@@ -3,6 +3,8 @@
 AI が生成した HTML スライドを、CSS も JavaScript もそのまま再現したまま
 PowerPoint のように編集できるデスクトップアプリ(Tauri v2 + React + TypeScript)。
 
+[![CI](https://github.com/TominagaTeam/bishudeck/actions/workflows/ci.yml/badge.svg)](https://github.com/TominagaTeam/bishudeck/actions/workflows/ci.yml)
+
 ![Bishudeck の編集画面。スライドの見出しを選ぶと、右のインスペクタに文字書式と位置・サイズが出る](docs/images/screenshot.png)
 
 ## できること
@@ -167,6 +169,10 @@ Artifacts の「standalone」書き出しは、中身が JSON で埋め込まれ
 **設計ドキュメントの入口は [`docs/INDEX.md`](docs/INDEX.md)。**
 開発ルールは [`docs/rules/development.md`](docs/rules/development.md)、
 AI 向けの運用ルールは [`CLAUDE.md`](CLAUDE.md)。
+
+Issue や Pull Request を送る前に [`CONTRIBUTING.md`](CONTRIBUTING.md) を読んでください。
+**このリポジトリはリリースごとのスナップショットで、PR をそのままマージできません**
+(取り込み直す形になります)。
 
 ### セットアップ
 
