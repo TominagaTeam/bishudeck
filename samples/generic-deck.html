@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>四半期レビュー</title>
+    <style>
+      :root {
+        --brand: #3884ff;
+        --ink: #14161a;
+      }
+      * { box-sizing: border-box; margin: 0; }
+      body {
+        font-family: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+        color: var(--ink);
+      }
+      .slide {
+        width: 1280px;
+        height: 720px;
+        padding: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 24px;
+        background: #fff;
+      }
+      .slide.title {
+        background: linear-gradient(135deg, var(--brand), #1b3f8f);
+        color: #fff;
+        align-items: flex-start;
+      }
+      h1 { font-size: 64px; letter-spacing: -0.02em; }
+      h2 { font-size: 44px; color: var(--brand); }
+      p  { font-size: 24px; line-height: 1.8; }
+      ul { font-size: 26px; line-height: 2; padding-left: 1.2em; }
+      .metric {
+        display: flex;
+        gap: 48px;
+        margin-top: 24px;
+      }
+      .metric div {
+        flex: 1;
+        padding: 32px;
+        border-radius: 16px;
+        background: #f1f4f9;
+      }
+      .metric strong {
+        display: block;
+        font-size: 56px;
+        color: var(--brand);
+        font-variant-numeric: tabular-nums;
+      }
+      .bar {
+        height: 18px;
+        border-radius: 9px;
+        background: var(--brand);
+        /* Animated purely in CSS, so it plays identically in edit and preview. */
+        animation: grow 1.2s ease-out both;
+      }
+      @keyframes grow {
+        from { width: 0; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="slide title">
+      <h1>2026 年 Q2 レビュー</h1>
+      <p>プロダクト部 / 8 月 18 日</p>
+    </section>
+
+    <section class="slide">
+      <h2>今期のハイライト</h2>
+      <ul>
+        <li>月間アクティブユーザーが前期比 38% 増</li>
+        <li>エンタープライズ契約を 12 社獲得</li>
+        <li>解約率が 2.1% まで低下</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>主要指標</h2>
+      <div class="metric">
+        <div><strong data-count="128400">0</strong>MAU</div>
+        <div><strong data-count="12">0</strong>新規契約</div>
+        <div><strong data-count="98">0</strong>NPS</div>
+      </div>
+      <div class="bar" style="width: 72%"></div>
+      <p>目標達成率 72%</p>
+    </section>
+
+    <section class="slide">
+      <h2>次の四半期に向けて</h2>
+      <p>オンボーディングの摩擦をなくし、初週の定着率を改善する。</p>
+    </section>
+
+    <script>
+      // Counts the metric numbers up on load. Runs in preview, stays inert
+      // while editing.
+      document.querySelectorAll('[data-count]').forEach((el) => {
+        const target = Number(el.dataset.count);
+        const started = performance.now();
+        const tick = (now) => {
+          const progress = Math.min((now - started) / 900, 1);
+          el.textContent = Math.round(target * progress).toLocaleString();
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    </script>
+  </body>
+</html>

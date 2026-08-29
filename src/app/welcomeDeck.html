@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Bishudeck へようこそ</title>
+<style>
+  /* ---------------------------------------------------------------- tokens */
+  :root {
+    --bg: #F0EEE6;
+    --paper: #FAF9F5;
+    --ink: #191813;
+    --ink-2: #56534A;
+    --muted: #8C8779;
+    --line: #E1DDD1;
+    --line-soft: #EAE7DC;
+    --clay: #D97757;
+    --clay-deep: #B4593B;
+    --wash: #F5E5DC;
+    --sans: "Noto Sans JP", "Noto Sans", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+    --serif: "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The shell the editor keeps around a single slide: no padding and no gap,
+     so one slide alone measures exactly 1280x720. */
+  .deck { display: flex; flex-direction: column; align-items: center; }
+
+  .slide {
+    position: relative;
+    width: 1280px;
+    height: 720px;
+    overflow: hidden;
+    background: var(--bg);
+    /* Drawn outside the box, so it separates slides in the exported file
+       without taking a pixel from the stage. */
+    outline: 1px solid rgba(25, 24, 19, 0.07);
+  }
+
+  /* ------------------------------------------------------------- furniture */
+  .head {
+    position: absolute;
+    top: 64px;
+    left: 88px;
+    right: 88px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .num {
+    font-family: var(--serif);
+    font-size: 30px;
+    line-height: 1;
+    color: var(--clay);
+    letter-spacing: 0.02em;
+  }
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+  }
+  .rule { flex: 1; height: 1px; background: var(--line); }
+
+  .title {
+    position: absolute;
+    top: 126px;
+    left: 88px;
+    right: 88px;
+    font-size: 46px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+  .title em { font-style: normal; color: var(--clay-deep); }
+
+  .lead {
+    position: absolute;
+    top: 202px;
+    left: 88px;
+    right: 260px;
+    font-size: 19px;
+    line-height: 1.8;
+    color: var(--ink-2);
+  }
+
+  .body {
+    position: absolute;
+    left: 88px;
+    right: 88px;
+    top: 288px;
+    bottom: 92px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+  /* Slides without a lead paragraph start their content higher. */
+  .body.high { top: 226px; }
+
+  .foot {
+    position: absolute;
+    left: 88px;
+    right: 88px;
+    bottom: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+  .foot .page { font-family: var(--serif); font-size: 15px; letter-spacing: 0; }
+
+  /* ----------------------------------------------------------------- parts */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 32px;
+    min-height: 232px;
+  }
+  .card h3 {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .card p { font-size: 16px; line-height: 1.9; color: var(--ink-2); }
+
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--clay-deep);
+    background: var(--wash);
+    border-radius: 999px;
+    padding: 6px 14px;
+    margin-bottom: 16px;
+  }
+
+  .list { list-style: none; }
+  .list li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--ink-2);
+    margin-bottom: 12px;
+  }
+  .list li:last-child { margin-bottom: 0; }
+  .list li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 13px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--clay);
+  }
+  .list b { color: var(--ink); font-weight: 700; }
+
+  .key {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 7px;
+    padding: 3px 9px;
+    white-space: nowrap;
+  }
+
+  .note {
+    display: block;
+    border-left: 3px solid var(--clay);
+    padding: 4px 0 4px 18px;
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--ink-2);
+  }
+  .note b { color: var(--ink); font-weight: 700; }
+
+  /* ----------------------------------------------------------------- cover */
+  .s-cover .burst {
+    position: absolute;
+    right: 96px;
+    top: 148px;
+    width: 300px;
+    height: 300px;
+    opacity: 0.9;
+  }
+  .cover-eyebrow {
+    position: absolute;
+    top: 92px;
+    left: 96px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+  }
+  .cover-title {
+    position: absolute;
+    top: 168px;
+    left: 96px;
+    width: 700px;
+    font-size: 62px;
+    font-weight: 700;
+    line-height: 1.28;
+    letter-spacing: -0.03em;
+  }
+  .cover-title em {
+    font-style: normal;
+    color: var(--clay-deep);
+  }
+  .cover-lead {
+    position: absolute;
+    top: 452px;
+    left: 96px;
+    width: 620px;
+    font-size: 19px;
+    line-height: 1.85;
+    color: var(--ink-2);
+  }
+  .cover-hint {
+    position: absolute;
+    left: 96px;
+    bottom: 96px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 22px;
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+  .cover-hint .tag { margin: 0; }
+
+  /* ------------------------------------------------------------ step cards */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .step {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 28px 30px;
+  }
+  .step .no {
+    font-family: var(--serif);
+    font-size: 52px;
+    line-height: 1;
+    color: var(--clay);
+    display: block;
+    margin-bottom: 18px;
+  }
+  .step h3 { font-size: 21px; font-weight: 700; margin-bottom: 10px; }
+  .step p { font-size: 15px; line-height: 1.85; color: var(--ink-2); }
+  .step .key { margin-top: 16px; }
+
+  /* -------------------------------------------------------- screen diagram */
+  .screen {
+    display: grid;
+    grid-template-columns: 172px 1fr 190px;
+    grid-template-rows: 46px 1fr 30px;
+    gap: 10px;
+    height: 322px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px;
+  }
+  .zone {
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    padding: 8px;
+  }
+  .zone b { font-size: 15px; color: var(--ink); font-weight: 700; }
+  .zone.wide { grid-column: 1 / -1; }
+  .zone.stage { background: var(--wash); border-color: #EBD5C9; }
+  .zone.stage b { color: var(--clay-deep); }
+
+  /* ------------------------------------------------------- inspector mock */
+  .panel-mock {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+  }
+  .panel-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--ink-2);
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid var(--line-soft);
+    margin-bottom: 8px;
+  }
+  .panel-row span { color: var(--muted); font-size: 13px; }
+  .panel-row.on { border-color: var(--clay); background: var(--wash); color: var(--clay-deep); font-weight: 700; }
+
+  /* --------------------------------------------------------- shortcut grid */
+  .keys { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 40px; }
+  .keys div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-size: 15px;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+  }
+
+  /* --------------------------------------------------------------- closing */
+  .s-end .end-title {
+    position: absolute;
+    left: 96px;
+    top: 232px;
+    width: 720px;
+    font-size: 54px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+  }
+  .s-end .end-title em { font-style: normal; color: var(--clay-deep); }
+  .s-end .end-lead {
+    position: absolute;
+    left: 96px;
+    top: 428px;
+    width: 620px;
+    font-size: 18px;
+    line-height: 1.9;
+    color: var(--ink-2);
+  }
+  .s-end .burst {
+    position: absolute;
+    right: 120px;
+    top: 236px;
+    width: 240px;
+    height: 240px;
+    opacity: 0.85;
+  }
+</style>
+</head>
+<body>
+<main class="deck">
+
+  <!-- 1 --------------------------------------------------------------- -->
+  <section class="slide s-cover">
+    <p class="cover-eyebrow">BISHUDECK — 使い方ガイド</p>
+    <h1 class="cover-title">AI がつくった<br><em>HTML スライド</em>を、<br>そのまま編集する。</h1>
+    <svg class="burst" viewBox="-50 -50 100 100" aria-hidden="true">
+      <g fill="#D97757">
+        <path d="M0 -46C2.9 -20.7 5.2 -12 5.2 0 5.2 12 2.9 20.7 0 46 -2.9 20.7 -5.2 12 -5.2 0 -5.2 -12 -2.9 -20.7 0 -46Z" transform="rotate(0)"/>
+        <path d="M0 -33C2.2 -14.8 4.0 -12 4.0 0 4.0 12 2.2 14.8 0 33 -2.2 14.8 -4.0 12 -4.0 0 -4.0 -12 -2.2 -14.8 0 -33Z" transform="rotate(30)"/>
+        <path d="M0 -46C2.9 -20.7 5.2 -12 5.2 0 5.2 12 2.9 20.7 0 46 -2.9 20.7 -5.2 12 -5.2 0 -5.2 -12 -2.9 -20.7 0 -46Z" transform="rotate(60)"/>
+        <path d="M0 -33C2.2 -14.8 4.0 -12 4.0 0 4.0 12 2.2 14.8 0 33 -2.2 14.8 -4.0 12 -4.0 0 -4.0 -12 -2.2 -14.8 0 -33Z" transform="rotate(90)"/>
+        <path d="M0 -46C2.9 -20.7 5.2 -12 5.2 0 5.2 12 2.9 20.7 0 46 -2.9 20.7 -5.2 12 -5.2 0 -5.2 -12 -2.9 -20.7 0 -46Z" transform="rotate(120)"/>
+        <path d="M0 -33C2.2 -14.8 4.0 -12 4.0 0 4.0 12 2.2 14.8 0 33 -2.2 14.8 -4.0 12 -4.0 0 -4.0 -12 -2.2 -14.8 0 -33Z" transform="rotate(150)"/>
+        <circle cx="0" cy="0" r="7.5" fill="#F0EEE6"/>
+        <circle cx="0" cy="0" r="4" fill="#B4593B"/>
+      </g>
+    </svg>
+    <p class="cover-lead">CSS も JavaScript も再現したまま、PowerPoint の感覚で直せる HTML スライドエディタ。まずはこの 11 枚で、ひととおりの操作を掴んでください。</p>
+    <div class="cover-hint">
+      <span class="tag">TRY</span>
+      この文につけたカーソルは飾りではありません。ダブルクリックすれば、いまこの場で書き換えられます。
+    </div>
+    <div class="foot"><span>WELCOME</span><span class="page">1 / 11</span></div>
+  </section>
+
+  <!-- 2 --------------------------------------------------------------- -->
+  <section class="slide s-what">
+    <div class="head"><span class="num">01</span><span class="eyebrow">CONCEPT</span><span class="rule"></span></div>
+    <h2 class="title">読み込んだ HTML を、<em>壊さない</em>。</h2>
+    <p class="lead">このアプリの前提は「エディタが解釈できないものは、触らなければそのまま残る」こと。だから AI が書いた凝ったデッキも、開いて直して書き出すだけで元の見た目のまま戻ります。</p>
+    <div class="body">
+      <div class="cards-3">
+        <div class="card">
+          <h3>HTML がそのまま正</h3>
+          <p>独自のプロジェクト形式に変換しません。扱うのは最初から最後まで 1 枚の HTML ファイルです。</p>
+        </div>
+        <div class="card">
+          <h3>CSS と JS は保持</h3>
+          <p>編集中はスクリプトを止めて安全に触り、再生では書かれたとおりに動かします。アニメーションもそのまま。</p>
+        </div>
+        <div class="card">
+          <h3>変更は上書きで載せる</h3>
+          <p>元の CSS は書き換えません。動かした位置や変えた色だけを、最小の差分として上に重ねます。</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CONCEPT</span><span class="page">2 / 11</span></div>
+  </section>
+
+  <!-- 3 --------------------------------------------------------------- -->
+  <section class="slide s-steps">
+    <div class="head"><span class="num">02</span><span class="eyebrow">GETTING STARTED</span><span class="rule"></span></div>
+    <h2 class="title">操作はこの <em>3 つ</em>だけ覚えれば足ります。</h2>
+    <p class="lead">取り込んで、直して、書き出す。ファイルはずっと HTML のままなので、保存と書き出しの区別もありません。</p>
+    <div class="body">
+      <div class="steps">
+        <div class="step">
+          <span class="no">01</span>
+          <h3>取り込む</h3>
+          <p>ツールバーの「HTML を取り込む」から選ぶだけ。スライドの切れ目は自動で判定し、確認してから分割します。</p>
+          <span class="key">⌘O</span>
+        </div>
+        <div class="step">
+          <span class="no">02</span>
+          <h3>直す</h3>
+          <p>クリックで選び、ドラッグで動かし、ダブルクリックで文字を打ち替える。細かい値は右のインスペクタで。</p>
+          <span class="key">ダブルクリック</span>
+        </div>
+        <div class="step">
+          <span class="no">03</span>
+          <h3>書き出す</h3>
+          <p>1 枚の HTML として書き出します。一度書き出したデッキは、手が 2 秒止まると同じ場所へ自動保存。</p>
+          <span class="key">⌘S</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>GETTING STARTED</span><span class="page">3 / 11</span></div>
+  </section>
+
+  <!-- 4 --------------------------------------------------------------- -->
+  <section class="slide s-screen">
+    <div class="head"><span class="num">03</span><span class="eyebrow">WORKSPACE</span><span class="rule"></span></div>
+    <h2 class="title">画面は <em>4 つ</em>に分かれています。</h2>
+    <div class="body high">
+      <div class="screen">
+        <div class="zone wide"><b>ツールバー</b>取り込み・書き出し・挿入・配置・再生・ヘルプ</div>
+        <div class="zone"><b>スライド一覧</b>並べ替え・追加・複製</div>
+        <div class="zone stage"><b>キャンバス</b>選んで、動かして、打ち替える場所</div>
+        <div class="zone"><b>インスペクタ</b>選んだ要素の数値と書式</div>
+        <div class="zone wide"><b>ステータスバー</b>保存状態・倍率・テーマ</div>
+      </div>
+      <div class="note">
+        左右のペインは境界をドラッグして幅を変えられ、境界のシェブロンをクリックすると畳めます。<b>幅と開閉は次に起動したときも残ります。</b>
+      </div>
+    </div>
+    <div class="foot"><span>WORKSPACE</span><span class="page">4 / 11</span></div>
+  </section>
+
+  <!-- 5 --------------------------------------------------------------- -->
+  <section class="slide s-select">
+    <div class="head"><span class="num">04</span><span class="eyebrow">SELECT &amp; MOVE</span><span class="rule"></span></div>
+    <h2 class="title">選んで、動かす。</h2>
+    <div class="body high">
+      <div class="cols-2">
+        <div class="card">
+          <span class="tag">選ぶ</span>
+          <ul class="list">
+            <li><b>クリック</b>で 1 つ選択。選べるのは常に 1 つです</li>
+            <li>重なって選べないときは <b>Alt+クリック</b>、または右クリックの「この位置にあるもの」</li>
+            <li><span class="key">Tab</span> で隣の要素へ、<span class="key">Esc</span> で 1 階層外へ</li>
+            <li>インスペクタの<b>パンくず</b>に触れると、その要素が破線で光ります</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">動かす</span>
+          <ul class="list">
+            <li><b>ドラッグ</b>で移動、<b>ハンドル</b>でリサイズ、上のハンドルで回転</li>
+            <li>他の要素の辺に近づくと<b>吸着</b>します</li>
+            <li><span class="key">←→↑↓</span> で 1px、<span class="key">Shift</span> を足して 10px</li>
+            <li><span class="key">Alt</span> を押しながらドラッグ、または <span class="key">⌘D</span> で複製</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>SELECT &amp; MOVE</span><span class="page">5 / 11</span></div>
+  </section>
+
+  <!-- 6 --------------------------------------------------------------- -->
+  <section class="slide s-text">
+    <div class="head"><span class="num">05</span><span class="eyebrow">TEXT</span><span class="rule"></span></div>
+    <h2 class="title">文字は<em>ダブルクリック</em>から。</h2>
+    <p class="lead">キャレットはクリックした位置に入り、その語が選択された状態で始まります。抜けるのは枠の外をクリックするか、Esc を押したとき。</p>
+    <div class="body">
+      <div class="cols-2">
+        <div class="card">
+          <h3>選ぶだけなら、要素ぜんぶ</h3>
+          <p>要素を選んだ状態でインスペクタの「文字書式」を当てると、その要素の全体に効きます。行揃えのように段落の性質を変えるものは、いつでも要素全体です。</p>
+        </div>
+        <div class="card">
+          <h3>範囲を選べば、そこだけ</h3>
+          <p>編集に入ってから範囲を選ぶと、色・蛍光・太さはその範囲だけに効きます。パネルを触っているあいだも編集は続き、選択範囲は消えません。</p>
+        </div>
+      </div>
+      <div class="note">
+        <span class="key">Enter</span> や <span class="key">F2</span> でも文字編集に入れます。抜けたあとは要素の選択が残るので、<b>そのまま矢印キーで動かせます</b>。
+      </div>
+    </div>
+    <div class="foot"><span>TEXT</span><span class="page">6 / 11</span></div>
+  </section>
+
+  <!-- 7 --------------------------------------------------------------- -->
+  <section class="slide s-inspector">
+    <div class="head"><span class="num">06</span><span class="eyebrow">INSPECTOR</span><span class="rule"></span></div>
+    <h2 class="title">数値で決めたいときは、右のパネル。</h2>
+    <div class="body high">
+      <div class="cols-2" style="grid-template-columns: 380px 1fr; gap: 44px;">
+        <div class="panel-mock">
+          <div class="panel-row on">位置とサイズ<span>X / Y / W / H / 回転</span></div>
+          <div class="panel-row">ボックス<span>背景・余白・角丸</span></div>
+          <div class="panel-row">枠線<span>種類・色・太さ</span></div>
+          <div class="panel-row">文字書式<span>書体・色・行揃え</span></div>
+          <div class="panel-row" style="margin-bottom: 0;">画像<span>差し替え・トリミング</span></div>
+        </div>
+        <div>
+          <ul class="list">
+            <li><b>打った字がその場で効きます。</b>確定のための Enter は要りません</li>
+            <li>スライダーもスピナーも同じで、動かしたぶんだけステージが追います</li>
+            <li>打っているあいだの変更は、<b>まとめて 1 回の Undo</b> で打つ前に戻ります</li>
+            <li>背景と枠線の「なし / 透明」はデッキの CSS ごと消し、「解除」は元の見た目に戻します</li>
+          </ul>
+          <div class="note" style="margin-top: 20px;">
+            パネルの並びと折りたたみは<b>次に起動したときも残ります</b>。よく使うものだけ開いておけます。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>INSPECTOR</span><span class="page">7 / 11</span></div>
+  </section>
+
+  <!-- 8 --------------------------------------------------------------- -->
+  <section class="slide s-image">
+    <div class="head"><span class="num">07</span><span class="eyebrow">IMAGES</span><span class="rule"></span></div>
+    <h2 class="title">空いている箱に、<em>写真を入れる</em>。</h2>
+    <p class="lead">文字も画像も持たない箱なら、どれでも写真枠として使えます。取り込んだデッキの「写真添付エリア」も同じ扱いです。</p>
+    <div class="body">
+      <div class="cards-3">
+        <div class="card">
+          <h3>落として入れる</h3>
+          <p>画像ファイルを箱の上にドラッグ＆ドロップ。デスクトップアプリとして起動しているときの入口です。</p>
+        </div>
+        <div class="card">
+          <h3>右クリックで入れる</h3>
+          <p>箱を右クリックして「画像を入れる」。ファイル選択が開きます。インスペクタの「画像」からも同じ操作ができます。</p>
+        </div>
+        <div class="card">
+          <h3>トリミングする</h3>
+          <p>枠と画像の 2 つの矩形で切り抜きます。はみ出た部分は隠れるだけで、捨てられません。</p>
+        </div>
+      </div>
+      <div class="note">
+        入れ替えもトリミングも <b>Undo 1 回</b>で元どおり。書き出した HTML を読み直しても、同じ状態で戻ります。
+      </div>
+    </div>
+    <div class="foot"><span>IMAGES</span><span class="page">8 / 11</span></div>
+  </section>
+
+  <!-- 9 --------------------------------------------------------------- -->
+  <section class="slide s-present">
+    <div class="head"><span class="num">08</span><span class="eyebrow">PRESENT &amp; SAVE</span><span class="rule"></span></div>
+    <h2 class="title">見せる。そして、失わない。</h2>
+    <div class="body high">
+      <div class="cols-2">
+        <div class="card">
+          <h3>再生する</h3>
+          <p><span class="key">F5</span> で別ウィンドウが全画面で開きます。ページ送りは <span class="key">←→</span> とクリック、終了は <span class="key">Esc</span>。ここでは JavaScript も書かれたとおりに動きます。</p>
+        </div>
+        <div class="card">
+          <h3>保存する</h3>
+          <p><span class="key">⌘S</span> で 1 枚の HTML に書き出します。行き先が決まったデッキは、手が 2 秒止まるたび同じファイルへ自動保存されます。</p>
+        </div>
+      </div>
+      <div class="note">
+        取り込んだだけのデッキは<b>勝手に上書きしません</b>。書き出し先を決めていないまま閉じようとしたときだけ、「書き出して終了 / 書き出さずに終了 / キャンセル」を聞きます。
+      </div>
+    </div>
+    <div class="foot"><span>PRESENT &amp; SAVE</span><span class="page">9 / 11</span></div>
+  </section>
+
+  <!-- 10 -------------------------------------------------------------- -->
+  <section class="slide s-keys">
+    <div class="head"><span class="num">09</span><span class="eyebrow">SHORTCUTS</span><span class="rule"></span></div>
+    <h2 class="title">よく使うキー。</h2>
+    <p class="lead">キーは PowerPoint に合わせてあります。Windows では ⌘ を Ctrl に読み替えてください。全一覧はヘルプ（⌘/）に入っています。</p>
+    <div class="body">
+      <div class="keys">
+        <div><span>取り込む</span><span class="key">⌘O</span></div>
+        <div><span>複製する</span><span class="key">⌘D</span></div>
+        <div><span>書き出す</span><span class="key">⌘S</span></div>
+        <div><span>前面へ / 背面へ</span><span class="key">⌘] / ⌘[</span></div>
+        <div><span>取り消す / やり直す</span><span class="key">⌘Z / ⌘⇧Z</span></div>
+        <div><span>スライドを追加</span><span class="key">⌘M</span></div>
+        <div><span>コピー / 切り取り / 貼り付け</span><span class="key">⌘C ⌘X ⌘V</span></div>
+        <div><span>再生する</span><span class="key">F5</span></div>
+        <div><span>書式をコピー / 貼り付け</span><span class="key">⌘⌥C / ⌘⌥V</span></div>
+        <div><span>画面に合わせる</span><span class="key">⌘0</span></div>
+        <div><span>文字編集に入る</span><span class="key">Enter / F2</span></div>
+        <div><span>ショートカット一覧</span><span class="key">⌘/</span></div>
+      </div>
+    </div>
+    <div class="foot"><span>SHORTCUTS</span><span class="page">10 / 11</span></div>
+  </section>
+
+  <!-- 11 -------------------------------------------------------------- -->
+  <section class="slide s-end">
+    <div class="head"><span class="num">10</span><span class="eyebrow">YOUR TURN</span><span class="rule"></span></div>
+    <h2 class="end-title">では、<em>あなたのデッキ</em>を<br>開いてみましょう。</h2>
+    <svg class="burst" viewBox="-50 -50 100 100" aria-hidden="true">
+      <g fill="#D97757">
+        <path d="M0 -46C2.9 -20.7 5.2 -12 5.2 0 5.2 12 2.9 20.7 0 46 -2.9 20.7 -5.2 12 -5.2 0 -5.2 -12 -2.9 -20.7 0 -46Z" transform="rotate(0)"/>
+        <path d="M0 -33C2.2 -14.8 4.0 -12 4.0 0 4.0 12 2.2 14.8 0 33 -2.2 14.8 -4.0 12 -4.0 0 -4.0 -12 -2.2 -14.8 0 -33Z" transform="rotate(30)"/>
+        <path d="M0 -46C2.9 -20.7 5.2 -12 5.2 0 5.2 12 2.9 20.7 0 46 -2.9 20.7 -5.2 12 -5.2 0 -5.2 -12 -2.9 -20.7 0 -46Z" transform="rotate(60)"/>
+        <path d="M0 -33C2.2 -14.8 4.0 -12 4.0 0 4.0 12 2.2 14.8 0 33 -2.2 14.8 -4.0 12 -4.0 0 -4.0 -12 -2.2 -14.8 0 -33Z" transform="rotate(90)"/>
+        <path d="M0 -46C2.9 -20.7 5.2 -12 5.2 0 5.2 12 2.9 20.7 0 46 -2.9 20.7 -5.2 12 -5.2 0 -5.2 -12 -2.9 -20.7 0 -46Z" transform="rotate(120)"/>
+        <path d="M0 -33C2.2 -14.8 4.0 -12 4.0 0 4.0 12 2.2 14.8 0 33 -2.2 14.8 -4.0 12 -4.0 0 -4.0 -12 -2.2 -14.8 0 -33Z" transform="rotate(150)"/>
+        <circle cx="0" cy="0" r="7.5" fill="#F0EEE6"/>
+        <circle cx="0" cy="0" r="4" fill="#B4593B"/>
+      </g>
+    </svg>
+    <p class="end-lead">ツールバーの「HTML を取り込む」<span class="key">⌘O</span> から、手元の HTML スライドをどうぞ。このガイドは取り込んだ時点で置き換わるので、消す手間は要りません。</p>
+    <div class="foot"><span>BISHUDECK</span><span class="page">11 / 11</span></div>
+  </section>
+
+</main>
+</body>
+</html>

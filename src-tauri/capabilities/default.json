@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Editor and presentation windows. File access goes through the dialog plugin only; no direct fs or shell permissions are granted. Window state is driven from Rust, so the frontend only needs to finish a close it was asked about.",
+  "windows": ["main", "presentation"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-destroy",
+    "opener:default",
+    "dialog:allow-open",
+    "dialog:allow-save",
+    "dialog:allow-message"
+  ]
+}

@@ -1,0 +1,1511 @@
+/*
+ * Two palettes, one set of names (docs/features/theme/design.md).
+ *
+ * `:root` holds the light one because that is what the editor opens in, and
+ * `[data-theme='dark']` restates only the tokens that move. The attribute is
+ * written by `shared/theme.ts` and never says `system`: that is resolved
+ * before it reaches the document, so there is exactly one block per palette
+ * rather than a second copy of the dark one inside a media query.
+ *
+ * What is *not* in the second block is the point. --accent and the overlay's
+ * own literals stay where they are, because the editor draws them over someone
+ * else's slide: they are picked to read against the deck, which does not
+ * change colour when the window does.
+ *
+ * --brand used to sit with them. It moved into both blocks when the run button
+ * became ink on a pale window and near-white on a dark one — safe, because it
+ * is a toolbar button and never reaches a slide.
+ */
+:root {
+  /* ---- the chrome's surfaces: everything the theme moves ---- */
+  --bg: #eef0f4;
+  /* Not #fff. The brightest thing on screen has to be the slide, and a white
+     panel beside a white slide makes the chrome compete with the document. */
+  --panel: #f9fafb;
+  --panel-alt: #ecedf1;
+  --border: #dcdfe6;
+  --text: #14161b;
+  --text-dim: #616875;
+  --danger: #c8332f;
+  /* Flat chrome buttons have no fill of their own; they borrow these. */
+  --hover-fill: rgb(20 22 27 / 0.055);
+  --press-fill: rgb(20 22 27 / 0.11);
+  /* The margin around the slide. Darker than --bg in both palettes: the canvas
+     is the well the slide sits in, and a white slide needs an edge to sit
+     against. */
+  --canvas-bg: #ccd1d9;
+  /* The trough a segmented control is pressed into. */
+  --sunken: rgb(20 22 27 / 0.05);
+  /* The hairline of light along a raised top edge. */
+  --sheen: rgb(255 255 255 / 0.7);
+  /* A swatch *is* its colour, so its outline has to come from outside it —
+     otherwise the white one has no edge at all on a pale panel. */
+  --swatch-border: rgb(20 22 27 / 0.2);
+  /* What a modal lays over the window it took the keyboard from. */
+  --scrim: rgb(20 22 27 / 0.35);
+  --shadow-raise: 0 1px 2px rgb(20 22 27 / 0.12);
+  --shadow-pop: 0 12px 32px rgb(20 22 27 / 0.16);
+  --shadow-stage: 0 10px 34px rgb(20 22 27 / 0.24);
+  /* --accent used as a *fill* rather than as a line. The line has to stay the
+     same in both palettes because it is drawn over someone else's slide; a
+     filled button is chrome, and on a pale window #3884ff is too light to
+     carry white text (3.6:1 against it). Identical to --accent in the dark
+     palette, where the fill sits on a dark panel. */
+  --accent-fill: #2563eb;
+  /* "Run the deck", kept apart from --accent: blue stays the meaning of
+     "selected". Ink rather than a colour, because blue is spoken for and a
+     second hue on the bar would have to argue with it — inverted to near-white
+     in the dark palette so the button keeps the strongest contrast available
+     on whichever window it is sitting on. */
+  --brand: #16181d;
+  --brand-hover: #2a2d35;
+  --on-brand: #fff;
+  color-scheme: light;
+
+  /* ---- the same in both palettes ---- */
+  --accent: #3884ff;
+  /* What sits on an --accent fill. That fill is the same colour in either
+     palette, so this cannot be allowed to follow --text: a light theme would
+     put near-black on a mid-blue button. --brand carries --on-brand instead,
+     because that fill does move. */
+  --on-accent: #fff;
+  /* The unsaved tell on the export command. Amber rather than --brand, which
+     is ink on one palette and near-white on the other: neither reads as
+     "there is something outstanding here" the way a warm dot does. */
+  --dirty: #e0a11b;
+  /* The corner scale, four steps: small inner surfaces (thumbnails, swatches),
+     controls, the panels and popovers that hold them, and the modal. Anything
+     rounder than --r-xl is a circle and says so with 50%. */
+  --r-sm: 4px;
+  --r-md: 7px;
+  --r-lg: 10px;
+  --r-xl: 14px;
+  /* Width of the grab seam between the slide list and the canvas. */
+  --divider: 6px;
+}
+
+:root[data-theme='dark'] {
+  --bg: #16181c;
+  --panel: #1d2025;
+  --panel-alt: #24272d;
+  --border: #32363e;
+  --text: #e6e8ec;
+  --text-dim: #949aa6;
+  --danger: #ff5c5c;
+  --hover-fill: rgb(255 255 255 / 0.07);
+  --press-fill: rgb(255 255 255 / 0.12);
+  --canvas-bg: #0c0d10;
+  --sunken: rgb(0 0 0 / 0.24);
+  --sheen: rgb(255 255 255 / 0.04);
+  --swatch-border: rgb(255 255 255 / 0.25);
+  --scrim: rgb(0 0 0 / 0.6);
+  --shadow-raise: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-pop: 0 14px 36px rgb(0 0 0 / 0.5);
+  --shadow-stage: 0 14px 44px rgb(0 0 0 / 0.55);
+  --accent-fill: #3884ff;
+  --brand: #f2f4f7;
+  --brand-hover: #ffffff;
+  --on-brand: #16181d;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.5 system-ui, -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* The same treatment for the controls that are not buttons. The browser's own
+   default for a disabled input is a colour change that varies by platform and
+   by control, so a row of greyed buttons beside a natively-greyed select read
+   as two different states rather than one. */
+input:disabled,
+select:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+button.active {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+button.link {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  padding: 0 4px;
+  text-decoration: underline;
+}
+
+input[type='text'],
+select,
+textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 4px 6px;
+  width: 100%;
+}
+
+input[type='color'] {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  width: 32px;
+  height: 26px;
+  padding: 2px;
+}
+
+/* ---------- layout ---------- */
+
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+/*
+ * The command bar reads as a ribbon rather than a row of boxes: commands are
+ * flat and borderless until the pointer is on them, and the grouping is carried
+ * by hairline rules between groups instead of by a frame around every button.
+ */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 6px 10px;
+  /* Flat, not a gradient with a lit top edge. The bevel was doing the work of
+     saying "this is a bar"; the hairline underneath says it on its own, and on
+     a pale palette the sheen only muddied the panel it sat on. */
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px;
+}
+
+.toolbar-group:first-child {
+  padding-left: 0;
+}
+
+/* The seam between ribbon groups. The mode switch draws its own frame and the
+   play button sits alone at the far end, so neither takes one. */
+.toolbar-group + .toolbar-group:not(.toolbar-modes):not(.toolbar-right) {
+  border-left: 1px solid var(--border);
+}
+
+.toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  padding: 5px 9px;
+  white-space: nowrap;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.toolbar button:hover:not(:disabled) {
+  background: var(--hover-fill);
+  border-color: transparent;
+}
+
+.toolbar button:active:not(:disabled) {
+  background: var(--press-fill);
+}
+
+.toolbar button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Icons carry the shape of a command; the label carries its name. Dimming them
+   a little keeps the row from reading as a wall of glyphs. */
+.toolbar .glyph {
+  flex: none;
+  opacity: 0.75;
+}
+
+.toolbar button:hover:not(:disabled) .glyph,
+.toolbar button.active .glyph,
+.toolbar button.primary .glyph {
+  opacity: 1;
+}
+
+/* An open drop-down is held down, not lit up. */
+.toolbar .menu > button.active {
+  background: var(--press-fill);
+  border-color: var(--border);
+}
+
+.toolbar .menu > button .glyph:last-child {
+  margin-right: -2px;
+  opacity: 0.55;
+}
+
+/* The unsaved tell: a dot on the export command. */
+.dirty-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dirty);
+}
+
+/* The view switch is one control with two halves, like PowerPoint's. */
+.toolbar-modes {
+  gap: 2px;
+  margin: 0 8px;
+  padding: 2px;
+  background: var(--sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.toolbar-modes button {
+  color: var(--text-dim);
+  padding: 4px 10px;
+}
+
+.toolbar-modes button.active {
+  background: var(--panel-alt);
+  border-color: var(--border);
+  color: var(--text);
+  box-shadow: var(--shadow-raise);
+}
+
+.toolbar-right {
+  margin-left: auto;
+  padding-right: 0;
+}
+
+/* The one thing on the bar that is worth colouring. */
+.toolbar button.primary {
+  background: var(--brand);
+  color: var(--on-brand);
+  padding: 5px 14px;
+  font-weight: 600;
+  box-shadow: var(--shadow-raise);
+}
+
+.toolbar button.primary:hover:not(:disabled) {
+  background: var(--brand-hover);
+}
+
+.toolbar button.primary:active:not(:disabled) {
+  background: var(--brand);
+}
+
+.toolbar button.primary:disabled {
+  background: none;
+  border-color: var(--border);
+  color: var(--text-dim);
+  box-shadow: none;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 240px var(--divider) 1fr var(--divider) 280px;
+  min-height: 0;
+  transition: grid-template-columns 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Collapsing should glide; dragging must not lag behind the pointer. */
+.workspace:has(.pane-divider.dragging) {
+  transition: none;
+}
+
+/* ---------- pane divider ---------- */
+
+.pane-divider {
+  position: relative;
+  z-index: 4;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pane-divider.collapsed {
+  cursor: default;
+}
+
+/* A hairline at rest, a visible rail under the pointer: the seam is findable
+   without drawing a permanent bar down the middle of the window. */
+.pane-divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--border);
+  transition: width 140ms ease, background 140ms ease;
+}
+
+.pane-divider:hover::after,
+.pane-divider.dragging::after {
+  width: 3px;
+  background: var(--accent);
+}
+
+.pane-toggle {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  /* Present enough to be found without being asked for, loud only once the
+     pointer is in the neighbourhood. */
+  opacity: 0.45;
+  transform: translateX(-50%);
+  transition: opacity 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.workspace:hover .pane-toggle,
+.pane-toggle:focus-visible {
+  opacity: 1;
+}
+
+/* Hidden pane: the chevron is the only way back, so it never fades out — and
+   it moves off the window edge, which would otherwise clip half of it. */
+.pane-divider.collapsed .pane-toggle {
+  opacity: 1;
+}
+
+.pane-divider.left.collapsed .pane-toggle {
+  left: 13px;
+}
+
+/* The mirror of the rule above: offset from the right edge, and the centring
+   translate flips with it. */
+.pane-divider.right.collapsed .pane-toggle {
+  left: auto;
+  right: 13px;
+  transform: translateX(50%);
+}
+
+.pane-toggle:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgb(56 132 255 / 0.18);
+}
+
+.pane-toggle svg {
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* The chevron points at where the pane will go: outward to hide it, back
+   toward the canvas to bring it in. Which way that is depends on the side. */
+.pane-divider.left.collapsed .pane-toggle svg,
+.pane-divider.right .pane-toggle svg {
+  transform: rotate(180deg);
+}
+
+.pane-divider.right.collapsed .pane-toggle svg {
+  transform: none;
+}
+
+.canvas {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--canvas-bg);
+}
+
+/* ---------- slide list ---------- */
+
+.slide-list {
+  /* Clipped rather than unmounted so collapsing animates instead of blinking. */
+  overflow: hidden auto;
+  min-width: 0;
+  padding: 12px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  transition: padding 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* A border-box floors at its own padding and border, so a zero-width track
+   would still leave a 25px stub. Hidden means hidden. */
+.workspace:has(.pane-divider.left.collapsed) .slide-list {
+  padding: 0;
+  border-right-width: 0;
+}
+
+.slide-list-empty {
+  color: var(--text-dim);
+  text-align: center;
+  margin-top: 32px;
+}
+
+.slide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px;
+  border-radius: var(--r-lg);
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.slide-item.selected {
+  border-color: var(--accent);
+  background: var(--panel-alt);
+}
+
+/* The accent border says "this is the slide on stage"; the ring says "and the
+   keyboard is here", which is what makes ↑ / ↓ inside the list legible. */
+.slide-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.slide-number {
+  color: var(--text-dim);
+  min-width: 16px;
+  text-align: right;
+}
+
+.thumb {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: #fff;
+  /* The slide's own white, always — but a pale panel gives it no edge, so the
+     outline comes from the chrome rather than from the slide. */
+  box-shadow: 0 0 0 1px var(--border);
+  flex-shrink: 0;
+}
+
+/* In the list the thumbnail takes whatever width the row leaves it, so the
+   selection outline always encloses it. min-width:0 lets it actually shrink. */
+.slide-item .thumb {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.thumb-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+/* ---------- stage ---------- */
+
+.stage-viewport {
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-stage);
+}
+
+.stage-surface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  background: #fff;
+}
+
+.stage-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  transition: opacity 120ms ease;
+}
+
+.stage-empty {
+  color: var(--text-dim);
+}
+
+/* Captures every pointer event over the slide so gestures live in one place
+   and the deck's own links can never swallow a click. */
+.stage-interaction {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: default;
+  /* A press here is always the start of a gesture, never the start of a
+     selection — and a selection is what lets the browser turn the next drag
+     into a native drag of it, cancelling the pointer mid-gesture (issues #16,
+     #17). `.pane-divider` needed the same pair for the same reason (#8):
+     `touch-action` also keeps a Windows touchpad from reclassifying the drag
+     as a system gesture. The handler calls `preventDefault()` as well; the two
+     are kept together because they fail differently. */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* It only takes focus so that leaving a text session can pull focus out of the
+   stage frame; there is nothing to draw a ring around. */
+.stage-interaction:focus {
+  outline: none;
+}
+
+/* The presentation's equivalent: it exists so a click can never land inside the
+   slide frame, which would move focus into a cross-origin document and leave
+   the presentation window deaf to the arrow keys and Escape. */
+.stage-shield {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: default;
+}
+
+.stage-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.overlay-guide {
+  position: absolute;
+  background: #ff3d81;
+}
+
+/* Host-side, like the rest of the overlay: nothing here may reach the export. */
+.overlay-badge {
+  position: absolute;
+  transform: translateX(-50%);
+  background: #14161a;
+  color: #fff;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.overlay-rotate {
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+  background: #fff;
+  border-style: solid;
+  border-color: var(--accent);
+  transform: translateX(-50%);
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.overlay-hover {
+  position: absolute;
+  border-style: solid;
+  border-color: rgb(56 132 255 / 0.5);
+}
+
+/* The breadcrumb preview. Dashed, so it never reads as a selection: the user
+   has not committed to this element yet, they are only pointing at its name. */
+.overlay-focus {
+  position: absolute;
+  border-style: dashed;
+  border-color: var(--accent);
+  background: rgb(56 132 255 / 0.08);
+}
+
+.overlay-selection {
+  position: absolute;
+  border-style: solid;
+  border-color: var(--accent);
+}
+
+/* Editing is a state, not a warning: same accent as a normal selection, told
+   apart by the softer fill and the badge rather than by an alarming colour.
+
+   The line steps outside the element here, drawn as an outline offset by
+   EDIT_FRAME_GAP (Overlay.tsx). On the boundary it was painted over the caret —
+   same pixels, same blue — and a box with nothing typed into it read as having
+   no caret at all (issues #99). The border stays where it was and turns
+   transparent rather than going to zero, so the fill still reaches exactly as
+   far as it did. */
+.overlay-selection.editing {
+  border-style: solid;
+  border-color: transparent;
+  outline-style: solid;
+  outline-color: rgb(56 132 255 / 0.9);
+  background: rgb(56 132 255 / 0.06);
+}
+
+/* Invisible click-catchers over everything but the element being edited; the
+   session-ending click has to happen on a host element (see Overlay). */
+.overlay-shield {
+  position: absolute;
+  pointer-events: auto;
+  cursor: default;
+}
+
+/* The other half of the pair: the pane over the text being edited. It takes the
+   press so the frame cannot turn it into a native drag of the selection
+   (issues #17), and the selection is drawn from the host instead. The frame's
+   own `cursor: text` is underneath it now, so the cursor is set here. */
+.overlay-text-shield {
+  position: absolute;
+  pointer-events: auto;
+  cursor: text;
+}
+
+.overlay-handle {
+  position: absolute;
+  background: #fff;
+  border-style: solid;
+  border-color: var(--accent);
+  pointer-events: auto;
+}
+
+/* Invisible: the selection's line is already drawn, and this only makes it
+   something to take hold of. Centred on that line so the grip reads as the line
+   itself rather than as a band inside or outside the element (Overlay.tsx). */
+.overlay-grip {
+  position: absolute;
+  pointer-events: auto;
+  cursor: move;
+}
+
+.grip-n {
+  left: 0;
+  right: 0;
+  top: 0;
+  transform: translateY(-50%);
+}
+
+.grip-s {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateY(50%);
+}
+
+.grip-w {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-50%);
+}
+
+.grip-e {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  transform: translateX(50%);
+}
+
+/* ---------- crop ---------- */
+
+/* The whole picture, including what the frame is cutting off. Dashed, because
+   the solid frame inside it is the edge that matters. */
+/* Above the stage frame (1) and the interaction layer (2), like .stage-overlay:
+   a positioned box left on `z-index: auto` paints *under* both of them, so the
+   whole of this was drawn behind the slide. */
+.overlay-crop-picture {
+  position: absolute;
+  z-index: 3;
+  border-style: dashed;
+  /* Two-tone, so the outline reads on a pale slide and on a dark one alike. */
+  border-color: rgb(255 255 255 / 0.9);
+  outline: 1px dashed rgb(16 18 22 / 0.5);
+  outline-offset: -1px;
+}
+
+/* Shades what falls outside the frame. Dark rather than light: a slide is more
+   often pale than not, and the cut-away part has to read as "going away". */
+.overlay-crop-dim {
+  position: absolute;
+  background: rgb(16 18 22 / 0.55);
+}
+
+.overlay-crop-frame {
+  position: absolute;
+  z-index: 4;
+  border-style: solid;
+  border-color: #fff;
+  box-shadow: 0 0 0 1px rgb(16 18 22 / 0.55);
+}
+
+/* Dragging inside the frame slides the picture; the cursor says so before the
+   drag starts. */
+.overlay-crop-grip {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  cursor: move;
+}
+
+/* Black brackets and bars rather than the selection's white squares — the same
+   distinction PowerPoint draws between trimming and resizing. */
+.overlay-crop-handle {
+  position: absolute;
+  background: #14161a;
+  border-color: #14161a;
+  border-style: solid;
+  pointer-events: auto;
+}
+
+.handle-nw { top: 0; left: 0; transform: translate(-50%, -50%); cursor: nwse-resize; }
+.handle-n  { top: 0; left: 50%; transform: translate(-50%, -50%); cursor: ns-resize; }
+.handle-ne { top: 0; left: 100%; transform: translate(-50%, -50%); cursor: nesw-resize; }
+.handle-e  { top: 50%; left: 100%; transform: translate(-50%, -50%); cursor: ew-resize; }
+.handle-se { top: 100%; left: 100%; transform: translate(-50%, -50%); cursor: nwse-resize; }
+.handle-s  { top: 100%; left: 50%; transform: translate(-50%, -50%); cursor: ns-resize; }
+.handle-sw { top: 100%; left: 0; transform: translate(-50%, -50%); cursor: nesw-resize; }
+.handle-w  { top: 50%; left: 0; transform: translate(-50%, -50%); cursor: ew-resize; }
+
+/* ---------- inspector ---------- */
+
+.inspector {
+  /* Clipped rather than unmounted so collapsing animates instead of blinking. */
+  overflow: hidden auto;
+  min-width: 0;
+  padding: 12px;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  transition: padding 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* A border-box floors at its own padding and border, so a zero-width track
+   would still leave a stub. Hidden means hidden. */
+.workspace:has(.pane-divider.right.collapsed) .inspector {
+  padding: 0;
+  border-left-width: 0;
+}
+
+/* Every block in the column: the fixed 選択 section and the folds below it.
+   What separates them is a line rather than more space — six blocks 20px apart
+   still read as one long box, which is what issues #20 was about. */
+.panel {
+  border-top: 1px solid var(--border);
+  padding: 8px 0;
+}
+
+/* 選択 is not a fold and sits above all of them, so it carries no rule of its
+   own and no line above it. */
+.panel.fixed {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* One rule for both kinds of heading, so a folded panel and the fixed section
+   sit on the same line of the eye. */
+.panel h2,
+.panel > summary {
+  font-size: 11px;
+  /* No text-transform. The headings are Japanese, where uppercase does nothing
+     and only the tracking that came with it survives — 「文字書式」 was being
+     spaced out like a title for no reason. Weight carries the heading instead,
+     and the tracking drops to what still helps 11px Latin. */
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.panel h2 {
+  margin-bottom: 8px;
+}
+
+.panel > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* A summary is a whole-width row, so the click target is the line rather than
+     the 11px of words on it. No text cursor and no selecting the heading — this
+     is a control, and a fold that is opened and shut repeatedly would otherwise
+     leave its own title highlighted. */
+  cursor: default;
+  user-select: none;
+  /* Both spellings of "do not draw the disclosure triangle" — the chevron below
+     is drawn by this rule set so it can animate and match the pane divider. */
+  list-style: none;
+}
+
+.panel > summary::-webkit-details-marker {
+  display: none;
+}
+
+.panel > summary::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  /* Pointing right when shut, down when open. Rotating one glyph rather than
+     swapping two keeps the two states obviously the same control. */
+  transform: rotate(-45deg);
+  transition: transform 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.panel[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+.panel > summary:hover {
+  color: var(--text);
+}
+
+.panel > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* A panel drawn for an element it has nothing to act on: still in the column,
+   still readable as a heading, but plainly not a control. The same 0.4 as
+   `button:disabled`, so "greyed out" means one thing across the pane.
+
+   `:hover` is overridden rather than left off, because the base rule brightens
+   every summary; without this, the one panel that cannot be opened would be the
+   one that lights up under the pointer. Focus is deliberately still visible:
+   the summary keeps its place in the tab order so the panel can be *found*
+   (`aria-disabled` says the rest). */
+.panel.disabled > summary,
+.panel.disabled > summary:hover {
+  opacity: 0.4;
+  color: var(--text-dim);
+  cursor: default;
+}
+
+.panel-body {
+  padding-top: 8px;
+}
+
+.hint {
+  color: var(--text-dim);
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+/* The label cell is a `<label>` when the row has one control to tie it to and a
+   `<span>` when it has a group of them (Field.tsx, issues #28). Both are the
+   same cell to the eye. */
+.field > span,
+.field > label {
+  color: var(--text-dim);
+}
+
+.field-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* A grid item's automatic minimum is its content, so without this the row
+     grows past the pane instead of letting a flexible control shrink. */
+  min-width: 0;
+}
+
+/* A control next to a shrinking select keeps its own width; squeezing a label
+   until it wraps mid-word is worse than a slightly narrower select. */
+.field-control button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* The thickness row: a slider that takes the slack, a small exact-value box. */
+.width-range {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.width-number {
+  flex: 0 0 48px;
+  width: 48px;
+}
+
+/* Padding and radius: the same small exact-value box, one digit wider because
+   these run to three figures where a border thickness stops at two. It must not
+   take the row's slack — the unit and the 辺ごと toggle sit beside it. */
+.spacing-number {
+  flex: 0 0 64px;
+  width: 64px;
+}
+
+/* A panel-wide action, kept out of the rows so the controls stay legible. */
+.panel-reset {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+/* Sits next to a number input, so it must not take the input's flex width. */
+.unit {
+  flex: 0 0 auto;
+  color: var(--text-dim);
+}
+
+.segmented {
+  display: flex;
+}
+
+.segmented button {
+  border-radius: 0;
+  padding: 3px 6px;
+  font-size: 11px;
+}
+
+.segmented button:first-child { border-radius: var(--r-md) 0 0 var(--r-md); }
+.segmented button:last-child { border-radius: 0 var(--r-md) var(--r-md) 0; }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+}
+
+.field.compact {
+  grid-template-columns: 28px 1fr;
+  margin-bottom: 0;
+}
+
+.field.compact input {
+  width: 100%;
+}
+
+.hint.small {
+  font-size: 11px;
+  margin: 0 0 8px;
+}
+
+/* Family names are long; the select has to be allowed to shrink next to the
+   button beside it. */
+.font-select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.format-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+/* Fixed width so the toggles line up as a row of squares. The horizontal
+   padding goes with it: at `border-box` it would leave 6px of content box, and
+   a two-glyph label (x²) would spill into the button beside it. */
+.format-button {
+  width: 28px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.format-button.bold { font-weight: 800; }
+.format-button.italic { font-style: italic; }
+.format-button.underline { text-decoration: underline; }
+.format-button.strikeThrough { text-decoration: line-through; }
+
+/* ---------- colour picker ---------- */
+
+/* Two buttons that have to read as one tool: the left applies the colour the
+   bar shows, the right opens the palette. Separate buttons rather than one
+   with a hot zone, so that Tab, Enter and a name of its own come for free. */
+.color-picker {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.color-picker button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 3px 5px;
+}
+
+.color-picker .color-apply { border-radius: var(--r-md) 0 0 var(--r-md); }
+
+.color-picker .color-open {
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding: 3px 1px;
+}
+
+/* One seam down the middle. Two borders would read as two buttons that happen
+   to be touching. */
+.color-picker button + button { margin-left: -1px; }
+
+.color-picker .glyph { flex: none; }
+
+.color-picker .color-open .glyph {
+  width: 11px;
+  height: 11px;
+  opacity: 0.7;
+}
+
+/* The palette hangs off the row, not off the button. The pane is 240–520px and
+   clips horizontally (`.inspector`), so a palette anchored to the highlighter's
+   button would be cut off at the right edge; one that is as wide as the row can
+   never overflow it, at any pane width. It also stays a descendant of the
+   panel, which is what keeps the text session alive through a click on it
+   (`data-hse-text-tools`, stage/EditStage.tsx) — a portal would look the same
+   and lose the selection. */
+.field-control:has(.color-picker) {
+  position: relative;
+}
+
+.color-popup {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 6px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-pop);
+}
+
+/* The column count comes from the script (colorPalette.ts), because the arrow
+   keys step by the same number and the two must not disagree. */
+.color-grid {
+  display: grid;
+  gap: 3px;
+}
+
+.color-swatch {
+  min-width: 0;
+  padding: 0;
+  aspect-ratio: 1;
+  border: 1px solid var(--swatch-border);
+  border-radius: var(--r-sm);
+}
+
+/* Not `.active`: the accent fill every other toggle uses would paint over the
+   one thing a swatch exists to show. */
+.color-swatch[aria-current='true'] {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.color-more {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.dim {
+  color: var(--text-dim);
+}
+
+/* ---------- menus ---------- */
+
+.menu {
+  position: relative;
+}
+
+.menu-popup {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  z-index: 30;
+  min-width: 200px;
+  padding: 5px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow:
+    0 1px 0 var(--sheen) inset,
+    var(--shadow-pop);
+}
+
+/*
+ * The context-menu variant: same chrome, placed at a point.
+ *
+ * Portalled to <body> rather than drawn in the stage — .stage-surface carries a
+ * transform, which makes it the containing block for position:fixed and would
+ * scale this with the zoom. See features/ContextMenu.tsx.
+ */
+.menu-popup.floating {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: var(--r-md);
+  padding: 5px 8px;
+  text-align: left;
+}
+
+/* A neutral highlight, not a blue flood: the row is being pointed at, which is
+   not the same statement as "this is selected". */
+.menu-item:hover:not(:disabled) {
+  background: var(--hover-fill);
+}
+
+.menu-item kbd {
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.menu-separator {
+  height: 1px;
+  margin: 4px 2px;
+  background: var(--border);
+}
+
+/* Not a row: dimmed and unpressable, so the eye reads it as a heading over the
+   rows under it rather than as an item that refuses to work. */
+.menu-label {
+  padding: 4px 8px 2px;
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.crumb {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  padding: 1px 4px;
+  font-size: 11px;
+}
+
+.crumb:hover:not(:disabled),
+.crumb:focus-visible {
+  color: var(--accent);
+}
+
+.crumb.current {
+  color: var(--accent);
+}
+
+/* ---------- status bar ---------- */
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 12px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.status-slot.dim,
+.status-path {
+  color: var(--text-dim);
+}
+
+.status-path {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.status-bar select {
+  width: auto;
+}
+
+/* ---------- modal ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--scrim);
+  z-index: 10;
+}
+
+.modal {
+  width: min(760px, 90vw);
+  max-height: 86vh;
+  overflow-y: auto;
+  padding: 20px 24px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+}
+
+.modal h1 {
+  font-size: 16px;
+  margin: 0 0 4px;
+}
+
+.modal-lead {
+  color: var(--text-dim);
+  margin: 0 0 16px;
+}
+
+.candidates {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.candidates label {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.candidates label:hover {
+  background: var(--panel-alt);
+}
+
+.candidate-count,
+.candidate-confidence {
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.import-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.import-preview .more {
+  color: var(--text-dim);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-actions .primary {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+/* The answer that throws work away. Outlined rather than filled: it must read
+   as available, not as the thing to press. */
+.modal-actions .destructive {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ---------- shortcut sheet ---------- */
+
+/* The same segmented control as the mode switch in the toolbar. It picks which
+   spelling to read, so it is a view of the list, not a setting. */
+.key-style-tabs {
+  display: inline-flex;
+  gap: 2px;
+  margin-bottom: 16px;
+  padding: 2px;
+  background: var(--sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.key-style-tabs button {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  padding: 4px 12px;
+}
+
+.key-style-tabs button:hover:not(.active) {
+  background: var(--hover-fill);
+}
+
+/* Says its own foreground, like the mode switch it copies: the base
+   `button.active` rule paints an accent fill and the white that goes on it,
+   and this control takes neither. */
+.key-style-tabs button.active {
+  background: var(--panel-alt);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+/* Two columns of groups: the list is long enough that one column would put the
+   presentation keys below the fold on a laptop. */
+.shortcut-sheet {
+  columns: 2;
+  column-gap: 28px;
+  margin-bottom: 20px;
+}
+
+.shortcut-sheet section {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+
+.shortcut-sheet h2 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin: 0 0 4px;
+}
+
+.shortcut-sheet dl {
+  margin: 0;
+}
+
+.shortcut-sheet dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 3px 0;
+}
+
+.shortcut-sheet dt {
+  display: flex;
+  flex-direction: column;
+}
+
+.shortcut-sheet dd {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.shortcut-sheet kbd {
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.shortcut-note {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+/* The list is longer than the dialog, so the way out has to stay in reach as
+   it scrolls. `-20px` cancels the modal's own bottom padding. */
+.shortcut-modal .modal-actions {
+  position: sticky;
+  bottom: -20px;
+  padding: 10px 0;
+  background: var(--panel);
+}
+
+/* ---------- toast & presentation ---------- */
+
+.toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: var(--r-lg);
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  z-index: 20;
+}
+
+.toast.error {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Focusable (tabIndex -1) so the presentation can take the keyboard back after
+   anything inside the window has stolen it; there is nothing to outline. */
+.present {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  background: #000;
+}
+
+.present:focus {
+  outline: none;
+}
+
+.present .stage-viewport {
+  box-shadow: none;
+}
+
+.present-progress {
+  position: fixed;
+  right: 16px;
+  bottom: 12px;
+  color: rgb(255 255 255 / 0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- narrow modal (link / close confirm) ---------- */
+
+.modal.narrow {
+  width: min(420px, 90vw);
+}

@@ -1,0 +1,41 @@
+# 手元でしか回っていなかった検証を、push のたびに回す。
+#
+# 範囲は typecheck / test の 2 つ（docs/issues.md #5）。cargo test を
+# 載せていないのは、Tauri のシステム依存（webkit2gtk など）を入れる時間が
+# 本体のビルドより長くなるため。Rust 側を触る頻度が上がったら足す。
+#
+# 実ブラウザを起動する E2E（smoke）は 2026-08-25 に廃止した
+# （docs/adr/0009-drop-smoke-e2e.md）。残るのは npm ci / typecheck / test の
+# 3 ステップだけなので、timeout は 10 分で足りる。
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+# 同じブランチに続けて push したら、前の実行は畳む。
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: 型
+        run: npm run typecheck
+
+      - name: 単体テスト
+        run: npm test

@@ -1,0 +1,42 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 調査中に出た一時ファイル(Playwright MCP のスナップショット・手元のスクリーンショット)
+.playwright-mcp/
+/*.png
+
+# 手元の検証用デッキ(実物。サイズが大きくリポジトリには入れない)
+/samples/local/
+
+# 秘密情報。いまは扱っていない(10-security.md「このアプリでは秘密情報を扱わない」)
+# が、Phase 4 の AI 連携で API キーを持つ日に .env を置く手が先に動く。
+# *.local では .env / .env.production が素通りするので、名指しで塞いでおく。
+.env
+.env.*
+!.env.example
+
+# Claude Code の個人設定。permission の allow 一覧は手元の作業履歴そのもので、
+# 他の環境に持っていく意味がない。launch.json(dev server の起動設定)は共有してよい。
+.claude/settings.local.json
