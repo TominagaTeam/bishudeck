@@ -13,7 +13,7 @@ export interface ComposeOptions {
   /**
    * `preview` runs the deck's scripts as authored. `edit` renders identical
    * CSS but with every script neutralized, because a document that rewrites
-   * itself cannot also be edited by hand (docs/adr/0002-edit-preview-separation.md).
+   * itself cannot also be edited by hand.
    */
   mode: ComposeMode;
   /** Origin that `assets/...` references resolve against. */
@@ -51,8 +51,8 @@ export const PLACEHOLDER_ATTRIBUTE = 'data-hse-placeholder';
  * the deck's author wrote, naming what it is.
  *
  * An exported file may carry the editor's own scaffolding as long as it does
- * not break the file (docs/rules/development.md §4, invariant 2) — and the
- * stage CSS is load-bearing for a deck whose runtime is gone, so it has to be carried. What
+ * not break the file — and the stage CSS is load-bearing for a deck whose
+ * runtime is gone, so it has to be carried. What
  * the rule does forbid is scaffolding that piles up, and this is how it does
  * not: on the way back in, the importer drops everything wearing this mark and
  * the next compose writes it fresh, so a deck opened and saved a hundred times
@@ -141,7 +141,7 @@ export function composeDocument(
  * **Stage only.** An export is a file that leaves this machine, and a
  * `slides://` stylesheet means nothing anywhere else — the exported deck keeps
  * naming the family in its `font-family` and falls through the stack the way it
- * always has (docs/rules/development.md §4, invariant 2 and the last one).
+ * always has.
  *
  * It goes in ahead of the deck's own head, which is the order that lets a deck
  * declaring its own `@font-face` for the same family win: later declarations

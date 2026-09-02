@@ -41,7 +41,7 @@ export async function importHtml(): Promise<void> {
  * Turns a Claude Artifacts download into the plain HTML it renders to. Every
  * other deck is handed to the detectors exactly as it was written: an import
  * that rewrites markup it did not have to touch is how decks get quietly
- * damaged (docs/rules/development.md §0).
+ * damaged.
  */
 async function prepare(html: string, ui: ReturnType<typeof useUiStore.getState>): Promise<string> {
   if (!isArtifactHtml(html)) return html;

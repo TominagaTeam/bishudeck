@@ -36,8 +36,7 @@ interface PreviewStageProps {
  * The document is served from the `slides://` origin and the frame is sandboxed
  * with `allow-scripts` but deliberately *not* `allow-same-origin`: the deck's
  * JavaScript gets a normal browser environment, yet cannot reach this window or
- * the Tauri IPC bridge (docs/adr/0002-edit-preview-separation.md
- * and docs/basic-design/10-security.md).
+ * the Tauri IPC bridge.
  *
  * Two frames alternate so a slide change swaps to an already-loaded document
  * instead of flashing an empty frame mid-presentation.

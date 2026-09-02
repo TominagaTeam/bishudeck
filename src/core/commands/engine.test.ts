@@ -54,7 +54,7 @@ describe('revoke: taking the newest step back', () => {
     expect(command.reverted).toBe(1);
     expect(stacks().undo).toEqual([]);
     // The point of revoking rather than undoing: the step is *gone*, not parked
-    // where one more keypress would bring it back (decisions #75).
+    // where one more keypress would bring it back.
     expect(stacks().redo).toEqual([]);
     expect(useHistory.getState().canUndo).toBe(false);
   });

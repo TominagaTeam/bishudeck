@@ -8,7 +8,7 @@ import { useId } from 'react';
  * every dead pixel in it (the words, the rest of the 56px column, the slack
  * beside a fixed-width box) forwarded its click into the row's first control:
  * 左 on 行揃え, the colour picker on 文字色, the number box on 角丸. Measured
- * with a real mouse in Chromium, `isTrusted` and all (issues #28).
+ * with a real mouse in Chromium, `isTrusted` and all.
  *
  * A row that holds a single control still wants the label, so `children` may be
  * a function: it is handed an id to put on that control, and the label cell

@@ -13,7 +13,7 @@
  *
  * Two kinds of override lose that way, and they lose differently.
  *
- * **Alignment** (issues #27) loses three ways at once, measured on the sample
+ * **Alignment** loses three ways at once, measured on the sample
  * deck: the `<ul>` keeps its own `padding-left`, so the centre it centres on
  * sits half of that to the right (15.59px at 1.2em); `list-style-position:
  * outside` puts the marker outside the line's content box, so the words move
@@ -22,7 +22,7 @@
  * unconditionally — "align this" is an instruction about lines, so there is no
  * case where a line should be left out.
  *
- * **Everything else inherited** (issues #31) loses only the third way, and only
+ * **Everything else inherited** loses only the third way, and only
  * where the deck actually says something. `ul { font-size: 26px }` on the sample
  * deck left the lines at 26px while the box went to 60px — and on a box whose
  * whole content is a list, that is a size control that does nothing at all. But
@@ -32,7 +32,7 @@
  *
  * Both stay addressed by uid — `reindex()` stamps every element, lists included
  * — so nothing here holds a DOM reference across a command, and an override
- * stays an override (ADR-0004): no deck stylesheet is rewritten.
+ * stays an override: no deck stylesheet is rewritten.
  *
  * **Fitting the list into its box** is a third thing, and it is not about the
  * cascade at all. Measured in Chromium at font-size 28px inside the 520x90 box
@@ -126,7 +126,7 @@ export const INHERITED_PROPERTIES = new Set([
  * write an override nobody asked for, on every deck that uses a bullet.
  *
  * `justify` is still a chosen alignment even though no button writes one any
- * more (issues #39): it reaches here from a deck that justifies its own text,
+ * more: it reaches here from a deck that justifies its own text,
  * through `carryAlignmentIntoLists` reading the computed value.
  */
 export function chosenAlign(computed: string): string | null {
@@ -144,7 +144,7 @@ export function chosenAlign(computed: string): string | null {
  * where an outside marker already belongs, so they clear the override instead
  * of declaring the default over whatever the deck chose.
  *
- * `justify` stays a case here after its button went away (issues #39). Nothing
+ * `justify` stays a case here after its button went away. Nothing
  * in the panel writes one now, but a deck that justifies its own text hands one
  * to `carryAlignmentIntoLists` the moment a line there is bulleted.
  */
@@ -321,7 +321,7 @@ export function carryAlignmentIntoLists(element: HTMLElement): void {
  *
  * `features/styleValues.ts` has the same three lines for the inspector's number
  * fields. It stays copied rather than shared because the dependency direction
- * runs `features → core` and never back (basic-design/05-directory.md).
+ * runs `features → core` and never back.
  */
 function pixels(value: string): number | null {
   if (!value.trim().endsWith('px')) return null;
@@ -518,14 +518,14 @@ export function listsIn(element: HTMLElement): Set<Element> {
  * Writes to the DOM rather than running a command, the way
  * `carryAlignmentIntoLists` does: the caller is inside `withUndo`, so the
  * markup difference is picked up by the `commitTextSession` that follows and
- * bulleting stays one undo step (decisions.md #73).
+ * bulleting stays one undo step.
  *
  * **The height is the exception, and it is a known asymmetry.** It lands on the
  * box's own `style` attribute, while the step the session records is the box's
  * `innerHTML` (`SetInnerHtmlCommand`) — which does not carry it. Undoing the
  * bullet takes the list back and leaves the box tall. The alternative was to
  * push the height as a `SetInlineStyleCommand` of its own, and that is the
- * option decisions.md #73 already turned down for the alignment: it costs a
+ * option already turned down for the alignment: it costs a
  * second undo step, so one press of the button would need two presses of undo.
  * A box left taller than it needs to be is visible and harmless; a bullet that
  * takes two undos to remove is the operation losing its shape.

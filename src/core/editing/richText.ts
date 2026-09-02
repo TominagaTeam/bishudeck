@@ -173,7 +173,7 @@ export function setTextSession(next: TextSession | null): void {
  *
  * A store rather than something read while rendering, because nothing announces
  * a selection change: the stage runs no scripts, so `selectionchange` never
- * reaches the host (ADR-0002). EditStage looks while a session is open.
+ * reaches the host. EditStage looks while a session is open.
  *
  * Showing it matters more here than in a word processor. A deck styles its own
  * headings, so text is very often bold before anyone touches it — and a B that
@@ -219,7 +219,7 @@ const NO_CARET_STYLE: CaretStyle = { fontSize: null, fontFamily: null, fontWeigh
  * the field silently resized the wrong run.
  *
  * A store for the same reason {@link useFormatState} is one: the stage runs no
- * scripts, so `selectionchange` never reaches the host (ADR-0002) and nothing
+ * scripts, so `selectionchange` never reaches the host and nothing
  * would re-render when the caret moves. It is filled from the same 200ms poll,
  * which is what makes the fields follow the caret without EditStage growing a
  * second timer.
@@ -284,7 +284,7 @@ export function commitTextSession(): void {
  * everything typed so far to a command that never touched it: the keystrokes
  * belong to neither step, and `commitTextSession` then finds nothing left to
  * record. Typing a word and pressing 行揃え used to leave one step on the
- * stack, and undoing it gave back the alignment but not the word (issues #44).
+ * stack, and undoing it gave back the alignment but not the word.
  *
  * `lastAt` is the stamp `execute` writes and `undo` / `redo` / `revoke` clear,
  * so the store already draws the line — there is no second field to keep in
@@ -374,7 +374,7 @@ export function activeTextSession(): TextSession | null {
  *    types, so nothing is ever there to rewrite — the `<font>` goes into the
  *    slide's markup and stays (measured: typing after a size set at a caret
  *    left `<font>XY</font>` in the box, which is exactly the presentational
- *    tag ADR-0001's "don't break the HTML" promise forbids);
+ *    tag the "don't break the HTML" promise forbids);
  *  - and it is discarded anyway the moment focus leaves the frame, which the
  *    size field does after every keystroke (`LiveNumberInput` takes focus back
  *    so the next digit lands in it).
@@ -437,7 +437,7 @@ function readableRange(element: HTMLElement): Range | null {
  *
  * Walked from the session element rather than from `commonAncestorContainer`,
  * so the search cannot wander into the rest of the slide however the range was
- * built — the same line every sweep in this file draws (ADR-0004).
+ * built — the same line every sweep in this file draws.
  *
  * Nodes that are nothing but whitespace are left out. They carry no glyph, so
  * no format is visible on them, and they are mostly the newlines between an
@@ -518,7 +518,7 @@ export function setFontSize(px: number): void {
     // — or run through some other tool on its way here — may carry a `<font
     // size="7">` of its own somewhere else on the slide, and a document-wide
     // sweep would rewrite that stranger's markup to whatever number this field
-    // is holding (ADR-0004: the editor overrides, it does not rewrite).
+    // is holding: the editor overrides, it does not rewrite.
     const element = sessionElement() ?? doc.body;
     const spans: HTMLElement[] = [];
     for (const font of Array.from(element.querySelectorAll('font[size="7"]'))) {
@@ -612,8 +612,8 @@ function dropInnerFontSize(spans: HTMLElement[]): void {
  * times leaves `<span style=""><span style=""><span style="font-size:30px">`,
  * one dead pair deeper every time. Rendering is unaffected, which is why it
  * went unnoticed, but the markup grows without bound inside a single session
- * and every byte of it is exported (the "往復で増えない" half of the promise in
- * CLAUDE.md).
+ * and every byte of it is exported — and an export that grows on every round
+ * trip is exactly what this editor promises not to produce.
  *
  * `style=""` is what makes them safe to take out, and it is the whole test. A
  * deck never ships an empty style attribute — it can only be what is left when
@@ -863,7 +863,7 @@ export function createLink(href: string): void {
 
 /**
  * The commands whose state a toolbar button can show. The list pair is here for
- * the same reason B is (issues #27): without it there is no way to read off
+ * the same reason B is: without it there is no way to read off
  * whether the line the caret sits on is already a bullet, so the button says
  * "make this a list" whether that is what it will do or the opposite.
  */
@@ -1075,7 +1075,7 @@ function buildList(doc: Document, command: string, value?: string): void {
   doc.execCommand(command, false, value);
   dropPreservationSpans(new Set(before), declared);
   // The list arrives with no alignment of its own, and inheritance does not
-  // survive the trip (issues #27). Written here rather than as a command of
+  // survive the trip. Written here rather than as a command of
   // its own: inside the recording wrapper it is part of the markup difference
   // the commit records, so bulleting an aligned box stays one undo step.
   if (element) carryAlignmentIntoLists(element);
@@ -1170,7 +1170,7 @@ function resumeSessionOn(rebuilt: HTMLElement, carried: RangeAnchors | null): vo
  * a `<span style="font-size:26px">` holding the size it had *inside* the list,
  * so the text keeps the list's look forever after. In a deck styling `ul` at
  * 26px, a 44px heading turned into a bulleted line and back comes out 26px, and
- * the deck's own `h2` rule no longer reaches it (ADR-0004). Pressing the button
+ * the deck's own `h2` rule no longer reaches it. Pressing the button
  * twice has to leave the slide as it was.
  *
  * Two tests, because "the engine wrote it" alone is not enough: applying a list

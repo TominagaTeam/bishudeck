@@ -197,7 +197,7 @@ describe('what the runtime would have rendered', () => {
    * would land on — and it carries words, which is where selection stops. That
    * left the frame itself reachable only through the breadcrumb, and a
    * double-click on a photo frame opening a text session on the placeholder
-   * text instead of asking for a photo (issues #100).
+   * text instead of asking for a photo.
    */
   it('leaves the caption untouchable, the way the component drew it', async () => {
     const { html } = await unwrapArtifact(bundle(TEMPLATE));

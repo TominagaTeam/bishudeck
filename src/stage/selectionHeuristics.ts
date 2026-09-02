@@ -128,7 +128,7 @@ function isBackdrop(element: Element): boolean {
  * selecting the picture hands back the *uncropped* rectangle: handles and a
  * selection frame drawn out where the trimmed-away part would be, and a drag
  * that slides the photo inside its frame instead of moving the object. The
- * frame is the object on the slide (features/image-crop/design.md); the picture
+ * frame is the object on the slide; the picture
  * is what it holds.
  */
 function frameOf(element: Element): Element | null {
@@ -157,11 +157,11 @@ function isSelfContained(element: Element): boolean {
  * `hasOwnText` asks whether an element holds words *now*, which is the right
  * question to ask of a deck's own markup — a slide is full of empty `<div>`s
  * used as panels, rules and spacers, and widening the rule to let every one of
- * them be edited is the thing that was rejected twice (decisions #52, #75). It
+ * them be edited is the thing that was rejected twice. It
  * is the wrong question to ask of a box the user has just emptied: deleting the
  * last character turned it back into one of those `<div>`s, so the click that
  * should have selected it climbed to the panel behind it, and none of the three
- * doors into a session would open for it again (issues #104).
+ * doors into a session would open for it again.
  *
  * The mark answers instead, and it can, because only the stage ever writes it:
  * it goes on the box a session is open on, on the box just inserted, and on the
@@ -258,7 +258,7 @@ export function siblingStep(element: Element, direction: 1 | -1): Element | null
  *
  * The click rules answer for one element; this asks them of every element the
  * point lands in, so that something buried under an opaque shape is still
- * *named* even though no click will ever land on it (issues #102). Hit testing
+ * *named* even though no click will ever land on it. Hit testing
  * does not care what covers what, so the whole pile comes back from
  * `elementsAt`; the front of it is what a plain click already selects.
  *

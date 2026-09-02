@@ -24,7 +24,7 @@ export interface StageMenuTarget {
    * breadcrumb labels things. Decided at open time, while the point is still
    * known: the menu is drawn elsewhere and has no way to ask again.
    *
-   * The whole pile rather than just the next step back (issues #102). One step
+   * The whole pile rather than just the next step back. One step
    * is the right thing for a *gesture* — Alt+click repeats, so it walks — but a
    * menu is read before it is used, and offering "the one behind" makes the
    * reader guess what that is. Here they are looking at the list.

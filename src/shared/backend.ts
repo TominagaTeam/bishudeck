@@ -33,7 +33,7 @@ export interface FileDrag {
  *
  * The platform and the ratio are arguments rather than reads so that the rule
  * itself can be checked without a window to run in: this is a coordinate
- * conversion, and those get tests (rules/development.md §2).
+ * conversion, and those get tests.
  */
 export function toCssPixels(
   position: { x: number; y: number },

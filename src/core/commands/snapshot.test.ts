@@ -12,7 +12,7 @@ const command = (
 
 /**
  * Which snapshots fold together, which is the rule that lets a field apply on
- * every keystroke without filling the history (issues #38).
+ * every keystroke without filling the history.
  *
  * Folding is opt-in on a key rather than on the label, because the same command
  * records both kinds of edit: a gesture arrives already whole — the pointer

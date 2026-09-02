@@ -22,8 +22,7 @@ not a public issue.*
 
 Bishudeck は **他人が書いた HTML をそのまま開いて編集する**ツールです。
 取り込む HTML は信用できないものとして扱う、というのが設計の出発点で、
-境界は次の 4 つに置いています（詳細は
-[docs/basic-design/10-security.md](docs/basic-design/10-security.md)）。
+境界は次の 4 つに置いています。
 
 - **編集モードで JS を実行しない。** 編集用の iframe に `allow-scripts` を付けない
 - **プレビューに `allow-same-origin` を付けない。** スクリプトを動かす側には同一オリジンを渡さない

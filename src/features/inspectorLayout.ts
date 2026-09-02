@@ -3,10 +3,10 @@
  * and which of them are there but cannot be worked.
  *
  * The inspector used to hand every element the same column of five panels, all
- * expanded, which is 18 rows before anyone touches 辺ごと (issues #20). Two
+ * expanded, which is 18 rows before anyone touches 辺ごと. Two
  * things are wrong with that at once, and they turn out to be the same problem:
  * there is too much on screen, and what little the user actually wants is not
- * at the top (issues #22).
+ * at the top.
  *
  * Neither half is solved by *hiding* fields. 余白 / 角丸 / 塗り / 枠線 all apply
  * to an `<img>` and an `<svg>` as much as to a `<div>`, so there is no element
@@ -14,7 +14,7 @@
  * be the reason someone opened the inspector. That makes this a question of
  * order and of what starts collapsed, which is what this table is.
  *
- * **Every panel is drawn for every element** (decisions #56). The ones with
+ * **Every panel is drawn for every element**. The ones with
  * nothing to act on arrive at the end of the column, collapsed and disabled,
  * rather than not arriving: a pane whose contents change shape with the
  * selection asks the user to remember what a photo "has" — and the answer to
@@ -25,7 +25,7 @@
  * The table is kept apart from the components so it can be tested as a plain
  * function. Testing something that lives inside a component is possible but
  * costly: with no testing-library here, a test has to mount the real thing with
- * `createElement` and drive it by hand (decisions #36, see
+ * `createElement` and drive it by hand (see
  * `inspectorField.test.ts`). That is worth the scaffolding when the markup
  * itself is what has to be right, and not worth it for a question that is pure
  * data — order and open/closed defaults need no rendered tree to check.
@@ -58,7 +58,7 @@ const ALL_PANELS: readonly PanelId[] = ['geometry', 'image', 'text', 'box', 'bor
  * Deliberately the same tests the rest of the editor already uses —
  * `isCroppable` decides whether トリミング can be started, `isTextEditable`
  * decides whether a double-click opens a text session and whether 文字書式 is
- * live (decisions #21). A further opinion about "is this an image" would
+ * live. A further opinion about "is this an image" would
  * eventually disagree with one of them, and nobody could say which was right.
  * `isFillable` is not that further opinion: it is the two of them read together
  * (core/editing/imageFill.ts), which is why it decides only whether 画像 is
@@ -108,7 +108,7 @@ const LAYOUTS: Record<ElementKind, readonly { id: PanelId; open: boolean }[]> = 
     // 画像 is named here, ahead of 枠線, rather than being left to arrive as
     // part of the tail. A shape's 画像 panel holds 「画像を入れる」, and the box
     // it is most often wanted on is the photo frame an imported deck draws
-    // where its `<image-slot>` was (issues #100) — a panel that answers that
+    // where its `<image-slot>` was — a panel that answers that
     // from the bottom of the column is one the user has to go looking for.
     { id: 'image', open: false },
     { id: 'border', open: false },
@@ -126,7 +126,7 @@ const LAYOUTS: Record<ElementKind, readonly { id: PanelId; open: boolean }[]> = 
  * **画像 is live for two different reasons, and only one of them is a kind.**
  * A picture gets it because トリミング acts on a picture, and that is what makes
  * the element an `image` for ordering purposes. A box gets it because 画像を入れる
- * can put a picture *into* it (issues #100) — which does not make the box a
+ * can put a picture *into* it — which does not make the box a
  * photo, so the kind stays `shape` and the panel takes the place the shape row
  * gives it. Reading `isFillable` here rather than inside the panel keeps the
  * column and the panel from ever disagreeing about whether there is anything to
@@ -153,7 +153,7 @@ const LAYOUTS: Record<ElementKind, readonly { id: PanelId; open: boolean }[]> = 
  * Widening `isTextEditable` itself is still refused for the reason it always
  * was: it is the same function that decides what counts as background, and a
  * rule that let any empty `<div>` be text would make a deck's backdrops
- * selectable and editable (decisions #52, #75). `isUntouchedTextBox` answers for
+ * selectable and editable. `isUntouchedTextBox` answers for
  * exactly one uid and only until something is typed into it, which is why the
  * uid is a parameter here rather than the element being asked on its own.
  */
@@ -201,7 +201,7 @@ export function offeredPanels(
  *
  * 位置とサイズ loses its power: it reads the box once per commit, and typing
  * commits nothing, so during a session its numbers are not merely beside the
- * point — they are wrong (issues #37). Going dark is what keeps them off the
+ * point — they are wrong. Going dark is what keeps them off the
  * screen: the panel is shut, its summary does not open, and `Inspector` does
  * not build the fields, so there is no route to a stale number and no route to
  * filing an override from one either.

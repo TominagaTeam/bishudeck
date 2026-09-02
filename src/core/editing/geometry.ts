@@ -4,10 +4,10 @@
  * The counterpart to the resize and move gestures (stage/interactions.ts): the
  * same writes, expressed the same way — an editor `translate()` on top of
  * whatever transform the deck wrote, and `width` / `height` as inline
- * overrides (AD-4) — but driven from the inspector's fields. It sits in
+ * overrides — but driven from the inspector's fields. It sits in
  * `core/editing` rather than in the panel because it touches the stage and the
- * history, which a UI file may not (basic-design/05-directory.md), and because
- * the folding and the undo below are what needed testing (issues #38).
+ * history, which a UI file may not, and because the folding and the undo below
+ * are what needed testing.
  *
  * `stage/geometry.ts` is the other half and reads: it derives the oriented box
  * this module writes back to.
@@ -47,7 +47,7 @@ export function setGeometry(uid: string, field: GeometryField, value: number): v
   if (!stage || !element || !Number.isFinite(value)) return;
 
   // A cropped picture is its frame's content and scales with it, here exactly
-  // as it does under a resize handle (AD-6) — otherwise typing a width would
+  // as it does under a resize handle — otherwise typing a width would
   // silently re-crop the photo instead of resizing it. Read before the write:
   // both elements go into one snapshot, so it is one undo step.
   const framed = pictureOf(element);

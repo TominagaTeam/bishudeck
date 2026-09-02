@@ -14,8 +14,8 @@ import { TextFormatControls } from './TextFormatControls';
  *
  * It was the one control in this panel that could not be opened with the mouse:
  * a `mousedown` handler calling `preventDefault` had been added to match the
- * buttons beside it, and a `<select>`'s mousedown default *is* showing the popup
- * (issues #40). The keyboard path was never blocked, which is why the menu still
+ * buttons beside it, and a `<select>`'s mousedown default *is* showing the
+ * popup. The keyboard path was never blocked, which is why the menu still
  * applied a weight when walked with Tab and the arrows — so the tests below use
  * `change`, the event both paths arrive on, for what the control does, and read
  * the press itself only for what it is allowed to cancel.
@@ -148,7 +148,7 @@ describe('太さ — what picking one does', () => {
   });
 
   // Reversed. It used to write the weight onto the element even with a range
-  // open (decisions.md #18) — the mechanism's excuse, not the user's: they had
+  // open — the mechanism's excuse, not the user's: they had
   // selected two characters and watched the whole heading go bold. It now takes
   // the same scope B does, through the wrapper `setFontWeight` writes.
   it('writes it onto the range when one is open', () => {

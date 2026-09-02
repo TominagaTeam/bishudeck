@@ -5,12 +5,12 @@
  * on the clipboard — Word and Google Docs both hand over `class="mso-*"` and
  * `<span style="font-size:99px">` — and none of it belongs in someone else's
  * deck: it lands in the slide's markup, survives into the exported HTML, and
- * fights the deck's own CSS (docs/issues.md #12).
+ * fights the deck's own CSS.
  *
  * A `paste` listener would be the obvious place for this, but the edit frame
  * runs with scripting disabled and WebKit will not fire listeners attached to
- * such a document (ADR-0002; the same wall that keeps ⌘B out of the command
- * history). Mutation records do cross the boundary, so the cleanup happens just
+ * such a document — the same wall that keeps ⌘B out of the command history.
+ * Mutation records do cross the boundary, so the cleanup happens just
  * after the nodes land rather than just before.
  *
  * What survives is emphasis, not typography. Bold, italic, underline, links and
@@ -49,7 +49,7 @@
  *   sibling of the new line, not on any ancestor of it.
  * - *"a bare `<span style>` is the browser's, a classed one is Word's"* fails
  *   the other way — Google Docs pastes bare spans, and dropping their size is
- *   the behaviour issues #12 asked for.
+ *   the behaviour this sweep is for.
  *
  * Attributes are *not* softened by any of this, and must not be: Chrome clones
  * the run whole, `data-hse-uid` included, so both halves of a split line come

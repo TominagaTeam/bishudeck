@@ -1,12 +1,11 @@
 # 手元でしか回っていなかった検証を、push のたびに回す。
 #
-# 範囲は typecheck / test の 2 つ（docs/issues.md #5）。cargo test を
+# 範囲は typecheck / test の 2 つ。cargo test を
 # 載せていないのは、Tauri のシステム依存（webkit2gtk など）を入れる時間が
 # 本体のビルドより長くなるため。Rust 側を触る頻度が上がったら足す。
 #
-# 実ブラウザを起動する E2E（smoke）は 2026-08-25 に廃止した
-# （docs/adr/0009-drop-smoke-e2e.md）。残るのは npm ci / typecheck / test の
-# 3 ステップだけなので、timeout は 10 分で足りる。
+# 実ブラウザを起動する E2E（smoke）は 2026-08-25 に廃止した。残るのは
+# npm ci / typecheck / test の 3 ステップだけなので、timeout は 10 分で足りる。
 name: CI
 
 on:

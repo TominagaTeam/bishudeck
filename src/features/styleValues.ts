@@ -3,8 +3,8 @@
  *
  * These live apart from the panels that use them for two reasons. `Inspector`
  * imports `TextFormatControls`, so anything both of them need cannot sit in
- * either without a cycle — the same problem `Field` was pulled out to solve
- * (inspector/decisions.md #7). And a `.tsx` file is invisible to the test
+ * either without a cycle — the same problem `Field` was pulled out to solve.
+ * And a `.tsx` file is invisible to the test
  * runner (`vite.config.ts` includes `src/**\/*.test.ts` only), so a judgement
  * worth testing has to live in a `.ts` one.
  */
@@ -91,9 +91,9 @@ export function parsePixels(value: string | undefined): number | null {
  *
  * `Number('')` is 0, not NaN, so a NaN guard lets an emptied field commit a
  * real zero and fling the element to the slide's top-left — and `type="number"`
- * reports letters as an empty string, so typing "abc" did the same thing
- * (docs/issues.md #10). Emptiness is therefore checked before the conversion,
- * and `Number.isFinite` closes Infinity as well as NaN.
+ * reports letters as an empty string, so typing "abc" did the same thing.
+ * Emptiness is therefore checked before the conversion, and `Number.isFinite`
+ * closes Infinity as well as NaN.
  *
  * "0" has to survive: it is a legitimate x, y and rotation, so nothing here may
  * lean on falsiness.
@@ -116,7 +116,7 @@ const LOGICAL_SIDES: Record<string, { ltr: string; rtl: string }> = {
  * An element nobody has aligned computes to `start`, never to `left`, so
  * comparing the computed value against the buttons' own values lights none of
  * them: the row says "nothing chosen yet" about text that is plainly aligned to
- * one side (docs/issues.md #32). `start` and `end` are the logical pair of
+ * one side. `start` and `end` are the logical pair of
  * `left` and `right`, and which physical side either one means is the element's
  * `direction` to decide — the buttons are labelled 左 / 右, so the one that
  * lights has to be the side the words actually sit on, not the side an LTR deck
@@ -132,8 +132,8 @@ const LOGICAL_SIDES: Record<string, { ltr: string; rtl: string }> = {
  * panel holds for the one render before the computed read lands, and lighting
  * nothing is the right answer while nothing is known.
  *
- * `justify` passes through to nothing now that the 両端 button is gone (issues
- * #39), so a deck that justifies its own text lights no button. That is the
+ * `justify` passes through to nothing now that the 両端 button is gone, so a
+ * deck that justifies its own text lights no button. That is the
  * cost of dropping the button and is deliberate: resolving it to 左 would claim
  * a choice the element does not carry.
  */

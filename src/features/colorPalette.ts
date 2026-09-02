@@ -3,7 +3,7 @@
  *
  * A `.ts` rather than part of the component for the usual reason: the test
  * runner only sees `.ts` files (`vite.config.ts` includes `src/**\/*.test.ts`),
- * so a judgement worth testing has to live in one (inspector/decisions.md #20).
+ * so a judgement worth testing has to live in one.
  */
 
 /**

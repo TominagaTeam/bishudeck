@@ -5,8 +5,7 @@ import { t, type MessageKey } from '../shared/i18n';
 import { THEMES, type ThemePreference } from '../shared/theme';
 
 /** Named by key rather than by text: the catalog has to be read when the row
- *  renders rather than when this module is first loaded
- *  (docs/features/i18n/design.md). */
+ *  renders rather than when this module is first loaded. */
 const THEME_LABELS: Record<ThemePreference, MessageKey> = {
   system: 'status.themeSystem',
   light: 'status.themeLight',

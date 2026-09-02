@@ -27,7 +27,7 @@ describe('normalizeWeight', () => {
 
 // A box nobody has aligned computes to `start`, so comparing the computed value
 // with the buttons' own values lit none of the four and the row claimed nothing
-// had been chosen about text that was plainly against one edge (issues #32).
+// had been chosen about text that was plainly against one edge.
 describe('shownAlign', () => {
   it('lights 左 on a left-to-right element nobody has aligned', () => {
     expect(shownAlign('start', 'ltr')).toBe('left');
@@ -49,7 +49,7 @@ describe('shownAlign', () => {
   });
 
   /**
-   * The 両端 button is gone (issues #39), and `justify` is left passing through
+   * The 両端 button is gone, and `justify` is left passing through
    * rather than resolved to one of the three — so a deck that justifies its own
    * text lights no button at all. That is the accepted cost of dropping the
    * button, written down here: mapping it to 左 would be worse, because the row

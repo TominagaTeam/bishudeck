@@ -298,7 +298,7 @@ describe('undo steps across a session', () => {
    * The other half of the same subscription, and the one that cost a user their
    * words: EditStage is told about every publish, pushes included. A resync on a
    * push moves the baseline past what was typed, and the typing then belongs to
-   * no step at all (issues #44). The element-scope command stands in for 行揃え
+   * no step at all. The element-scope command stands in for 行揃え
    * and 太さ, which are the two controls this panel can reach mid-session.
    */
   it('keeps what was typed when an element-scope command is pushed', () => {
@@ -476,7 +476,7 @@ describe('what a list command leaves behind', () => {
 
   // Aligning a box and then bulleting it has to land where bulleting it and
   // then aligning it does. The list arrives with no alignment of its own, and
-  // inheriting the box's does not survive the trip (issues #27).
+  // inheriting the box's does not survive the trip.
   it('carries the box’s alignment onto the list it just built', () => {
     open('<h2 style="text-align: center">今期のハイライト</h2>');
     engineWrites('<ul><li>今期のハイライト</li></ul>');
@@ -541,7 +541,7 @@ describe('what the buttons show', () => {
   });
 
   // The 段落 buttons had no state to read at all, so a line that was already a
-  // bullet looked exactly like one that was not (issues #27).
+  // bullet looked exactly like one that was not.
   it('reports whether the caret sits on a list', () => {
     (document as Document & { queryCommandState?: unknown }).queryCommandState = vi.fn(
       (command: string) => command === 'insertUnorderedList',
@@ -554,7 +554,7 @@ describe('what the buttons show', () => {
   });
 
   // 上付き was the one toggle nobody asked the engine about, so the button could
-  // not light up however the text was formatted (issues #35).
+  // not light up however the text was formatted.
   it('reports whether the caret sits in superscript', () => {
     (document as Document & { queryCommandState?: unknown }).queryCommandState = vi.fn(
       (command: string) => command === 'superscript',
@@ -587,8 +587,8 @@ describe('what the buttons show', () => {
 });
 
 /**
- * The size field applies as it is typed, so `setFontSize` runs once per digit
- * (inspector/decisions.md #25). Going through `execCommand` every time would
+ * The size field applies as it is typed, so `setFontSize` runs once per digit.
+ * Going through `execCommand` every time would
  * nest a span inside the last one, and the innermost — the one nearest the text
  * — would win: the slide would stop following the field after the first digit.
  */
@@ -783,7 +783,7 @@ describe('a size or family asked for at a bare caret', () => {
  * mints on purpose, but it is also ordinary HTML that an imported deck can
  * already contain — and a document-wide sweep would rewrite that stranger's
  * markup to whatever number this field is holding, which is precisely the
- * "don't rewrite the deck's own CSS" line ADR-0004 draws.
+ * "don't rewrite the deck's own CSS" line this editor draws.
  */
 describe('the sweep that rewrites the engine output', () => {
   it('rewrites only the fonts inside the box being edited', () => {
@@ -1162,7 +1162,7 @@ describe('a weight chosen for a range', () => {
     // The wrap goes *inside* the `<b>`, so the span holding the letters is the
     // innermost element over them and the UA's bold rule no longer reaches
     // them. Nothing is unwrapped: `<b>` is meaning the user (or the deck) put
-    // there, and this is an override (ADR-0004).
+    // there, and this is an override.
     open('<h2>今期の<b>ハイ</b>ライト</h2>');
 
     const range = document.createRange();
@@ -1373,7 +1373,7 @@ describe('the last word before a session closes', () => {
 
 /**
  * The boxes the list buttons did nothing to, and the one whose result did not
- * survive being saved ([issues](../../../docs/issues.md) #98).
+ * survive being saved.
  *
  * All three are hosts `execCommand` cannot leave a list in, so the fix is to
  * rebuild the host first (core/editing/listHost.ts). The engine is stubbed to

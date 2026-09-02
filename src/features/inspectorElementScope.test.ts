@@ -18,8 +18,7 @@ import { TextFormatControls } from './TextFormatControls';
  * flushes the session on both sides. These two do not, and the history store
  * publishes on a push as well as on an undo, so the session's baseline used to
  * move past the typing the moment either of them ran: the keystrokes ended up
- * on neither step, and an undo gave back the alignment but not the word
- * (issues #44).
+ * on neither step, and an undo gave back the alignment but not the word.
  *
  * Mounted for real, because what is under test is the wiring — that the press
  * flushes before the command, not that a flush would work if one happened.
@@ -69,7 +68,7 @@ const openSession = () => act(() => setTextSession({ uid }));
 const render = () => act(() => root.render(h(TextFormatControls, { uid, styles: { ...STYLES } })));
 
 /**
- * Standing in for typing. The frame runs no scripts (ADR-0002), so keystrokes
+ * Standing in for typing. The frame runs no scripts, so keystrokes
  * never reach the host and produce no command of their own — the markup simply
  * differs the next time anyone looks.
  */

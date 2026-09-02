@@ -3,7 +3,7 @@
  *
  * A workspace preference rather than document content, so it lives next to the
  * window and never reaches the exported HTML — the same reasoning as pane
- * widths (docs/basic-design/07-ui-system.md).
+ * widths.
  */
 
 export const LOCALES = ['ja'] as const;

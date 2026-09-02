@@ -77,7 +77,7 @@ export function CollapsiblePanel({
   /** Extra attributes for the container. `data-hse-text-tools` is the only one
    *  so far, and it goes here rather than on the controls inside because the
    *  marker for "a click here must not end the text session" belongs to the
-   *  region of host UI (inspector/decisions.md #4). */
+   *  region of host UI. */
   attributes?: Record<string, string>;
   /** The container, for a panel that needs to put *itself* on screen — 文字書式
    *  scrolls to itself when a session opens (`Inspector`).

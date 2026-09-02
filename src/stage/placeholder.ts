@@ -10,7 +10,7 @@
  * the rule that used to cover that case, `:has(> br:only-child)`, counts child
  * *elements* only. `<h1>見出し<br>2 行目</h1>` has exactly one of those, all of
  * it `<br>`, so the prompt was painted over text the user had written — on any
- * tag, whenever a single `<br>` was the only element inside (issues #46).
+ * tag, whenever a single `<br>` was the only element inside.
  *
  * So the question is answered in script, where the text nodes are in plain
  * sight, and the answer is left on the element for the CSS to select on. The
@@ -31,7 +31,7 @@ import { isBlank } from '../core/editing/textBox';
  * The second case has no attribute to lean on — a selected box is not marked in
  * the DOM at all — so that guard came down here, where the answer is a uid
  * comparison rather than a selector (`isUntouchedTextBox`, EditStage). Which is
- * the same move #78 made for "is it empty": what a selector may ask is not
+ * the same move made for "is it empty": what a selector may ask is not
  * enough, so script answers and leaves the answer on the element.
  */
 export const BLANK_ATTRIBUTE = 'data-hse-blank';
@@ -62,7 +62,7 @@ const CARET_COLOR = 'rgb(56, 132, 255)';
  * no area cannot be clicked: `elementFromPoint` at its centre answers with the
  * ancestor behind it, so the click that should have selected the box selected
  * the panel around it, and the frame the editor drew was a line with nothing to
- * grab (issues #104).
+ * grab.
  *
  * Small enough to be a floor rather than a shape: 24 x 16 is a little under one
  * line of body text, so a box that already has room keeps its own size, and the

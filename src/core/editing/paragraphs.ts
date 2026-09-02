@@ -8,8 +8,7 @@
  * sandboxed without `allow-scripts` (invariant 3), so nothing runs in there to
  * set it. Taking the key over from the outside is no better — WebKit fires no
  * listener at all in a script-disabled document, listeners the host added from
- * the parent frame included (features/editing-engine/design.md,
- * 「インライン編集の抜け方」), so Enter is not observable from here on the
+ * the parent frame included, so Enter is not observable from here on the
  * engine the app actually ships on. Whatever the browser leaves behind is what
  * the editor has to live with, and the only place left to act is the commit.
  *
@@ -31,7 +30,7 @@
  * ## Why this unwraps where the paste cleanup refuses to
  *
  * The paste cleanup strips attributes but never unwraps: a `<span>` left with
- * nothing on it stays (decisions #62). That rule is about markup arriving from
+ * nothing on it stays. That rule is about markup arriving from
  * somewhere else, where the nesting is the author's — dropping a level there
  * moves things on the page, and the cleanup has no way to know what the level
  * was doing. The rule here is not a claim about where the `<div>` came from
@@ -39,7 +38,7 @@
  * invisible: it is the element's only child, so nothing is spliced in beside
  * anything, and it declares nothing of its own, so nothing is lost when it
  * goes. Where that does not hold, this leaves the markup alone, which is the
- * same side of the fence #62 falls on.
+ * same side of the fence the paste rule falls on.
  *
  * Provenance would have been the tighter test — "this `<div>` was not here when
  * the session opened" is exactly what we mean — and it was rejected because the
@@ -153,7 +152,7 @@ const PARAGRAPH_TAGS = new Set(['DIV', 'P']);
  * selectable and draws it a selection frame of its own.
  *
  * There is no way to catch the key instead. The stage frame runs no scripts, so
- * WebKit fires no listener the host attached (ADR-0002), and
+ * WebKit fires no listener the host attached, and
  * `defaultParagraphSeparator` only chooses which tag is minted, never whether.
  * So it is undone afterwards, here.
  *

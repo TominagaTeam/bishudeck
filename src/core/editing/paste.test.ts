@@ -13,7 +13,7 @@ function inserted(html: string): HTMLElement {
 
 /**
  * The two things actually measured escaping into an exported deck were
- * `class="mso-junk"` and `font-size:99px` (issues #12).
+ * `class="mso-junk"` and `font-size:99px`.
  */
 describe('sanitizeInsertedNode', () => {
   it('drops the classes a word processor brings with it', () => {

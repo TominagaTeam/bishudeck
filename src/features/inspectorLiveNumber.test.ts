@@ -6,7 +6,7 @@ import { LiveNumberInput } from './LiveNumberInput';
 
 /**
  * The one number field the inspector has — 文字サイズ, 余白, 角丸, 枠線の太さ and
- * 位置とサイズ are all this component (issues #38).
+ * 位置とサイズ are all this component.
  *
  * What has to be right is *when* a value leaves the box and what the box shows
  * meanwhile, and neither is a judgement that can be pulled out into a pure
@@ -129,8 +129,8 @@ describe('LiveNumberInput — when the value leaves the box', () => {
     expect(applied).toEqual([64]);
   });
 
-  // Emptying the box mid-edit is not a request to put the element at 0
-  // (issues #10), and neither is what type="number" reports for letters.
+  // Emptying the box mid-edit is not a request to put the element at 0, and
+  // neither is what type="number" reports for letters.
   it('applies nothing for a draft that is not a number', () => {
     const applied: number[] = [];
     render(h(LiveNumberInput, { value: 24, max: 200, onApply: (v: number) => applied.push(v) }));

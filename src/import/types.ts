@@ -25,7 +25,7 @@ export interface DetectionResult {
   designHeight?: number;
   /**
    * CSS a deck's own runtime would have applied at render time, for decks whose
-   * layout lives in a script the editor does not run (AD-2). It is added to the
+   * layout lives in a script the editor does not run. It is added to the
    * shared head ahead of the deck's own styles — never to slide markup — so the
    * authored CSS still wins and the slides round-trip untouched.
    */

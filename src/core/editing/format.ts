@@ -85,7 +85,7 @@ export function pasteFormat(): boolean {
   // One command, so one undo step — and `apply` does the writing, which is why
   // this needs no `alreadyApplied`. Most of what the brush carries is inherited,
   // so painting onto a box that holds a list meets the wall the list puts in
-  // front of an inherited declaration (issues #27, #31): the spread is what gets
+  // front of an inherited declaration: the spread is what gets
   // it past, and collapses to a single target when the painted box holds no
   // list — or when the deck says nothing about its own lists.
   execute(new SetInlineStyleGroupCommand(listTargets(uid, copied), t('command.pasteFormat')));

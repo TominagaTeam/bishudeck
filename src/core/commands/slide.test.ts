@@ -25,7 +25,7 @@ if (typeof CSS === 'undefined') {
  *
  * The forward direction used to be set by whoever called the command, and the
  * revert by nobody, so undoing a delete or a reorder left the editor on a
- * different slide than the one being worked on (issues #11).
+ * different slide than the one being worked on.
  */
 describe('slide index follows the deck', () => {
   const deck = () => useDocumentStore.getState().project.slides;

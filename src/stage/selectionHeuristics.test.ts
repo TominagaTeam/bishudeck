@@ -85,8 +85,7 @@ describe('chooseSelectionTarget', () => {
     // The counterpart to the rule above. A box the user has emptied carries no
     // words to save it from the full-bleed test, and a full-bleed heading is a
     // real shape someone put there — so without the mark, emptying one handed
-    // back "you clicked on nothing" and the box could not be reached again
-    // (issues #104).
+    // back "you clicked on nothing" and the box could not be reached again.
     const root = slide(`<h1 class="hero" ${BLANK_ATTRIBUTE} style="display:block"></h1>`);
     const hero = root.querySelector('.hero')!;
     slideBox(root);
@@ -256,7 +255,7 @@ describe('ancestryOf / isTextEditable', () => {
   it('still offers text editing on a box the editor has emptied', () => {
     // Emptying a box used to be a one-way door: with no text of its own it was
     // a deck's own empty <div> by every test here, so no double-click, Enter or
-    // F2 would open it again (issues #104). The mark is the stage saying it
+    // F2 would open it again. The mark is the stage saying it
     // knows this one is text; only the stage writes it, so the deck's own empty
     // boxes are still background.
     const root = slide(`<h1 ${BLANK_ATTRIBUTE}></h1><div class="rule"></div>`);
@@ -329,7 +328,7 @@ describe('selectionStack', () => {
   });
 
   it('names a box that an opaque shape is sitting on top of', () => {
-    // The whole of issues #102: the shape answers a hit test and the box never
+    // The case the pile exists for: the shape answers a hit test and the box never
     // does, so nothing but the pile can say the box is still there.
     const root = slide('<div class="shape"></div><p class="buried">本文</p>');
     slideBox(root);

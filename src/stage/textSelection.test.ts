@@ -4,8 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TextSelectionController, holdTextFocus, placeCaret } from './textSelection';
 
 /**
- * The host draws the selection because the frame cannot be asked to
- * (issues #17), so what is under test is the arithmetic of press → anchor,
+ * The host draws the selection because the frame cannot be asked to, so what
+ * is under test is the arithmetic of press → anchor,
  * move → focus, and the press-count run.
  *
  * `caretRangeFromPoint` does not exist in jsdom — nor would a layout-free DOM
@@ -196,8 +196,8 @@ describe('placeCaret', () => {
 
     placeCaret(host, { x: 0, y: 0 });
 
-    // Selecting the word here is what made the next keystroke destructive
-    // (issues #25); it belongs to the second press of a run instead.
+    // Selecting the word here is what made the next keystroke destructive; it
+    // belongs to the second press of a run instead.
     expect(modify).not.toHaveBeenCalled();
     expect(selection.isCollapsed).toBe(true);
     expect(selection.anchorOffset).toBe(4);

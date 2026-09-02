@@ -288,8 +288,7 @@ export class GestureController {
   /**
    * Shift arrives raw because it means something different to each gesture —
    * an axis lock while moving, the aspect ratio while resizing, 15° steps while
-   * rotating. All three match PowerPoint; the move used to be the odd one out
-   * (issues #97).
+   * rotating. All three match PowerPoint; the move used to be the odd one out.
    */
   move(x: number, y: number, modifiers: { shift: boolean; alt: boolean }): void {
     const gesture = this.#gesture;
@@ -379,8 +378,7 @@ export class GestureController {
    *
    * Until it has, the gesture writes nothing at all: a press that never clears
    * the dead zone was a click, and a click must leave the slide exactly as it
-   * found it — no `transform`, no pinned size, no history entry
-   * ([issues](../../docs/issues.md) #18, #24, #29).
+   * found it — no `transform`, no pinned size, no history entry.
    *
    * Once cleared the flag stays up and each gesture keeps measuring from its
    * *start* point, so the pointer and the element hold the grip they had.
@@ -528,7 +526,7 @@ export class GestureController {
     // does not reflow out from under the drag. This used to run in
     // `beginResize`, *before* the "before" snapshot was taken — which meant an
     // undone resize put back the pinned state and left `width` / `height`
-    // behind on an element that never had them (issues #24). Writing it here
+    // behind on an element that never had them. Writing it here
     // fixes that twice over: the snapshot is already taken, and a press that
     // never clears the dead zone never gets this far.
     if (!gesture.pinned) {

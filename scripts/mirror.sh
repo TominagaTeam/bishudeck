@@ -8,13 +8,16 @@
 # なぜ丸ごと 1 コミットか
 #   公開側は「そのリリース時点のソース」であればよく、開発の過程は private 側に
 #   残る。コミットを 1 対 1 で写そうとすると、写す順序と粒度をミラーのたびに
-#   決めることになり、手作業が増える(docs/adr/0012 を参照)。
+#   決めることになり、手作業が増える(ADR-0012 を参照)。
 #
 # 何を写すか
 #   git archive の出力、つまり **その tag で追跡されているファイルだけ**。
 #   .gitignore の対象(node_modules / dist / samples/local / .env / .claude の
-#   個人設定)は最初から入らないので、除外リストを別に持つ必要がない。
-#   docs も CLAUDE.md も外さない —— 外すと docs 内の相互リンクが 155 本切れる。
+#   個人設定)は最初から入らない。
+#
+#   そのうえで docs/ と CLAUDE.md は外す —— 設計ドキュメントと AI 向けの
+#   作業指示は公開しない(ADR-0013)。外した先を指すリンクは残す側から
+#   掃除してあり、写す前にもう一度ここで確かめる。
 #
 # push はしない
 #   コミットを作るところまでで止める。公開は取り返しがつかないので、
@@ -41,6 +44,10 @@ USAGE
 fi
 
 SRC="$(git rev-parse --show-toplevel)"
+
+# 公開しないもの。**追跡されている**ので .gitignore では落ちず、ここで名指しする。
+# 増やしたら、下の「行き先の無い参照」チェックの検索語も合わせること。
+NOT_PUBLISHED=(':(exclude)docs' ':(exclude)CLAUDE.md')
 
 # ---------------------------------------------------------------- 事前チェック
 # 写す前に止まる条件をすべてここで見る。途中で失敗すると、公開リポが
@@ -91,8 +98,40 @@ fi
 echo "→ 公開リポの中身を空にする"
 git -C "$DEST" rm -rq --ignore-unmatch . 2>/dev/null || true
 
-echo "→ $TAG の追跡ファイルを展開する"
-git -C "$SRC" archive "$TAG" | tar -x -C "$DEST"
+echo "→ $TAG の追跡ファイルを展開する(docs/ と CLAUDE.md を除く)"
+git -C "$SRC" archive "$TAG" -- "${NOT_PUBLISHED[@]}" . | tar -x -C "$DEST"
+
+# 外したものを指す記述が残っていると、公開側に行き先の無いリンクが出る。
+# 参照は残す側の中に出るので、外した側を見ても気付けない —— ここで見る。
+#
+# パスだけを探しても足りない。同じものを指す書き方が何通りもあって、この掃除で
+# 直した 84 ファイル・200 箇所あまりのうち、docs/ で始まる素のパスは 4 分の 1
+# ほどしかなかった —— 残りは (ADR-0002)・(issues #27)・
+# (inspector/decisions.md #55) のような形をしていた。
+DANGLING_PATTERNS=(
+  'docs/'                     # docs/adr/0002-... のような素のパス
+  'CLAUDE\.md'
+  'INDEX\.md' 'development\.md' 'roadmap\.md' 'issues\.md' 'ideas\.md'
+  'decisions\.md' 'design\.md'
+  '[0-9][0-9]-[a-z-]*\.md'    # basic-design/07-ui-system.md の類
+  'ADR-[0-9]' '(AD-[0-9]'     # ADR の番号参照(素の AD- は書体の unicode-range に当たる)
+  'issues #[0-9]' 'decisions #[0-9]'
+)
+
+echo "→ 外した先を指す参照が残っていないか見る"
+GREP_ARGS=()
+for pattern in "${DANGLING_PATTERNS[@]}"; do
+  GREP_ARGS+=(-e "$pattern")
+done
+# 自分自身は見ない —— 何を外すかをここに書いてある以上、必ず引っかかる。
+DANGLING="$(grep -rIn "${GREP_ARGS[@]}" "$DEST" \
+  --exclude-dir=.git --exclude 'mirror.sh' || true)"
+if [ -n "$DANGLING" ]; then
+  echo "エラー: 公開しないファイルを指す記述が残っている。" >&2
+  echo "$DANGLING" >&2
+  echo "  開発リポ側でこの参照を外してから、tag を打ち直して写すこと。" >&2
+  exit 1
+fi
 
 # ------------------------------------------------------------------ コミット
 git -C "$DEST" add -A

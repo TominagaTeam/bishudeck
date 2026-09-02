@@ -3,10 +3,10 @@
  *
  * A workspace preference rather than document content, so it lives beside the
  * window and never reaches the exported HTML — the same shelf as pane widths
- * and the interface language (docs/basic-design/07-ui-system.md).
+ * and the interface language.
  *
  * Only the chrome moves. The overlay the editor draws over a slide keeps its
- * colours (docs/features/theme/design.md): those are picked to read against
+ * colours: those are picked to read against
  * the deck's own background, which has nothing to do with the palette the
  * window happens to be wearing.
  */

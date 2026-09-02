@@ -43,7 +43,7 @@ export class StyleSnapshotCommand implements EditCommand {
    * Folds a continued run, keeping the *first* `before`: that is what makes an
    * undo land on the state from before the first keystroke rather than one
    * digit back — and, for the fields that pin `width` / `height` on an element
-   * that had none, what stops the pinned size being left behind (issues #24).
+   * that had none, what stops the pinned size being left behind.
    *
    * The captured elements have to be the same ones, for the same reason
    * `SetInlineStyleGroupCommand` checks: `before` describes a set of elements,

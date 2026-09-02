@@ -129,12 +129,12 @@ export class StageBridge {
    * what it cannot.
    *
    * `elementFromPoint` answers with the topmost element only, which is why an
-   * element moved behind an opaque one became unreachable
-   * ([issues](../../docs/issues.md) #102). But hit testing is the wrong
-   * question to ask twice, because it is not only occlusion that takes an
-   * element out of it. Measured on slide 12 of the deck used for checking, an
-   * element dragged out of a card that carries `overflow:hidden` sits at
-   * (706, 162)–(1214, 258) with the pointer dead in the middle of it, and:
+   * element moved behind an opaque one became unreachable. But hit testing is
+   * the wrong question to ask twice, because it is not only occlusion that
+   * takes an element out of it. Measured on slide 12 of the deck used for
+   * checking, an element dragged out of a card that carries `overflow:hidden`
+   * sits at (706, 162)–(1214, 258) with the pointer dead in the middle of it,
+   * and:
    *
    * | asked | answer |
    * |---|---|
@@ -278,7 +278,7 @@ export class StageBridge {
   /**
    * Serializes the slide back to a fragment, undoing every annotation the editor
    * added. What comes out must be loadable by any browser with no trace of the
-   * editor in it (docs/adr/0001-html-as-source-of-truth.md).
+   * editor in it.
    */
   serializeSlide(): string {
     return this.slideRoots()

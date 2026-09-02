@@ -73,8 +73,8 @@ describe('bounds', () => {
 describe('boxOf', () => {
   /**
    * The inspector reads this box and writes `style.width`, so a width that came
-   * back as the rotated bounding box shrank the shape every time it was retyped
-   * (issues #9). SVG roots are the ones that hit it: they have no `offsetWidth`.
+   * back as the rotated bounding box shrank the shape every time it was
+   * retyped. SVG roots are the ones that hit it: they have no `offsetWidth`.
    */
   it('reports an SVG shape at its layout size, not its rotated bounds', () => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

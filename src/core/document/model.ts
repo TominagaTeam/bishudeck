@@ -2,9 +2,8 @@
  * The document model.
  *
  * The source of truth for a slide is its HTML string, never a derived object
- * graph (docs/adr/0001-html-as-source-of-truth.md). Anything the editor does
- * not understand survives a round trip untouched, which is what makes arbitrary
- * AI-generated decks reproducible.
+ * graph. Anything the editor does not understand survives a round trip
+ * untouched, which is what makes arbitrary AI-generated decks reproducible.
  */
 
 export const PROJECT_VERSION = 1;

@@ -12,7 +12,7 @@ import type { OrientedBox } from './geometry';
  * `box-sizing: border-box` its line lands just inside that boundary — which is
  * where the caret stands. On a blank box both are the editor's blue
  * (placeholder.ts colours the caret while the element is empty), so the caret
- * was painted over and could not be found (issues #99). The frame steps outside
+ * was painted over and could not be found. The frame steps outside
  * during a session, drawn as an offset outline so the fill still stops at the
  * element's edge.
  *
@@ -94,7 +94,7 @@ describe('Overlay', () => {
 
 describe('move grips', () => {
   it('draws four edges to take hold of while the selection is idle', () => {
-    // The one route to an element a hit test cannot name (issues #102): the
+    // The one route to an element a hit test cannot name: the
     // frame is host chrome, so it is reachable however the element under it is
     // clipped, covered or refusing the pointer.
     render(false);

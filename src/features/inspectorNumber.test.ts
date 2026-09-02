@@ -5,7 +5,7 @@ import { parseNumberDraft, parsePixels } from './styleValues';
 
 /**
  * `Number('')` is 0, so an emptied X field used to commit a real zero and send
- * the element to the corner of the slide (issues #10). `type="number"` hands
+ * the element to the corner of the slide. `type="number"` hands
  * back an empty string for letters too, so "abc" did the same.
  */
 describe('parseNumberDraft', () => {
@@ -39,8 +39,7 @@ describe('parseNumberDraft', () => {
 /**
  * The padding and radius fields take a number and put the unit in the
  * interface, so what comes out of `getComputedStyle` has to become one — and
- * anything that is not a length has to be refused rather than guessed at
- * (issues #21).
+ * anything that is not a length has to be refused rather than guessed at.
  */
 describe('parsePixels', () => {
   it('reads the lengths computed style actually hands back', () => {

@@ -9,8 +9,8 @@ import { parseNumberDraft } from './styleValues';
  *
  * **This reverses the decision the component was built on.** It used to apply
  * on every keystroke, and the 位置とサイズ fields were moved onto it from a
- * delayed-commit `NumberField` that was then deleted (inspector/decisions.md
- * #25 / #48). Three objections were recorded then, and each has an answer now:
+ * delayed-commit `NumberField` that was then deleted. Three objections were
+ * recorded then, and each has an answer now:
  *
  *  - *"a size cannot be decided without watching the slide change."* The
  *    stepper is what watching is for, and it is immediate: holding ▲ walks the
@@ -44,12 +44,12 @@ import { parseNumberDraft } from './styleValues';
  * which of the two arrived.
  *
  * The draft exists so the box can be empty mid-edit. An empty or unparseable
- * one applies nothing (`parseNumberDraft`, issues #10) and puts the field back
+ * one applies nothing (`parseNumberDraft`) and puts the field back
  * in step with the element.
  *
  * It lives in its own file because both `Inspector` and `TextFormatControls`
  * use it and the first imports the second — the same cycle `Field` and
- * `styleValues` were pulled out to avoid (inspector/decisions.md #7 / #20).
+ * `styleValues` were pulled out to avoid.
  */
 export function LiveNumberInput({
   id,
@@ -61,7 +61,7 @@ export function LiveNumberInput({
   flushOn,
   onApply,
 }: {
-  /** Set when the row ties its label to this box (`Field`, issues #28). */
+  /** Set when the row ties its label to this box (`Field`). */
   id?: string;
   /**
    * `null` when the selection has no single number to show — a range covering

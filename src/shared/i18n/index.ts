@@ -3,12 +3,12 @@
  *
  * Written by hand rather than pulled in: what this needs is a lookup and a
  * substitution, and `i18next` brings plurals, contexts, namespaces and lazy
- * loading that nothing here asks for (docs/rules/development.md §6).
+ * loading that nothing here asks for.
  *
  * `t` is a plain function, not a hook, because command labels are interface
- * text that lives in `core/` — and `core` cannot depend on React
- * (docs/basic-design/05-directory.md). It reads the catalog on every call so
- * that switching languages later is a matter of re-rendering, not of reloading.
+ * text that lives in `core/` — and `core` cannot depend on React. It reads the
+ * catalog on every call so that switching languages later is a matter of
+ * re-rendering, not of reloading.
  */
 
 import { ja } from './ja';

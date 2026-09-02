@@ -97,7 +97,7 @@ const SCHEME = /^[a-z][a-z0-9+.-]*:/i;
 /**
  * The one scheme that is refused outright.
  *
- * The editor's own frame runs no scripts (ADR-0002), so nothing here could be
+ * The editor's own frame runs no scripts, so nothing here could be
  * made to fire — but the deck is *exported* as an HTML file and *previewed* in
  * a frame that does run scripts, and a link in the markup is a link the deck's
  * next reader clicks. Writing one is not something the リンク button needs to

@@ -117,8 +117,7 @@ export class CropController {
     this.#gesture = null;
     if (!gesture) return;
     // A grip pressed and released is a click, and a click may not crop:
-    // `move()` wrote nothing, so there is nothing to record either
-    // ([issues](../../docs/issues.md) #30).
+    // `move()` wrote nothing, so there is nothing to record either.
     if (!gesture.moved) return;
 
     const after = captureStyles(this.#bridge, [

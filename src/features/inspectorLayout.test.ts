@@ -54,7 +54,7 @@ const openIds = (
 
 /**
  * The inspector used to give every element the same five expanded panels, and
- * the ordering is the half of issues #22 that could not be solved by hiding
+ * the ordering is the half of the problem that could not be solved by hiding
  * fields — 余白 and 枠線 apply to a photo, they are just not why anyone
  * selected one.
  */
@@ -95,7 +95,7 @@ describe('panel order', () => {
 
 /**
  * The panels an element has nothing for are drawn anyway, greyed out at the end
- * of the column (decisions #56). A pane that changes shape with the selection
+ * of the column. A pane that changes shape with the selection
  * asks the user to remember what a photo "has"; one that greys the difference
  * out shows it. What the earlier rule got right is kept — they are last, they
  * are shut, and they cost one row each rather than their contents.
@@ -136,7 +136,7 @@ describe('what is drawn but cannot be worked', () => {
 /**
  * Two open at a time is the budget: about what the pane shows at its default
  * 280px without scrolling, so what greets a new selection stays this table's
- * decision rather than the window height's (issues #20). Dark panels cost a
+ * decision rather than the window height's. Dark panels cost a
  * summary each and never open, so they do not spend it.
  */
 describe('what starts open', () => {
@@ -174,8 +174,8 @@ describe('what the user folded by hand', () => {
 });
 
 /**
- * 位置とサイズ is the one panel a mode takes the power out of, and issues #37 is
- * the reason: the box is read once per commit and typing commits nothing, so
+ * 位置とサイズ is the one panel a mode takes the power out of, and the reason is
+ * this: the box is read once per commit and typing commits nothing, so
  * during a text session the X / Y / 幅 / 高さ on screen are not merely beside the
  * point, they are stale. It goes dark rather than staying live — a shut panel
  * whose summary does not open is a panel with no route to a wrong number.
@@ -203,7 +203,7 @@ describe('inside a text session', () => {
     }
   });
 
-  /** The half issues #37 warned about: a session must not lose to what the user
+  /** The half that needed warning about: a session must not lose to what the user
    *  folded by hand, and must not leave a record of its own. */
   it('beats a remembered override rather than losing to it', () => {
     const drawn = panelsFor('text', ALL, { geometry: true }, true);
@@ -357,7 +357,7 @@ describe('what the element offers', () => {
 
   /**
    * And only that box. Widening the rule to "any empty element" is the option
-   * that was refused (decisions #52, #75): the childless full-bleed `<div>` a
+   * that was refused: the childless full-bleed `<div>` a
    * generated deck paints its background on is empty too, and the same test
    * decides what counts as background.
    */
@@ -376,8 +376,8 @@ describe('what the element offers', () => {
 
   /**
    * 画像 has a second way of being live, and it is not a kind. A photo frame an
-   * imported deck left behind is a box with a caption in it and no picture
-   * (issues #100): nothing to crop, so the column stays a shape's, but 画像を入れる
+   * imported deck left behind is a box with a caption in it and no picture:
+   * nothing to crop, so the column stays a shape's, but 画像を入れる
    * has something to act on — which is what makes the panel worth drawing.
    */
   it('offers 画像 to a box a picture can be put into', () => {

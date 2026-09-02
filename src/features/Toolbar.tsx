@@ -40,7 +40,7 @@ import { t, type MessageKey } from '../shared/i18n';
 
 /** Named by key rather than by text: the name is reused inside the undo label,
  *  and `t()` has to run when the menu renders rather than when this module is
- *  first read (docs/features/i18n/design.md). */
+ *  first read. */
 const SHAPES: { kind: ShapeKind; labelKey: MessageKey; width: number; height: number }[] = [
   { kind: 'rectangle', labelKey: 'shape.rectangle', width: 320, height: 200 },
   { kind: 'ellipse', labelKey: 'shape.ellipse', width: 260, height: 260 },

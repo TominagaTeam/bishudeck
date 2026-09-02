@@ -8,7 +8,7 @@ export function newSlideId(): string {
 /**
  * Identifier stamped onto every element when a slide is loaded into the edit
  * stage. Commands address elements by uid rather than by DOM node so they keep
- * resolving after an undo or a reload (docs/adr/0003-all-edits-as-commands.md).
+ * resolving after an undo or a reload.
  */
 export const UID_ATTRIBUTE = 'data-hse-uid';
 

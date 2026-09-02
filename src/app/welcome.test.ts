@@ -18,7 +18,7 @@ describe('the bundled welcome deck', () => {
   });
 
   it('carries no script, so it reads the same in the edit stage as in preview', () => {
-    // Edit mode neutralizes scripts (ADR-0002), so a guide that needed one to
+    // Edit mode neutralizes scripts, so a guide that needed one to
     // draw itself would be blank in the one mode the user starts in.
     expect(WELCOME_DECK_HTML).not.toMatch(/<script/i);
   });

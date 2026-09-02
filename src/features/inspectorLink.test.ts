@@ -140,7 +140,7 @@ describe('normalizeHref', () => {
   });
 
   // The exported deck is opened in a browser and the preview frame does run
-  // scripts (ADR-0002), so this is a link someone else's machine would execute.
+  // scripts, so this is a link someone else's machine would execute.
   it('refuses a script URL rather than completing it', () => {
     expect(normalizeHref('javascript:alert(1)')).toBeNull();
     expect(normalizeHref('  JavaScript:alert(1)')).toBeNull();
@@ -308,7 +308,7 @@ describe('行揃え — which one is lit', () => {
 
   // Through `shownAlign`, which is what keeps an untouched element — computing
   // to `start` above, and to `end` here — from lighting none of the three while
-  // sitting plainly against one edge (issues #32).
+  // sitting plainly against one edge.
   it('reads a logical value against the writing direction', () => {
     render({ ...STYLES, 'text-align': 'end', direction: 'rtl' });
     expect(pressedAligns()).toEqual([

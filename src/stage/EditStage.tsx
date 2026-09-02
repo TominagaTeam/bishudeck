@@ -76,7 +76,7 @@ import { t } from '../shared/i18n';
 /**
  * How often the panel asks what is true at the caret. Moving the caret inside
  * the stage announces nothing — the document runs no scripts, so
- * `selectionchange` never crosses the boundary (ADR-0002) — and the only way to
+ * `selectionchange` never crosses the boundary — and the only way to
  * keep the controls honest is to look.
  *
  * One tick answers for both halves of the panel, and deliberately in one place:
@@ -115,9 +115,8 @@ interface EditStageProps {
  * The document is loaded via `srcdoc` under `sandbox="allow-same-origin"` and
  * *without* `allow-scripts`, which is what makes editing tractable: the browser
  * guarantees none of the deck's JavaScript runs, so the DOM only changes when
- * the user changes it, while the host window keeps full access for editing
- * (docs/adr/0002-edit-preview-separation.md). CSS, including animations,
- * still applies in full.
+ * the user changes it, while the host window keeps full access for editing.
+ * CSS, including animations, still applies in full.
  *
  * Pointer handling lives in a transparent layer over the frame rather than
  * inside it. One coordinate space, one place to reason about gestures, and the
@@ -135,7 +134,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
    * click or the start of a duplicating drag. Null whenever Alt was not held.
    */
   const digRef = useRef<{ x: number; y: number; from: string | null } | null>(null);
-  /** Lives as long as one text session; the host draws its selection (issues #17). */
+  /** Lives as long as one text session; the host draws its selection. */
   const textSelectionRef = useRef<TextSelectionController | null>(null);
   const lastSerialized = useRef<string | null>(null);
   const editing = useRef<{ uid: string } | null>(null);
@@ -279,7 +278,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
 
     // And the wrapper the browser put round the words goes with it. Pressing
     // Return in a `contenteditable` mints a `<div>` and there is no way to stop
-    // it: the frame runs no scripts, so the key is never seen (ADR-0002), and
+    // it: the frame runs no scripts, so the key is never seen, and
     // `defaultParagraphSeparator` only chooses which tag. So the shape is put
     // right once, here, where the session is over and no caret can be standing
     // in what moves (core/editing/paragraphs.ts).
@@ -325,7 +324,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
       // it with nothing in it, the mark stays on.
       //
       // It used to come off here, and that is what made emptying a box a
-      // one-way door (issues #104). Without the mark the element is a deck's
+      // one-way door. Without the mark the element is a deck's
       // empty `<div>` again by every test the editor has — `isTextEditable`
       // refuses it, so no double-click, Enter or F2 can open it again;
       // `isSelfContained` refuses it, so a click selects the panel behind it;
@@ -366,7 +365,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
     // command: this is session scaffolding of the same kind as the
     // `contenteditable` attribute two lines up — put in as the session opens,
     // taken back as it closes, and never a description of what the user wrote
-    // (ADR-0003 is about edits, and no edit has happened yet).
+    // (a command describes an edit, and no edit has happened yet).
     const blank = isBlank(element);
     if (blank) openCaretLine(element);
     syncBlankMark(element);
@@ -589,9 +588,8 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
       // The browser's own answer to a press here is never the one the user
       // asked for: it starts a text selection, and a press that lands on text
       // already selected starts a *native drag* of that selection instead —
-      // which arrives as `pointercancel` and takes the gesture with it. That is
-      // candidate (a) of issues #16 and the whole of #17, and it is the same
-      // chain `.pane-divider` was caught in (#8). `user-select: none` on the
+      // which arrives as `pointercancel` and takes the gesture with it. It is
+      // the same chain `.pane-divider` was caught in. `user-select: none` on the
       // layer suppresses it too; both are kept because they fail differently
       // (a lost stylesheet, or a handler that stops running).
       event.preventDefault();
@@ -675,7 +673,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
       croppable: target !== null && isCroppable(target),
       // 「画像を入れる」 wherever a box can hold one, with no test ordered in
       // front of it. A double-click had to put `textual` first because one
-      // gesture cannot mean two things (decisions #100); a menu is read before
+      // gesture cannot mean two things; a menu is read before
       // it is used, so the freshly inserted text box can simply offer both
       // rows and let the user say which one was meant.
       fillable: target !== null && isFillable(target),
@@ -737,7 +735,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
    * movement as a system gesture, the capture being taken away. This used to
    * run the pointer-up path, which *committed* whatever few pixels the drag had
    * covered — and that is exactly what the Windows build shows as "the object
-   * jumps a little and then stops" (issues #16). Rewinding says the true thing
+   * jumps a little and then stops". Rewinding says the true thing
    * instead: the gesture failed, so nothing moved.
    *
    * The same reasoning Escape already uses (see the key handler below); this
@@ -870,7 +868,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
       // user most obviously means to type into. The exception is made at the
       // door rather than inside that function: it is the same rule that decides
       // what counts as background, and loosening it there would make every
-      // empty `<div>` in a deck editable and selectable (decisions #52, #75).
+      // empty `<div>` in a deck editable and selectable.
       // `isUntouchedTextBox` answers for exactly one element and only until
       // something is typed into it (core/editing/textBox.ts).
       const textual = isTextEditable(target) || isUntouchedTextBox(uid, target);
@@ -953,7 +951,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
    * point: left to the browser, a press inside an existing range starts a
    * native drag of that range instead of a new selection, and a
    * scripting-disabled document gives the host nothing to call
-   * `preventDefault()` on (issues #17). The selection is built here instead.
+   * `preventDefault()` on. The selection is built here instead.
    */
   const handleTextDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     const selecting = textSelectionRef.current;
@@ -1190,7 +1188,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
   //
   // The whole store is watched, so this also fires when `execute` pushes;
   // `resyncTextBaseline` is what tells the two apart, and has to, because a
-  // push must leave the baseline where it is (issues #44).
+  // push must leave the baseline where it is.
   //
   // It is also where the mutation observer above learns that what is about to
   // land in it is the history's doing and not a paste. `isRestoring()` cannot
@@ -1224,7 +1222,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
    *
    * A box the user emptied keeps its mark after the session closes (see
    * `finishTextEditing`), which is what leaves it selectable and open for
-   * typing again (issues #104). ⌘Z can then put its words back with no session
+   * typing again. ⌘Z can then put its words back with no session
    * open, and the session's own observer — the only thing that syncs the mark —
    * is long gone: the prompt would be painted over the text that had just come
    * back. So every history step sweeps whatever is marked. Cheap: a slide wears
@@ -1408,7 +1406,7 @@ export function EditStage({ shared, slide, designWidth, designHeight, scale }: E
  * Where the key handler can be reached — Chromium — nothing here ever fires,
  * because the app's undo puts back markup the editor itself recorded, uids and
  * all. Where it cannot — WebKit runs no listener in a scripting-disabled
- * document, not even one the host attached (ADR-0002) — the engine's own undo
+ * document, not even one the host attached — the engine's own undo
  * runs instead and hands back a run it re-created from its own transaction
  * log: measured, `<u>2026 </u>` where the box had
  * `<u data-hse-uid="e3d">2026 </u>`. An element with no uid is one nothing can
@@ -1525,7 +1523,7 @@ function releaseTextFocus(element: HTMLElement, layer: HTMLDivElement | null): v
   // leaves it behind: measured after Escape, the host selection was empty but
   // still `isCollapsed: false`. A press that lands inside a live range is what
   // makes the browser drag it rather than start a gesture, so the range has to
-  // go too — the frame's selection alone was never the whole of it (#16 (a)).
+  // go too — the frame's selection alone was never the whole of it.
   layer?.ownerDocument.defaultView?.getSelection()?.removeAllRanges();
 }
 

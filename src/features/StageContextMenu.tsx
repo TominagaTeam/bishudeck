@@ -87,8 +87,7 @@ export function StageContextMenu() {
           {/* Next to トリミング because the two are the same question read at
               two moments — what to do about this box's picture — and never
               both true at once (`isFillable` refuses what `isCroppable`
-              accepts). The inspector's image panel seats them the same way
-              (features/inspector/decisions.md #66).
+              accepts). The inspector's image panel seats them the same way.
 
               Not awaited: the dialog is the OS's, and the click that opened
               this menu is over. The right-click already selected the box, so

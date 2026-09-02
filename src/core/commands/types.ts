@@ -1,5 +1,5 @@
 /**
- * Every mutation goes through a command (docs/adr/0003-all-edits-as-commands.md).
+ * Every mutation goes through a command.
  *
  * Undo/redo is the immediate payoff, but the same seam is what later lets
  * plugins, AI-driven rewrites and collaborative editing change the document

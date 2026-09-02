@@ -7,7 +7,7 @@
  * underneath the editor, so it goes, and the element is materialized as the
  * placeholder box it drew while empty — a dashed frame around the author's
  * caption (import/artifact.ts). Nothing is left that answers a drop, in the
- * editor or in an export, which is what issues #100 reports. The component was
+ * editor or in an export. The component was
  * never going to work outside its own runtime either: it gates its controls on
  * `window.omelette.writeFile`, so a share link or a saved copy has always been
  * read-only.

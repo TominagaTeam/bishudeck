@@ -15,7 +15,7 @@
  * The frame is the element the user selects, moves and resizes; the picture's
  * `left`/`top` go negative for the parts that are cut away. Nothing here is
  * editor-specific — a deck author could have written it by hand, and any
- * browser renders it — which is what makes a crop survive export (AD-1).
+ * browser renders it — which is what makes a crop survive export.
  *
  * `clip-path: inset(...)` would be fewer elements, and was the first thing
  * tried. It clips the paint but leaves the layout box the original size, so
@@ -63,7 +63,7 @@ export const CROPPING_ATTRIBUTE = 'data-hse-cropping';
  * picture follows the box it sits in, so 「元の画像に戻す」 cannot mean anything
  * without a copy of it.
  *
- * Not part of recognising a frame, which stays structural (AD-2); this is only
+ * Not part of recognising a frame, which stays structural; this is only
  * ever read as a destination. `serializeSlide` strips every `data-hse-*`, so it
  * cannot reach the saved file, while `slideMarkup` keeps it — which is what
  * lets it survive undo.
@@ -236,7 +236,7 @@ export function writePlacement(picture: HTMLElement, placement: Placement): void
  *
  * The picture is the frame's content, so it scales with the frame: a resize
  * that left the picture alone would silently be a re-crop, revealing more of
- * the photo rather than making the photo bigger (AD-6). The axes are separate
+ * the photo rather than making the photo bigger. The axes are separate
  * because a frame can be stretched on one of them.
  */
 export function scalePlacement(start: Placement, kx: number, ky: number): Placement {
@@ -579,7 +579,7 @@ function borrowableFrame(picture: HTMLElement): HTMLElement | null {
  * unlike {@link wrap} there is no new element here to carry it; only the
  * declarations the model owns are overwritten.
  *
- * The frame is not tightened to the picture the way a bare one is (AD-5). This
+ * The frame is not tightened to the picture the way a bare one is. This
  * box is the author's, drawn at the size they chose, and it paints its own
  * plate in the letterbox bands.
  */

@@ -25,10 +25,10 @@ if (typeof CSS === 'undefined') {
  * Two cards inside a wrapper, and a headline outside it.
  *
  * The wrapper is one point: it stands for the grid cell / `.container .card`
- * that the first attempt at this feature used to pull elements out of
- * (docs/roadmap.md). The other is that the two are laid out differently — the
- * cards are placed by their parent, the headline places itself — which is what
- * decides whether a paste is nudged clear of the original.
+ * that the first attempt at this feature used to pull elements out of. The
+ * other is that the two are laid out differently — the cards are placed by
+ * their parent, the headline places itself — which is what decides whether a
+ * paste is nudged clear of the original.
  */
 const DECK = `<!doctype html>
 <html>
@@ -99,9 +99,9 @@ describe('copySelection', () => {
 });
 
 /**
- * Where a paste lands is the whole of what sank this feature the first time
- * (docs/roadmap.md): an element dropped under the slide root loses the parent
- * whose CSS was painting it. These pin the rule that replaced it.
+ * Where a paste lands is the whole of what sank this feature the first time:
+ * an element dropped under the slide root loses the parent whose CSS was
+ * painting it. These pin the rule that replaced it.
  */
 describe('pasteClipboard', () => {
   it('puts the copy beside the selection, inside the same parent', () => {

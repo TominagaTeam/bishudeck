@@ -3,7 +3,7 @@
  *
  * Keys are flat and dotted so that grepping one finds both the call site and
  * the entry here; a nested shape would leave the caller's string appearing
- * nowhere in this file (docs/features/i18n/design.md).
+ * nowhere in this file.
  *
  * Proper nouns are not here. Typeface names stay in `shared/fonts.ts`: the name
  * of a typeface is the same in every language, and translating it would leave
@@ -297,7 +297,7 @@ export const ja = {
   'inspector.fillHint': '選んでいる箱の中身が画像に置き換わります',
   'inspector.background': '背景',
   /* 塗り・枠線の色も文字色と同じ分割ボタン (ColorPicker) を使う。
-     文言の形も揃える —— 左は「適用」、右は「選ぶ」 (issues #101) */
+     文言の形も揃える —— 左は「適用」、右は「選ぶ」 */
   'inspector.backgroundApply': '塗りの色を適用',
   'inspector.backgroundPalette': '塗りの色を選ぶ',
   'inspector.transparent': '透明',
@@ -325,8 +325,7 @@ export const ja = {
   'stage.previewTitle': 'スライドプレビュー',
   'stage.loadingTitle': 'スライド読み込み中',
   // Painted by the stage into an empty text box while it is being edited, and
-  // never part of the document: nothing of it reaches the saved HTML
-  // (docs/features/i18n/design.md).
+  // never part of the document: nothing of it reaches the saved HTML.
   'stage.textBoxPlaceholder': 'テキストを入力',
   'command.duplicateAndMove': '複製して移動',
   'command.resize': 'サイズ変更',

@@ -33,7 +33,7 @@ import { t } from '../../shared/i18n';
  * called them, because an undo has no caller: the drop that reordered the deck
  * finished long ago, and only the command still knows where the slide went.
  * Leaving it to the call sites is what made undoing a delete or a reorder open
- * a different slide than the one that was being edited (docs/issues.md #11).
+ * a different slide than the one that was being edited.
  */
 function focusSlide(index: number): void {
   editorEvents.emit('slide:focusRequest', { index });

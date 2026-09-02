@@ -63,7 +63,7 @@ describe('pane persistence', () => {
  * The inspector's folds share the pane queue, so they inherit its debounce and
  * its `pagehide` flush. What they must not inherit is "record everything":
  * only the panels the user actually worked are stored, because a full map would
- * retire the per-kind layout table after a single click (issues #20 / #22).
+ * retire the per-kind layout table after a single click.
  */
 describe('inspector fold persistence', () => {
   let setItem: ReturnType<typeof vi.spyOn>;

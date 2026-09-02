@@ -10,7 +10,7 @@
  *
  * In `shared/` rather than beside the panel that first needed it: `stage/`
  * reaches for it too, and `stage → features` is the one direction the layering
- * does not have (basic-design/05-directory.md). `shared` is the crosscutting
+ * does not have. `shared` is the crosscutting
  * layer every other one may call.
  */
 
@@ -27,8 +27,7 @@ const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'];
  *
  * The path is relative on purpose: `assets/<name>` is what the export writes
  * next to the HTML file, and what `compose`'s `baseUrl` resolves against the
- * `slides://` origin while the deck is on the stage
- * (features/asset-pipeline/design.md).
+ * `slides://` origin while the deck is on the stage.
  */
 export async function chooseImageAsset(): Promise<string | null> {
   const chosen = await openDialog({

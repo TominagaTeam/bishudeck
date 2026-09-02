@@ -63,7 +63,7 @@ describe('what counts as a chosen alignment', () => {
     expect(chosenAlign('right')).toBe('right');
   });
 
-  // The panel stopped offering 両端 (issues #39), but a deck that justifies its
+  // The panel stopped offering 両端, but a deck that justifies its
   // own text still hands `justify` to `carryAlignmentIntoLists`. Reading it as
   // "nobody chose" would leave that deck's bulleted lines unjustified the
   // moment someone touched them.
@@ -91,7 +91,7 @@ describe('what a list node is given', () => {
   });
 
   // Both start their lines at the left edge, where an outside marker belongs.
-  // `justify` has no button behind it any more (issues #39) and keeps its road
+  // `justify` has no button behind it any more and keeps its road
   // for the deck that brings its own.
   it('hands the marker back for left and a deck’s justify', () => {
     expect(listAlignmentStyle('left', 'UL')).toEqual({
@@ -198,7 +198,7 @@ describe('a list built inside an already aligned box', () => {
 });
 
 /**
- * The half that is measured rather than declared (issues #31).
+ * The half that is measured rather than declared.
  *
  * The blockage is set up here with an inline declaration on the list rather than
  * with a `<style>` rule, because what the probe reads is the *computed* value —

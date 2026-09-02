@@ -148,7 +148,7 @@ describe('setGeometry', () => {
     });
 
     /**
-     * The sibling of issues #24: an element the deck sized in its own CSS gets
+     * A sibling case: an element the deck sized in its own CSS gets
      * `width` written on it for the first time, and an undo that folded the run
      * onto the *last* snapshot would leave that width pinned — a box that no
      * longer grows with its text, in the exported file as well.
@@ -193,8 +193,8 @@ describe('setGeometry', () => {
     beforeEach(() => layOut(cropFrame(), { left: 0, top: 0, width: 400, height: 300 }));
 
     /**
-     * The frame is the object on the slide and the picture is its content
-     * (AD-6), so typing a width has to scale the photo rather than reveal more
+     * The frame is the object on the slide and the picture is its content, so
+     * typing a width has to scale the photo rather than reveal more
      * of it. Each keystroke scales from what the last one left, so the run
      * composes to the same place a single 400 → 100 would.
      */

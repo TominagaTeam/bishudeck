@@ -100,7 +100,7 @@ export function isBlank(element: Element): boolean {
  * has just been inserted has no text of its own yet, so the rule for what a
  * double-click may enter refuses it. Widening that rule instead was rejected —
  * it would let every empty `<div>` a deck happens to contain be edited, and the
- * same function decides what counts as background (decisions #52, #75).
+ * same function decides what counts as background.
  *
  * Both arguments are needed and neither is redundant. The uid is what makes it
  * *this* box and not any other; the element is what makes it *still* empty, and
@@ -132,7 +132,7 @@ export function pendingTextBoxUid(): string | null {
  * inspector before a single key was pressed, or the box dragged somewhere
  * better — puts it out of reach, and the removal has to be an edit of its own.
  * That is unchanged from when a session end was the only thing that called
- * this (decisions #75); only the callers are new.
+ * this; only the callers are new.
  */
 export function dropTextBox(uid: string): void {
   const insertion = pending;

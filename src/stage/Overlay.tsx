@@ -43,7 +43,7 @@ const HANDLES: Handle[] = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
  * two are the same pixels in the same blue: the caret takes the editor's accent
  * while the element is blank (placeholder.ts), because an empty box offers no
  * proof that the deck's own colour would be readable. So the caret was there
- * and could not be seen (issues #99).
+ * and could not be seen.
  *
  * Moving the frame out is enough to part them, and it costs nothing else: the
  * fill still stops at the element's edge (the line is an outline, the border
@@ -211,7 +211,7 @@ function Badge({
  * There used to be a hole here so that caret and drag-selection could reach the
  * text natively. It is covered now: a press that lands inside an existing range
  * makes the browser drag the range instead of starting a new selection, and a
- * scripting-disabled frame gives the host no way to refuse (issues #17). The
+ * scripting-disabled frame gives the host no way to refuse. The
  * pane takes the press instead and the selection is drawn from the host
  * (textSelection.ts).
  */
@@ -275,7 +275,7 @@ function Shields({
  * pointer, or simply covered. Alt+click and the context menu can *select* one
  * of those (bridge.ts), and once selected the inspector, the arrow keys and
  * ⇧⌘] all reach it — but a drag did not, because a press over it goes on
- * naming the thing in front (issues #102).
+ * naming the thing in front.
  *
  * The frame is the way in, for the same reason the resize handles already are:
  * it is host chrome drawn over the stage (invariant 15), so it is reachable

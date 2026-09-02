@@ -177,7 +177,7 @@ describe('copyFormat / pasteFormat', () => {
   });
 
   // The brush carries `text-align`, so it meets the same wall the 行揃え button
-  // does: a list between the declaration and the words (issues #27).
+  // does: a list between the declaration and the words.
   it('paints an alignment past the list in the way', () => {
     const { bridge, doc } = mountStage();
     const listed = doc.querySelector('.listed') as HTMLElement;
@@ -192,8 +192,8 @@ describe('copyFormat / pasteFormat', () => {
   });
 
   // The alignment was only the first declaration to be stopped. Anything the
-  // brush carries that reaches a line by inheritance meets the same rule
-  // (issues #31) — here a size the list declares for itself.
+  // brush carries that reaches a line by inheritance meets the same rule —
+  // here a size the list declares for itself.
   it('paints a size past a list that declares its own', () => {
     const { bridge, doc } = mountStage();
     const listed = doc.querySelector('.listed') as HTMLElement;

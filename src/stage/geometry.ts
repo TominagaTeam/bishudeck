@@ -81,8 +81,7 @@ export function boxOf(element: HTMLElement): OrientedBox {
  * Falling back to the bounding rect for those returned the *rotated* bounds,
  * and since the inspector reads the box and writes `style.width`, retyping the
  * width it was showing shrank the shape a little more each time: a 360px arrow
- * at 45° read 260, and writing 260 back made it read 190
- * (docs/issues.md #9).
+ * at 45° read 260, and writing 260 back made it read 190.
  *
  * Computed style is the right source for those: it reports the used width in
  * px, transforms do not touch it, and it is the same property
@@ -224,7 +223,7 @@ export const MIN_VISIBLE = 24;
  * *hit testing* as well as out of the picture, so a box dragged past the edge of
  * the card it lives in — or past the edge of the slide, which the stage clips
  * the same way — stops being anywhere at all: invisible, and unreachable by the
- * pointer that put it there ([issues](../../docs/issues.md) #102).
+ * pointer that put it there.
  *
  * Two approximations, both deliberately on the side of *not* getting in the way
  * (there are other ways back to a lost element — Alt+click, the context menu's

@@ -11,7 +11,7 @@
  *   root (stage/selectionHeuristics.ts), so `<ul>` is what gets
  *   `contenteditable`. `execCommand` then reports success and changes nothing —
  *   a list cannot unwrap itself — which leaves 箇条書き and 番号 both dead on
- *   exactly the boxes that already are lists ([issues](../../../docs/issues.md) #98).
+ *   exactly the boxes that already are lists.
  *   `queryCommandState` still answers "yes, a list", so the button lights up
  *   under a press that does nothing.
  * - **the host is a `<span>`.** Blink refuses outright — `execCommand` returns
@@ -51,8 +51,8 @@
  * cascade cannot be asked "which of my declarations came from the tag", so the
  * answer here is to *measure*: the computed value of a handful of text
  * properties is read before the swap and again after it, and only what actually
- * changed is written back as an inline override (ADR-0004 — no deck stylesheet
- * is touched). A box whose look survives the swap gets nothing written on it.
+ * changed is written back as an inline override, and no deck stylesheet is
+ * touched. A box whose look survives the swap gets nothing written on it.
  *
  * Only text properties travel. The box properties a list carries — the marker
  * gutter, the UA's vertical margin — are the list's own and *should* go when

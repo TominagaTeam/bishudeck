@@ -7,7 +7,7 @@ use crate::state::AppState;
 
 /// Hands a fully composed HTML document to the backend and returns the URL the
 /// preview iframe should load. Composition happens in the frontend so that no
-/// HTML parsing logic is duplicated in Rust (docs/basic-design/04-architecture.md).
+/// HTML parsing logic is duplicated in Rust.
 #[tauri::command]
 pub fn publish_preview(state: State<'_, AppState>, id: String, html: String) -> String {
     state.publish_preview(id.clone(), html);

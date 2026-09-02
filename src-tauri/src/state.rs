@@ -2,7 +2,7 @@
 //!
 //! Slide HTML is pushed here by the frontend right before it is displayed, then
 //! served back over the `slides://` scheme so the preview iframe lands on a
-//! *different origin* than the app itself (docs/adr/0002-edit-preview-separation.md).
+//! *different origin* than the app itself.
 
 use std::collections::HashMap;
 use std::sync::RwLock;

@@ -120,7 +120,7 @@ const READ_PROPERTIES: readonly string[] = [
   'border-top-left-radius',
   // Read, never written — and deliberately not on the brush's list. The
   // alignment row needs it to say which physical side an unaligned element's
-  // `start` is sitting on (issues #32); a brush that carried it would re-flow
+  // `start` is sitting on; a brush that carried it would re-flow
   // the text it was asked only to restyle.
   'direction',
 ];
@@ -206,7 +206,7 @@ function ElementPanels() {
   const setFold = useUiStore((s) => s.setInspectorPanel);
   // The same test 文字書式 uses one component down (`TextPanel`), so the column
   // and the controls inside it can never disagree about whether a session is
-  // open (decisions #21). `uid` is checked first because both sides are null
+  // open. `uid` is checked first because both sides are null
   // when nothing is selected, and `null === null` would read as "editing".
   const sessionUid = useTextSession((s) => s.uid);
   const inTextSession = uid !== null && sessionUid === uid;
@@ -382,7 +382,7 @@ function BoxPanel({
  *
  * The container is what carries `data-hse-text-tools` — the marker for "a click
  * here must not end the text session" belongs to the region of host UI, not to
- * the controls inside it (decisions.md #4).
+ * the controls inside it.
  *
  * It also owns the hint, because the hint is the only thing that explains why
  * half the panel is missing outside a session: without it, a user who saw B and
@@ -448,7 +448,7 @@ function TextPanel({
  * The box this is most often wanted on is the photo frame an imported deck
  * draws where its `<image-slot>` used to be. That frame arrives as plain markup
  * with nothing behind it — the component's own drop handler belongs to a
- * runtime the import has to drop (core/editing/imageFill.ts, issues #100) — so
+ * runtime the import has to drop (core/editing/imageFill.ts) — so
  * this button is what the frame's 「写真添付エリア」 caption now means.
  *
  * No uid: `fillWithImage` reads the selection itself, the way every other
@@ -479,7 +479,7 @@ function FillPanel({ title, fold }: { title: string; fold: Fold }) {
  * scaling the picture to its frame, and giving the whole picture back. All four
  * act on the frame that is currently open — so outside one they are drawn
  * disabled rather than not drawn, which is what stops 「トリミング」 from
- * looking like the only thing this panel does (decisions #56).
+ * looking like the only thing this panel does.
  *
  * The hint is the piece that tells the two states apart, the same way 文字書式
  * switches its own: a row of greyed buttons with nothing to explain them reads
@@ -567,7 +567,7 @@ function CropPanel({ title, uid, fold }: { title: string; uid: string; fold: Fol
  * 「透明」 and 「解除」 are different, for the same reason as the outline's
  * 「なし」 and 「解除」: the deck's own CSS may be painting the fill, so 透明
  * writes `transparent` as an override that beats it, while 解除 drops the
- * inline declaration and returns the box to the deck's look (AD-4).
+ * inline declaration and returns the box to the deck's look.
  */
 function BackgroundField({ uid, value }: { uid: string; value: string | undefined }) {
   const transparent = isTransparent(value);
@@ -619,7 +619,7 @@ function BackgroundField({ uid, value }: { uid: string; value: string | undefine
  *
  * Both used to be text fields holding raw CSS, which asked the user to know
  * that `px` was required and showed them `10px 20px 10px 20px` whenever the
- * sides differed — a value no one could edit sensibly (issues #21). The unit
+ * sides differed — a value no one could edit sensibly. The unit
  * moved to a `.unit` label beside the box, and the field takes a number.
  *
  * **All four sides are written every time, even when one changed.** That is
@@ -718,7 +718,7 @@ function SpacingFields({ uid, styles }: { uid: string; styles: Record<string, st
  *
  * Written as the three longhands rather than the `border` shorthand. The
  * shorthand also resets `border-image`, which a deck may well be using, and
- * AD-4 only allows overriding what the user asked to change.
+ * this editor only overrides what the user asked to change.
  *
  * Every field writes all three at once, because the parts are not independent:
  * a colour on its own is invisible while the style is `none`, and a deck whose
@@ -856,8 +856,8 @@ function BorderPanel({
  * Every field lands as it is typed, like every other number in this panel. It
  * was the last one that did not: it committed on blur or Enter, so the stage
  * stood still while the number was being chosen and the spinner arrows — the
- * obvious way to close in on a position — did nothing until focus left
- * (issues #38). What makes that affordable is the folding in
+ * obvious way to close in on a position — did nothing until focus left. What
+ * makes that affordable is the folding in
  * `StyleSnapshotCommand`, which keeps a run of keystrokes to one undo step.
  */
 function GeometryPanel({
@@ -908,8 +908,8 @@ function GeometryPanel({
  * One cell of the 位置とサイズ grid.
  *
  * `.field.compact` keeps its `<label>` wrapper: the row holds a single input,
- * so the implicit association has nothing else to hand the click to
- * (issues #28). `whole` is off because these five are the only fields showing a
+ * so the implicit association has nothing else to hand the click to. `whole`
+ * is off because these five are the only fields showing a
  * *measurement* — `round()` keeps two decimals — and rounding a typed 22.5°
  * would refuse a value the field itself displays.
  */

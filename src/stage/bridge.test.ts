@@ -8,8 +8,7 @@ import { BLANK_ATTRIBUTE, CARET_LINE_ATTRIBUTE, openCaretLine, syncBlankMark } f
 
 /**
  * The load/edit/save round trip is the promise the whole design rests on: what
- * comes out has to be the slide that went in, with no trace of the editor
- * (docs/adr/0001-html-as-source-of-truth.md).
+ * comes out has to be the slide that went in, with no trace of the editor.
  */
 const DECK = `<!doctype html>
 <html>

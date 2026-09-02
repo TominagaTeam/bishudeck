@@ -255,8 +255,7 @@ describe('recognising a frame', () => {
 
 /**
  * The dead zone on the crop grips, which is the same rule the move / resize /
- * rotate handles follow ([issues](../../docs/issues.md) #30, and #18 / #29
- * before it).
+ * rotate handles follow.
  *
  * jsdom measures every box as zero, so the frame's `base` is empty here and the
  * numbers a drag lands on are not the point — whether *anything* was written is.

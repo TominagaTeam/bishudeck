@@ -146,7 +146,7 @@ describe('GestureController: Alt-drag duplicates', () => {
 });
 
 /**
- * The dead zone, which keeps a click from moving anything (issues #18).
+ * The dead zone, which keeps a click from moving anything.
  *
  * The drags that are expected to land somewhere clear the 6px threshold, so
  * snapping cannot move them — see the note above the Alt-drag block.
@@ -214,8 +214,8 @@ describe('GestureController: a press has to travel before it drags', () => {
 });
 
 /**
- * Shift on a move, which locked nothing and turned snapping off instead
- * (issues #97). Resize (aspect ratio) and rotate (15° steps) already read it
+ * Shift on a move, which locked nothing and turned snapping off instead.
+ * Resize (aspect ratio) and rotate (15° steps) already read it
  * the way PowerPoint does; this is the third one catching up.
  *
  * Every drag here travels further than the 6px snapping threshold, so the
@@ -310,8 +310,8 @@ describe('GestureController: Shift locks a move to one axis', () => {
 
 /**
  * The handles, which have the same two problems the layer had: a press that
- * barely travels still committed something (issues #29), and a resize left the
- * size it pinned behind after an undo (issues #24).
+ * barely travels still committed something, and a resize left the
+ * size it pinned behind after an undo.
  */
 describe('GestureController: the handles leave a click alone', () => {
   beforeEach(() => {

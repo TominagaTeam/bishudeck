@@ -1,5 +1,5 @@
 /*
- * Two palettes, one set of names (docs/features/theme/design.md).
+ * Two palettes, one set of names.
  *
  * `:root` holds the light one because that is what the editor opens in, and
  * `[data-theme='dark']` restates only the tokens that move. The attribute is
@@ -584,8 +584,8 @@ input[type='color'] {
   cursor: default;
   /* A press here is always the start of a gesture, never the start of a
      selection — and a selection is what lets the browser turn the next drag
-     into a native drag of it, cancelling the pointer mid-gesture (issues #16,
-     #17). `.pane-divider` needed the same pair for the same reason (#8):
+     into a native drag of it, cancelling the pointer mid-gesture.
+     `.pane-divider` needed the same pair for the same reason:
      `touch-action` also keeps a Windows touchpad from reclassifying the drag
      as a system gesture. The handler calls `preventDefault()` as well; the two
      are kept together because they fail differently. */
@@ -672,7 +672,7 @@ input[type='color'] {
    The line steps outside the element here, drawn as an outline offset by
    EDIT_FRAME_GAP (Overlay.tsx). On the boundary it was painted over the caret —
    same pixels, same blue — and a box with nothing typed into it read as having
-   no caret at all (issues #99). The border stays where it was and turns
+   no caret at all. The border stays where it was and turns
    transparent rather than going to zero, so the fill still reaches exactly as
    far as it did. */
 .overlay-selection.editing {
@@ -692,8 +692,8 @@ input[type='color'] {
 }
 
 /* The other half of the pair: the pane over the text being edited. It takes the
-   press so the frame cannot turn it into a native drag of the selection
-   (issues #17), and the selection is drawn from the host instead. The frame's
+   press so the frame cannot turn it into a native drag of the selection, and
+   the selection is drawn from the host instead. The frame's
    own `cursor: text` is underneath it now, so the cursor is set here. */
 .overlay-text-shield {
   position: absolute;
@@ -827,7 +827,7 @@ input[type='color'] {
 
 /* Every block in the column: the fixed 選択 section and the folds below it.
    What separates them is a line rather than more space — six blocks 20px apart
-   still read as one long box, which is what issues #20 was about. */
+   still read as one long box. */
 .panel {
   border-top: 1px solid var(--border);
   padding: 8px 0;
@@ -937,7 +937,7 @@ input[type='color'] {
 }
 
 /* The label cell is a `<label>` when the row has one control to tie it to and a
-   `<span>` when it has a group of them (Field.tsx, issues #28). Both are the
+   `<span>` when it has a group of them (Field.tsx). Both are the
    same cell to the eye. */
 .field > span,
 .field > label {

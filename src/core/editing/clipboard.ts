@@ -1,7 +1,7 @@
 /**
  * The element clipboard: ⌘C / ⌘X / ⌘V on whole objects.
  *
- * This was built once before and taken out again (docs/roadmap.md), and the
+ * This was built once before and taken out again, and the
  * reason was never the keys — it was **where a paste lands**. The old one put
  * every paste under the slide root, which pulled the element out of the grid
  * cell or the `.container .card` that had been painting it, and it arrived

@@ -5,12 +5,12 @@
  * such a document even when the host attached it — so nothing that happens
  * *inside* the frame can be observed. What the host can still do is make the
  * frame do things: `focus()`, `caretRangeFromPoint()` and the Selection API all
- * work when called from outside (docs/adr/0002-edit-preview-separation.md).
+ * work when called from outside.
  *
  * That asymmetry is why selection is drawn here rather than left to the
  * browser. Left to it, a press that lands inside an existing range starts a
  * *native drag of that range* instead of a new selection, and there is no way
- * to call `preventDefault()` on it from the host — the whole of issues #17.
+ * to call `preventDefault()` on it from the host.
  * With the press caught on a host element the frame never sees it, so the drag
  * cannot start on any engine, and the selection is built by hand from the
  * points the pointer passes through.
@@ -18,7 +18,7 @@
  * The cost is that everything `contenteditable` gave away for free — caret
  * placement, word on the second press, the whole element on the third, shift to
  * extend — is spelled out here. Dragging selected text to move it is gone;
- * that was the trade (decisions.md #67).
+ * that was the trade.
  */
 
 /** Resolves a point in stage coordinates to a caret position in the frame. */
@@ -171,8 +171,7 @@ export class TextSelectionController {
  * frame's selection as an *inactive* one — no caret, and grey rather than blue
  * where there is a range. The frame is same-origin (`srcdoc` under
  * `sandbox="allow-same-origin"`), so the host can set all three itself; only
- * `allow-scripts` is withheld, and nothing here needs the frame to run anything
- * (ADR-0002, and design.md's "the host can make the frame do things").
+ * `allow-scripts` is withheld, and nothing here needs the frame to run anything.
  *
  * Outside in, and the element last: focusing a frame resets that frame's own
  * focused element to its body, so an `element.focus()` before either of the
@@ -211,7 +210,7 @@ export function holdTextFocus(element: HTMLElement): void {
  * It used to take the word there as well. Starting a session with a word
  * already selected makes the very next keystroke destructive — one character
  * replaces the word, and the user who only meant to start editing does not see
- * it coming (issues #25). The word is still one gesture away: a second
+ * it coming. The word is still one gesture away: a second
  * double-click *inside* the session takes it, which `TextSelectionController`
  * counts for itself.
  *

@@ -1,6 +1,6 @@
 [package]
 name = "bishudeck"
-version = "0.1.3"
+version = "0.1.4"
 description = "Bishudeck"
 authors = ["TominagaTeam"]
 edition = "2021"

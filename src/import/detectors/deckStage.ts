@@ -7,7 +7,7 @@ import { t } from '../../shared/i18n';
  *
  * `<deck-stage>` is a web component: its slides are its direct children, and it
  * absolutely positions and scales them at runtime. The editor never runs that
- * script (AD-2), and {@link unwrapArtifact} drops it, so the geometry it would
+ * script, and {@link unwrapArtifact} drops it, so the geometry it would
  * have applied is handed back as {@link DetectionResult.runtimeCss} — mirroring
  * the component's own `::slotted(*)` rule, which is the authored slides' only
  * source of size and of a positioned containing block.

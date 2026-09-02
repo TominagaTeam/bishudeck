@@ -10,7 +10,7 @@ import { Field } from './Field';
  * A `<label>` with no `for` adopts the first labelable element under it, and
  * `button` is labelable — so a row of buttons wrapped in one forwarded clicks
  * from the label text, the rest of the 56px column and the slack beside the
- * controls straight into its first button (issues #28). These mount the real
+ * controls straight into its first button. These mount the real
  * component and press the label cell, because the association is a property of
  * the markup rather than of anything the component computes.
  */

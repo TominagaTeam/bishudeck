@@ -266,7 +266,7 @@ function useKeyboardShortcuts(slideCount: number, fitScale: number) {
 
       // PowerPoint splits this in two — Ctrl+M adds a slide, Ctrl+⇧D duplicates
       // one — but blank slides were withdrawn, so both land on the one
-      // operation this app has (see docs/features/shortcuts/decisions.md).
+      // operation this app has.
       if (editing && matchesShortcut('slide.add', event)) {
         event.preventDefault();
         const slide = useDocumentStore.getState().project.slides[ui.slideIndex];

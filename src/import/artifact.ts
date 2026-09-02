@@ -7,7 +7,7 @@
  * Opening the file runs a loader that mints blob URLs for the manifest entries,
  * substitutes them into the template and replaces the whole document with it.
  *
- * The editor cannot import what only exists after a script has run (AD-2), so
+ * The editor cannot import what only exists after a script has run, so
  * this module performs the same substitution ahead of time, as string work:
  *
  * - Fonts and images are inlined as `data:` URLs. The deck stays one file,
@@ -65,7 +65,7 @@ export const DECK_STAGE_IMPORT = `x-import[${DECK_STAGE_MARKER}]`;
  * that has to round-trip through exactly that parser, so the tags it cannot be
  * trusted with are stored under names the parser has no rules for, and the
  * runtime renames them back as it builds the DOM. This app parses the template
- * instead of running the runtime (AD-2), so the rename is on us.
+ * instead of running the runtime, so the rename is on us.
  */
 const ESCAPED_TAGS: Record<string, string> = {
   'sc-helmet': 'helmet',
@@ -138,7 +138,7 @@ export interface ArtifactUnwrap {
 /**
  * Whether this file needs unwrapping at all. Ordinary decks must not be put
  * through the round trip below: re-serializing a document the editor has no
- * business rewriting is exactly the kind of silent damage AD-1 rules out — and
+ * business rewriting is exactly the kind of silent damage this editor rules out — and
  * this one would re-subset the fonts of a deck that has already been subsetted,
  * dropping faces for text the user has since deleted.
  *
@@ -275,7 +275,7 @@ function flattenDesignComponents(doc: Document): void {
  * The runtime's interpolation is a substitution and nothing more: `renderVals()`
  * returns an object and `{{ a.b }}` is looked up in it, in text nodes and in
  * attribute values alike. What the editor cannot do is *run* `renderVals()` to
- * get that object (AD-2), so the values come from the `default` each prop
+ * get that object, so the values come from the `default` each prop
  * declares in `data-props` — which is what the component renders anyway until
  * someone supplies a value, and these downloads carry none.
  *
@@ -429,7 +429,7 @@ function materializeImageSlots(doc: Document): number {
     // and since it carries words, selection stops there and never reaches the
     // box (stage/selectionHeuristics.ts). That left 画像を入れる reachable only
     // through the breadcrumb, and a double-click on a photo frame opening a
-    // text session on its own placeholder text (issues #100). The component
+    // text session on its own placeholder text. The component
     // drew this caption inside a shadow root, where it was equally untouchable,
     // so the mark restores the original behaviour rather than departing from
     // it. The ring below has carried the same declaration all along.

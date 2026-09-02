@@ -14,8 +14,8 @@ interface ColorPickerProps {
   applyLabel: string;
   paletteLabel: string;
   /** Greyed out and unworkable, for a scope this colour cannot reach — the
-   *  highlighter outside a text session, which has no element-wide meaning
-   *  (inspector/decisions.md #55). The palette is shut with it: a popup that
+   *  highlighter outside a text session, which has no element-wide meaning.
+   *  The palette is shut with it: a popup that
    *  outlived the button that opened it would be a menu whose picks go
    *  nowhere. */
   disabled?: boolean;
@@ -28,7 +28,7 @@ interface ColorPickerProps {
  * A single `<input type="color">` could only ever act on *change*, so the one
  * thing a colour is most often wanted for — putting the same colour on another
  * run of words — had no gesture at all: the value was already what the user
- * wanted, so nothing fired (docs/issues.md #36). Splitting it gives the repeat
+ * wanted, so nothing fired. Splitting it gives the repeat
  * its own button and moves the choosing into a palette that opens in place.
  *
  * The palette is a plain child, not a portal. Three separate mechanisms read
@@ -36,7 +36,7 @@ interface ColorPickerProps {
  * survives a click on it (`data-hse-text-tools`, stage/EditStage.tsx), whether
  * an outside click should close it (`useDismiss`), and whether it scrolls with
  * the pane. All three are right for free while it stays inside the button; a
- * portal would break all three at once (inspector/decisions.md).
+ * portal would break all three at once.
  */
 export function ColorPicker({
   color,

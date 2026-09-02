@@ -14,8 +14,8 @@ import {
  * The prompt 「テキストを入力」 must appear over empty elements and nowhere
  * else. It used to be selected with `:has(> br:only-child)`, which counts
  * child elements and ignores text nodes — so anything holding one `<br>` was
- * treated as empty, on every tag, however much the user had written in it
- * (issues #46). These cases are the ones that told the two apart.
+ * treated as empty, on every tag, however much the user had written in it.
+ * These cases are the ones that told the two apart.
  */
 function element(html: string): Element {
   const host = document.createElement('div');
@@ -225,7 +225,7 @@ describe('placeholderRules', () => {
     // Not decoration. Measured on the real deck, 122 of its 262 text elements
     // went to zero width the moment their text came out, and a box with no
     // area answers `elementFromPoint` with the panel behind it — so the click
-    // that should have selected the box selected the panel (issues #104).
+    // that should have selected the box selected the panel.
     expect(rules).toContain(`[${BLANK_ATTRIBUTE}] {`);
     expect(rules).toContain('min-width');
     expect(rules).toContain('min-height');

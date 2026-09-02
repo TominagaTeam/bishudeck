@@ -45,7 +45,7 @@ const TEXT_BOX_LINE_HEIGHT = 1.5;
  * given `min-height` and no `height`, so the browser sizes it to what is in it
  * and a Return makes it taller as the line lands. Nothing has to watch the
  * typing for that — which matters, because the stage frame runs no scripts and
- * the host cannot see a keystroke inside it (ADR-0002). The height that used to
+ * the host cannot see a keystroke inside it. The height that used to
  * be written here was a flat 90px, and it stayed 90px however many lines were
  * put in it.
  *

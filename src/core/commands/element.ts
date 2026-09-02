@@ -84,7 +84,7 @@ export class SetInnerHtmlCommand implements EditCommand {
    * Folds a continued run of typing, and nothing else.
    *
    * Typing produces no command of its own — the frame runs no scripts, so no
-   * keystroke ever reaches the host (ADR-0002) — and is recorded instead by
+   * keystroke ever reaches the host — and is recorded instead by
    * whoever next flushes the element's markup onto the stack
    * (`commitTextSession`, core/editing/richText.ts). A run of those flushes is
    * one thing the user did and has to come back in one Undo. The formatting
@@ -118,7 +118,7 @@ export class SetInnerHtmlCommand implements EditCommand {
    * alternative (also requiring `this` to be text-only) breaks the size field,
    * which is the case that actually happens.
    *
-   * `mergeKey`, the way `StyleSnapshotCommand` solves this (decisions #76), was
+   * `mergeKey`, the way `StyleSnapshotCommand` solves this, was
    * the first thing tried and is the better shape: the caller knows perfectly
    * well whether it is a button or a keystroke, and would not have to be
    * inferred from. It is not taken here only because every caller sits in
@@ -145,9 +145,9 @@ export class SetInnerHtmlCommand implements EditCommand {
 
 /**
  * Applies inline style properties as an override on top of whatever the deck's
- * own stylesheets say, rather than editing those stylesheets (docs/adr/
- * 0004-style-edits-as-overrides.md). Reverting restores the exact previous inline value, including its
- * absence, so an undo leaves no residue behind.
+ * own stylesheets say, rather than editing those stylesheets. Reverting
+ * restores the exact previous inline value, including its absence, so an undo
+ * leaves no residue behind.
  */
 export class SetInlineStyleCommand implements EditCommand {
   #before = new Map<string, string>();

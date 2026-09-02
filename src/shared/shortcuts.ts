@@ -11,8 +11,7 @@
  * the menu components.
  *
  * It sits in `shared/` because all three of `app` / `features` / `stage` read
- * it, and that is the only direction the dependency rules allow
- * (`docs/basic-design/05-directory.md`).
+ * it, and that is the only direction the dependency rules allow.
  */
 
 import { detectPlatform, type Platform } from './platform';
@@ -84,7 +83,7 @@ export interface ShortcutEntry {
    * The extra line the help sheet shows for keys whose meaning depends on
    * context. Spelled out rather than derived from the id, because only five
    * entries have one and `shortcut.${id}.note` cannot be proved to exist for
-   * the rest without an `as` (docs/rules/development.md §5).
+   * the rest without an `as`.
    */
   noteKey?: MessageKey;
   /**

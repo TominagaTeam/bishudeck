@@ -5,7 +5,7 @@ import { useEffect, type ReactNode } from 'react';
  * the dark area around it.
  *
  * They used to be written per dialog, so only two of the four had them and the
- * other two could not be dismissed at all (docs/issues.md #14). A modal that
+ * other two could not be dismissed at all. A modal that
  * closes one way in one place and another way elsewhere costs the user a guess
  * every time, so the behaviour lives here and the dialogs supply only what
  * "never mind" means for them.

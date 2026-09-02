@@ -93,7 +93,7 @@ describe('insertTextBox', () => {
     // No `height`: the browser sizes the box to its content, so a Return makes
     // it taller as the line lands and nothing has to watch the typing for it —
     // which matters, because the frame runs no scripts and a keystroke inside
-    // it is not something the host can see (ADR-0002). It used to carry a flat
+    // it is not something the host can see. It used to carry a flat
     // `height:90px` and stayed 90px however many lines went in.
     expect(element.style.height).toBe('');
     // The floor is one line, and it is what keeps an empty box findable: with
@@ -106,7 +106,7 @@ describe('insertTextBox', () => {
   it('remembers only the box it just inserted', () => {
     const { bridge, doc } = mountStage();
     // An empty element of the deck's own, which is what widening the rule for
-    // "may be edited" would have swept in (decisions #75, rejected option ②).
+    // "may be edited" would have swept in (rejected option ②).
     const theirs = doc.createElement('div');
     doc.querySelector('.slide')!.append(theirs);
     bridge.reindex();

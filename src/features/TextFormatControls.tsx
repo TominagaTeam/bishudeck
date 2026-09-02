@@ -53,7 +53,7 @@ import { normalizeWeight, parsePixels, shownAlign, toHex } from './styleValues';
  * It used to live in an uncontrolled input's `defaultValue`, so the pen forgot
  * its colour whenever the panel came back — and picking this very yellow, the
  * one already sitting in the box, changed no value and therefore fired nothing
- * at all (docs/issues.md #36).
+ * at all.
  */
 const DEFAULT_HIGHLIGHT = '#ffe066';
 
@@ -135,7 +135,7 @@ const LISTS = [
  * `justify` used to be the fourth. It was offered and it was written, but on
  * the sample deck not one of the twelve text boxes moved a pixel by it: a
  * justified line only has slack to distribute when the text wraps, and a slide
- * is made of lines that do not (issues #39). `text-align-last` would have moved
+ * is made of lines that do not. `text-align-last` would have moved
  * them, by spreading four characters across the whole box — which is 均等割り付け,
  * not the 両端 the button was labelled.
  *
@@ -154,7 +154,7 @@ const ALIGNMENTS = [
  *
  * It used to be split in two: these controls formatted the caret's selection,
  * and a second panel below wrote the same three properties onto the element.
- * They read as duplicates because they looked identical (issues #19), so the
+ * They read as duplicates because they looked identical, so the
  * second one is gone and the scope is chosen from what the user is doing —
  * a range if one is open, the whole box otherwise, which is how every slide
  * tool behaves.
@@ -188,7 +188,7 @@ export function TextFormatControls({
   // Whether the controls below that only act on a *range* have anything to act
   // on. They are drawn either way and greyed out when there is nothing — the
   // pane says what the editor can do, and a control that vanishes leaves the
-  // user to remember it existed (decisions #56). The hint above them is what
+  // user to remember it existed. The hint above them is what
   // says which of the two states this is, and what to press to change it.
   const inSession = useTextSession((s) => s.uid) === uid;
   /** A control's tooltip, with the way back to using it when it is grey. */
@@ -294,7 +294,7 @@ export function TextFormatControls({
   /**
    * Element scope, but not element *only*: everything written here is inherited,
    * and a deck that names its own `ul` stops an inherited value at the list
-   * (issues #31, core/editing/listOverrides.ts). `listTargets` adds the list
+   * (core/editing/listOverrides.ts). `listTargets` adds the list
    * nodes that would otherwise be left behind, and hands back the single target
    * a plain `SetInlineStyleCommand` would have written when there are none.
    *
@@ -314,7 +314,7 @@ export function TextFormatControls({
    * Two reasons, and the first is the one that bit. A push moves the session's
    * baseline (EditStage watches the history), so without this the keystrokes
    * are absorbed into a step that never touched them and leave the stack
-   * altogether (issues #44, core/editing/richText.ts). The guard there is what
+   * altogether (core/editing/richText.ts). The guard there is what
    * makes that survivable; this is what makes it *right* — 行揃え writes on the
    * list nodes inside the element, so the markup a later `SetInnerHtmlCommand`
    * would carry already contains it, and undoing the typing would re-index the
@@ -465,9 +465,9 @@ export function TextFormatControls({
           No `preventDefault` on the pointer, unlike the buttons around it, and
           the difference is not a style choice: showing the popup *is* what a
           `<select>`'s mousedown defaults to, so cancelling it left the menu
-          impossible to open by mouse while the keyboard still worked (issues
-          #40). A button's mousedown defaults to moving focus instead — which is
-          what costs the frame its selection — so there the call is load-bearing
+          impossible to open by mouse while the keyboard still worked. A
+          button's mousedown defaults to moving focus instead — which is what
+          costs the frame its selection — so there the call is load-bearing
           and must stay. A select does not need it either way: the range is
           snapshotted on `pointerdown` over this panel and restored before a
           command runs (richText.ts), which is why `FontSelect` has always
@@ -509,11 +509,11 @@ export function TextFormatControls({
       {/* The one declaration repeated on every list node rather than only the
           blocked ones: "align this" is an instruction about lines, and a list's
           own padding and marker get a say even where nothing is declared
-          (issues #27, core/editing/listOverrides.ts).
+          (core/editing/listOverrides.ts).
 
           Which button is lit goes through `shownAlign`, because an untouched
           element computes to `start` and would otherwise light none of the four
-          while sitting plainly against one edge (issues #32). */}
+          while sitting plainly against one edge. */}
       <Field label={t('inspector.textAlign')}>
         <div className="segmented">
           {ALIGNMENTS.map(({ value, labelKey }) => {
@@ -630,7 +630,7 @@ export function FontSelect({
   value,
   onChange,
 }: {
-  /** Set when the row ties its label to this select (`Field`, issues #28). */
+  /** Set when the row ties its label to this select (`Field`). */
   id?: string;
   value: string;
   onChange(stack: string): void;
