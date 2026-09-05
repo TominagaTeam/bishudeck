@@ -13,17 +13,23 @@
  * no editor-specific markup, so whatever the detectors do to an imported deck
  * they do to this one too — including breaking, which a unit test then catches
  * (welcome.test.ts) rather than a user meeting an empty window.
+ *
+ * There is one deck per interface language, and the language picks it. The
+ * text is not in the message catalog: a deck is a document, and what gets
+ * translated is the document, not its sentences one by one.
  */
 
-import welcomeDeckHtml from './welcomeDeck.html?raw';
+import welcomeDeckEn from './welcomeDeck.en.html?raw';
+import welcomeDeckJa from './welcomeDeck.html?raw';
 
 import { clearHistory } from '../core/commands/engine';
 import { useDocumentStore } from '../core/document/store';
 import { analyzeHtml, buildProject } from '../import/pipeline';
 import type { Project } from '../core/document/model';
+import { currentLocale, type Locale } from '../shared/i18n';
 
-/** The bundled deck's source, exported for the test. */
-export const WELCOME_DECK_HTML = welcomeDeckHtml;
+/** The bundled decks' sources, by language. Exported for the test. */
+export const WELCOME_DECKS: Record<Locale, string> = { ja: welcomeDeckJa, en: welcomeDeckEn };
 
 /**
  * Runs the bundled deck through detection, or `null` if nothing claimed it.
@@ -32,10 +38,11 @@ export const WELCOME_DECK_HTML = welcomeDeckHtml;
  * ordinary guess is the right one, and pinning it would hide the day that
  * stops being true.
  */
-export function buildWelcomeProject(): Project | null {
-  const analysis = analyzeHtml(welcomeDeckHtml);
+export function buildWelcomeProject(locale: Locale = currentLocale()): Project | null {
+  const html = WELCOME_DECKS[locale];
+  const analysis = analyzeHtml(html);
   if (!analysis.best) return null;
-  return buildProject(welcomeDeckHtml, analysis.best.detectorId, analysis.title);
+  return buildProject(html, analysis.best.detectorId, analysis.title);
 }
 
 /**

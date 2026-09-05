@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { currentLocale } from '../shared/i18n';
 import { INSPECTOR_PANELS_KEY, PANES, flushPreferences, useUiStore } from './uiStore';
 
 /**
@@ -178,5 +179,31 @@ describe('paging the deck', () => {
   it('does nothing to an empty deck', () => {
     useUiStore.getState().step(1, 0);
     expect(useUiStore.getState().slideIndex).toBe(0);
+  });
+});
+
+/**
+ * The store's copy of the language is what re-renders the tree; the catalog
+ * `t()` reads is switched by the same action. Both have to move, or the screen
+ * would redraw in the language it already had.
+ */
+describe('the interface language', () => {
+  beforeEach(() => {
+    useUiStore.getState().setLocale('ja');
+  });
+
+  it('switches the catalog and remembers the choice', () => {
+    useUiStore.getState().setLocale('en');
+
+    expect(useUiStore.getState().locale).toBe('en');
+    expect(currentLocale()).toBe('en');
+    expect(localStorage.getItem('hse.locale')).toBe('en');
+    expect(document.documentElement.lang).toBe('en');
+  });
+
+  it('does nothing when asked for the language it is already in', () => {
+    const before = useUiStore.getState();
+    useUiStore.getState().setLocale('ja');
+    expect(useUiStore.getState()).toBe(before);
   });
 });

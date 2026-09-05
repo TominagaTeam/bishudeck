@@ -8,6 +8,7 @@ import { buildProject } from '../../import/pipeline';
 import { StageBridge } from '../../stage/bridge';
 import { UID_ATTRIBUTE } from '../../shared/ids';
 import { BLANK_ATTRIBUTE } from '../../stage/placeholder';
+import { t } from '../../shared/i18n';
 import {
   clearClipboard,
   copySelection,
@@ -236,7 +237,7 @@ describe('cutSelection', () => {
 
     expect(cutSelection()).toBe(true);
     expect(doc.querySelector('#a')).toBeNull();
-    expect(useHistory.getState().undoLabel).toBe('切り取り');
+    expect(useHistory.getState().undoLabel).toBe(t('command.cut'));
   });
 
   /**

@@ -49,6 +49,10 @@ export function App() {
   const closing = useClosePromptStore((s) => s.answer !== null);
   const helpOpen = useUiStore((s) => s.helpOpen);
   const clearSelection = useSelectionStore((s) => s.clear);
+  // Subscribed for the re-render alone: `t()` reads the catalog on every call,
+  // so a language change needs nothing from this component except that it,
+  // and everything under it, renders again.
+  useUiStore((s) => s.locale);
 
   const { shared, slides } = project;
   const slide = slides[slideIndex] ?? null;

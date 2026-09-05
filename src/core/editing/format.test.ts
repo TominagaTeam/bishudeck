@@ -16,6 +16,7 @@ import {
   pasteFormat,
 } from './format';
 import { INHERITED_PROPERTIES } from './listOverrides';
+import { t } from '../../shared/i18n';
 
 // jsdom ships no CSS.escape; both target WebViews have it.
 if (typeof CSS === 'undefined') {
@@ -145,7 +146,7 @@ describe('copyFormat / pasteFormat', () => {
     pasteFormat();
 
     expect(useHistory.getState().undoStack).toHaveLength(1);
-    expect(useHistory.getState().undoLabel).toBe('書式を貼り付け');
+    expect(useHistory.getState().undoLabel).toBe(t('command.pasteFormat'));
 
     undo();
     expect(target.style.color).toBe('');

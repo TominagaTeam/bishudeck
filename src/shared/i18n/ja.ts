@@ -145,6 +145,7 @@ export const ja = {
   'status.dirty': '変更あり',
   'status.exported': '書き出し済み',
   'status.exportedAt': '書き出し済み {time}',
+  'status.language': '言語',
   'status.theme': 'テーマ',
   'status.themeSystem': 'システム',
   'status.themeLight': 'ライト',

@@ -7,15 +7,22 @@
  *
  * `t` is a plain function, not a hook, because command labels are interface
  * text that lives in `core/` — and `core` cannot depend on React. It reads the
- * catalog on every call so that switching languages later is a matter of
+ * catalog on every call so that switching languages is a matter of
  * re-rendering, not of reloading.
  */
 
+import { en } from './en';
 import { ja } from './ja';
-import { DEFAULT_LOCALE, resolveLocale, storeLocale, type Locale } from './locale';
+import {
+  DEFAULT_LOCALE,
+  publishLocale,
+  resolveLocale,
+  storeLocale,
+  type Locale,
+} from './locale';
 
 export type { Locale };
-export { LOCALES, DEFAULT_LOCALE } from './locale';
+export { LOCALES, LOCALE_NAMES, DEFAULT_LOCALE, resolveLocale } from './locale';
 
 /** Every key the interface can ask for. A typo is a compile error. */
 export type MessageKey = keyof typeof ja;
@@ -25,13 +32,14 @@ export type MessageKey = keyof typeof ja;
  * ship with a key missing: the omission is a type error rather than a blank
  * label discovered by a user.
  */
-const CATALOGS: Record<Locale, Record<MessageKey, string>> = { ja };
+export const CATALOGS: Record<Locale, Record<MessageKey, string>> = { ja, en };
 
 let current: Locale = DEFAULT_LOCALE;
 
 /** Called once as the app starts, before anything renders. */
 export function initLocale(): Locale {
   current = resolveLocale();
+  publishLocale(current);
   return current;
 }
 
@@ -42,6 +50,7 @@ export function currentLocale(): Locale {
 export function setLocale(locale: Locale): void {
   current = locale;
   storeLocale(locale);
+  publishLocale(locale);
 }
 
 const PLACEHOLDER = /\{(\w+)\}/g;

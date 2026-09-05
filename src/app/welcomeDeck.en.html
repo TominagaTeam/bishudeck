@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Bishudeck へようこそ</title>
+<title>Welcome to Bishudeck</title>
 <style>
   /* ---------------------------------------------------------------- tokens */
   :root {
@@ -16,7 +16,7 @@
     --clay: #D97757;
     --clay-deep: #B4593B;
     --wash: #F5E5DC;
-    --sans: "Noto Sans JP", "Noto Sans", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+    --sans: "Noto Sans", "Noto Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
     --serif: "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
   }
 
@@ -375,8 +375,8 @@
 
   <!-- 1 --------------------------------------------------------------- -->
   <section class="slide s-cover">
-    <p class="cover-eyebrow">BISHUDECK — 使い方ガイド</p>
-    <h1 class="cover-title">AI がつくった<br><em>HTML スライド</em>を、<br>そのまま編集する。</h1>
+    <p class="cover-eyebrow">BISHUDECK — A GUIDED TOUR</p>
+    <h1 class="cover-title">Edit the <em>HTML slides</em><br>an AI wrote,<br>just as they are.</h1>
     <svg class="burst" viewBox="-50 -50 100 100" aria-hidden="true">
       <g fill="#D97757">
         <path d="M0 -46C2.9 -20.7 5.2 -12 5.2 0 5.2 12 2.9 20.7 0 46 -2.9 20.7 -5.2 12 -5.2 0 -5.2 -12 -2.9 -20.7 0 -46Z" transform="rotate(0)"/>
@@ -389,10 +389,10 @@
         <circle cx="0" cy="0" r="4" fill="#B4593B"/>
       </g>
     </svg>
-    <p class="cover-lead">CSS も JavaScript も再現したまま、PowerPoint の感覚で直せる HTML スライドエディタ。まずはこの 11 枚で、ひととおりの操作を掴んでください。</p>
+    <p class="cover-lead">An HTML slide editor that keeps the deck’s CSS and JavaScript intact and lets you fix things the way you would in PowerPoint. These 11 slides walk through everything you need.</p>
     <div class="cover-hint">
       <span class="tag">TRY</span>
-      この文につけたカーソルは飾りではありません。ダブルクリックすれば、いまこの場で書き換えられます。
+      The cursor on this sentence is not decoration. Double-click it and rewrite it right here.
     </div>
     <div class="foot"><span>WELCOME</span><span class="page">1 / 11</span></div>
   </section>
@@ -400,21 +400,21 @@
   <!-- 2 --------------------------------------------------------------- -->
   <section class="slide s-what">
     <div class="head"><span class="num">01</span><span class="eyebrow">CONCEPT</span><span class="rule"></span></div>
-    <h2 class="title">読み込んだ HTML を、<em>壊さない</em>。</h2>
-    <p class="lead">このアプリの前提は「エディタが解釈できないものは、触らなければそのまま残る」こと。だから AI が書いた凝ったデッキも、開いて直して書き出すだけで元の見た目のまま戻ります。</p>
+    <h2 class="title">Never break the HTML you <em>opened</em>.</h2>
+    <p class="lead">The premise: whatever the editor does not understand stays exactly as it was, as long as you leave it alone. So even an elaborate AI-generated deck comes back looking the way it did — open it, fix it, export it.</p>
     <div class="body">
       <div class="cards-3">
         <div class="card">
-          <h3>HTML がそのまま正</h3>
-          <p>独自のプロジェクト形式に変換しません。扱うのは最初から最後まで 1 枚の HTML ファイルです。</p>
+          <h3>HTML is the source of truth</h3>
+          <p>There is no project format to convert to. From start to finish, the thing you work on is one HTML file.</p>
         </div>
         <div class="card">
-          <h3>CSS と JS は保持</h3>
-          <p>編集中はスクリプトを止めて安全に触り、再生では書かれたとおりに動かします。アニメーションもそのまま。</p>
+          <h3>CSS and JS are preserved</h3>
+          <p>Scripts are paused while you edit, so touching things is safe; when you present, everything runs exactly as written. Animations included.</p>
         </div>
         <div class="card">
-          <h3>変更は上書きで載せる</h3>
-          <p>元の CSS は書き換えません。動かした位置や変えた色だけを、最小の差分として上に重ねます。</p>
+          <h3>Changes sit on top</h3>
+          <p>The original CSS is never rewritten. A moved position or a changed color is layered on as the smallest possible override.</p>
         </div>
       </div>
     </div>
@@ -424,26 +424,26 @@
   <!-- 3 --------------------------------------------------------------- -->
   <section class="slide s-steps">
     <div class="head"><span class="num">02</span><span class="eyebrow">GETTING STARTED</span><span class="rule"></span></div>
-    <h2 class="title">操作はこの <em>3 つ</em>だけ覚えれば足ります。</h2>
-    <p class="lead">取り込んで、直して、書き出す。ファイルはずっと HTML のままなので、保存と書き出しの区別もありません。</p>
+    <h2 class="title">There are only <em>three</em> things to learn.</h2>
+    <p class="lead">Import, fix, export. The file stays HTML the whole way, so there is no difference between saving and exporting.</p>
     <div class="body">
       <div class="steps">
         <div class="step">
           <span class="no">01</span>
-          <h3>取り込む</h3>
-          <p>ツールバーの「HTML を取り込む」から選ぶだけ。スライドの切れ目は自動で判定し、確認してから分割します。</p>
+          <h3>Import</h3>
+          <p>Pick a file from “Import HTML” in the toolbar. Slide boundaries are detected for you, and you confirm the split before it happens.</p>
           <span class="key">⌘O</span>
         </div>
         <div class="step">
           <span class="no">02</span>
-          <h3>直す</h3>
-          <p>クリックで選び、ドラッグで動かし、ダブルクリックで文字を打ち替える。細かい値は右のインスペクタで。</p>
-          <span class="key">ダブルクリック</span>
+          <h3>Fix</h3>
+          <p>Click to select, drag to move, double-click to rewrite text. Exact values live in the inspector on the right.</p>
+          <span class="key">Double-click</span>
         </div>
         <div class="step">
           <span class="no">03</span>
-          <h3>書き出す</h3>
-          <p>1 枚の HTML として書き出します。一度書き出したデッキは、手が 2 秒止まると同じ場所へ自動保存。</p>
+          <h3>Export</h3>
+          <p>Writes out a single HTML file. Once a deck has been exported, it autosaves to the same place whenever your hands pause for two seconds.</p>
           <span class="key">⌘S</span>
         </div>
       </div>
@@ -454,17 +454,17 @@
   <!-- 4 --------------------------------------------------------------- -->
   <section class="slide s-screen">
     <div class="head"><span class="num">03</span><span class="eyebrow">WORKSPACE</span><span class="rule"></span></div>
-    <h2 class="title">画面は <em>4 つ</em>に分かれています。</h2>
+    <h2 class="title">The window has <em>four</em> parts.</h2>
     <div class="body high">
       <div class="screen">
-        <div class="zone wide"><b>ツールバー</b>取り込み・書き出し・挿入・配置・再生・ヘルプ</div>
-        <div class="zone"><b>スライド一覧</b>並べ替え・追加・複製</div>
-        <div class="zone stage"><b>キャンバス</b>選んで、動かして、打ち替える場所</div>
-        <div class="zone"><b>インスペクタ</b>選んだ要素の数値と書式</div>
-        <div class="zone wide"><b>ステータスバー</b>保存状態・言語・テーマ・倍率</div>
+        <div class="zone wide"><b>Toolbar</b>Import · export · insert · arrange · present · help</div>
+        <div class="zone"><b>Slide list</b>Reorder · add · duplicate</div>
+        <div class="zone stage"><b>Canvas</b>Where you select, move and rewrite</div>
+        <div class="zone"><b>Inspector</b>Numbers and formatting for what is selected</div>
+        <div class="zone wide"><b>Status bar</b>Save state · language · theme · zoom</div>
       </div>
       <div class="note">
-        左右のペインは境界をドラッグして幅を変えられ、境界のシェブロンをクリックすると畳めます。<b>幅と開閉は次に起動したときも残ります。</b>
+        Drag a seam to resize the pane beside it, or click the chevron on the seam to fold the pane away. <b>Widths and folds are remembered the next time you launch.</b>
       </div>
     </div>
     <div class="foot"><span>WORKSPACE</span><span class="page">4 / 11</span></div>
@@ -473,25 +473,25 @@
   <!-- 5 --------------------------------------------------------------- -->
   <section class="slide s-select">
     <div class="head"><span class="num">04</span><span class="eyebrow">SELECT &amp; MOVE</span><span class="rule"></span></div>
-    <h2 class="title">選んで、動かす。</h2>
+    <h2 class="title">Select, then move.</h2>
     <div class="body high">
       <div class="cols-2">
         <div class="card">
-          <span class="tag">選ぶ</span>
+          <span class="tag">Select</span>
           <ul class="list">
-            <li><b>クリック</b>で 1 つ選択。選べるのは常に 1 つです</li>
-            <li>重なって選べないときは <b>Alt+クリック</b>、または右クリックの「この位置にあるもの」</li>
-            <li><span class="key">Tab</span> で隣の要素へ、<span class="key">Esc</span> で 1 階層外へ</li>
-            <li>インスペクタの<b>パンくず</b>に触れると、その要素が破線で光ります</li>
+            <li><b>Click</b> to select one element. Exactly one is selected at a time</li>
+            <li>When something is in the way, <b>Alt+click</b>, or right-click for “Elements at this point”</li>
+            <li><span class="key">Tab</span> moves to the next element, <span class="key">Esc</span> steps one level out</li>
+            <li>Hover the <b>breadcrumb</b> in the inspector to see that element outlined with a dashed line</li>
           </ul>
         </div>
         <div class="card">
-          <span class="tag">動かす</span>
+          <span class="tag">Move</span>
           <ul class="list">
-            <li><b>ドラッグ</b>で移動、<b>ハンドル</b>でリサイズ、上のハンドルで回転</li>
-            <li>他の要素の辺に近づくと<b>吸着</b>します</li>
-            <li><span class="key">←→↑↓</span> で 1px、<span class="key">Shift</span> を足して 10px</li>
-            <li><span class="key">Alt</span> を押しながらドラッグ、または <span class="key">⌘D</span> で複製</li>
+            <li><b>Drag</b> to move, use the <b>handles</b> to resize, and the top handle to rotate</li>
+            <li>Edges <b>snap</b> to those of nearby elements</li>
+            <li><span class="key">←→↑↓</span> nudges by 1px; add <span class="key">Shift</span> for 10px</li>
+            <li>Hold <span class="key">Alt</span> while dragging, or press <span class="key">⌘D</span>, to duplicate</li>
           </ul>
         </div>
       </div>
@@ -502,21 +502,21 @@
   <!-- 6 --------------------------------------------------------------- -->
   <section class="slide s-text">
     <div class="head"><span class="num">05</span><span class="eyebrow">TEXT</span><span class="rule"></span></div>
-    <h2 class="title">文字は<em>ダブルクリック</em>から。</h2>
-    <p class="lead">キャレットはクリックした位置に入り、その語が選択された状態で始まります。抜けるのは枠の外をクリックするか、Esc を押したとき。</p>
+    <h2 class="title">Text starts with a <em>double-click</em>.</h2>
+    <p class="lead">The caret lands where you clicked, with that word selected. Click outside the box, or press Esc, to leave.</p>
     <div class="body">
       <div class="cols-2">
         <div class="card">
-          <h3>選ぶだけなら、要素ぜんぶ</h3>
-          <p>要素を選んだ状態でインスペクタの「文字書式」を当てると、その要素の全体に効きます。行揃えのように段落の性質を変えるものは、いつでも要素全体です。</p>
+          <h3>Select the element: all of it</h3>
+          <p>With an element selected, the inspector’s “Text” panel applies to the whole of it. Anything that is a paragraph property, like alignment, always applies to the whole element.</p>
         </div>
         <div class="card">
-          <h3>範囲を選べば、そこだけ</h3>
-          <p>編集に入ってから範囲を選ぶと、色・蛍光・太さはその範囲だけに効きます。パネルを触っているあいだも編集は続き、選択範囲は消えません。</p>
+          <h3>Select a range: just that</h3>
+          <p>Once you are editing, a selected range takes color, highlight and weight on its own. Editing continues while you use the panel — the selection does not go away.</p>
         </div>
       </div>
       <div class="note">
-        <span class="key">Enter</span> や <span class="key">F2</span> でも文字編集に入れます。抜けたあとは要素の選択が残るので、<b>そのまま矢印キーで動かせます</b>。
+        <span class="key">Enter</span> and <span class="key">F2</span> also start editing. When you leave, the element stays selected, so <b>you can nudge it with the arrow keys right away</b>.
       </div>
     </div>
     <div class="foot"><span>TEXT</span><span class="page">6 / 11</span></div>
@@ -525,25 +525,25 @@
   <!-- 7 --------------------------------------------------------------- -->
   <section class="slide s-inspector">
     <div class="head"><span class="num">06</span><span class="eyebrow">INSPECTOR</span><span class="rule"></span></div>
-    <h2 class="title">数値で決めたいときは、右のパネル。</h2>
+    <h2 class="title">Exact values: the panel on the right.</h2>
     <div class="body high">
       <div class="cols-2" style="grid-template-columns: 380px 1fr; gap: 44px;">
         <div class="panel-mock">
-          <div class="panel-row on">位置とサイズ<span>X / Y / W / H / 回転</span></div>
-          <div class="panel-row">ボックス<span>背景・余白・角丸</span></div>
-          <div class="panel-row">枠線<span>種類・色・太さ</span></div>
-          <div class="panel-row">文字書式<span>書体・色・行揃え</span></div>
-          <div class="panel-row" style="margin-bottom: 0;">画像<span>差し替え・トリミング</span></div>
+          <div class="panel-row on">Position &amp; size<span>X / Y / W / H / rotation</span></div>
+          <div class="panel-row">Box<span>background · padding · radius</span></div>
+          <div class="panel-row">Border<span>style · color · width</span></div>
+          <div class="panel-row">Text<span>font · color · alignment</span></div>
+          <div class="panel-row" style="margin-bottom: 0;">Image<span>replace · crop</span></div>
         </div>
         <div>
           <ul class="list">
-            <li><b>打った字がその場で効きます。</b>確定のための Enter は要りません</li>
-            <li>スライダーもスピナーも同じで、動かしたぶんだけステージが追います</li>
-            <li>打っているあいだの変更は、<b>まとめて 1 回の Undo</b> で打つ前に戻ります</li>
-            <li>背景と枠線の「なし / 透明」はデッキの CSS ごと消し、「解除」は元の見た目に戻します</li>
+            <li><b>What you type applies at once.</b> There is no Enter to confirm</li>
+            <li>Sliders and spinners behave the same: the stage follows as you move them</li>
+            <li>Everything typed in one go is <b>a single Undo</b> back to where you started</li>
+            <li>“None” and “Transparent” for background and border remove the deck’s own CSS too; “Reset” restores the original look</li>
           </ul>
           <div class="note" style="margin-top: 20px;">
-            パネルの並びと折りたたみは<b>次に起動したときも残ります</b>。よく使うものだけ開いておけます。
+            The order and folds of the panels <b>are remembered the next time you launch</b>. Keep open only what you use.
           </div>
         </div>
       </div>
@@ -554,25 +554,25 @@
   <!-- 8 --------------------------------------------------------------- -->
   <section class="slide s-image">
     <div class="head"><span class="num">07</span><span class="eyebrow">IMAGES</span><span class="rule"></span></div>
-    <h2 class="title">空いている箱に、<em>写真を入れる</em>。</h2>
-    <p class="lead">文字も画像も持たない箱なら、どれでも写真枠として使えます。取り込んだデッキの「写真添付エリア」も同じ扱いです。</p>
+    <h2 class="title">Put a <em>photo</em> in an empty box.</h2>
+    <p class="lead">Any box that holds neither text nor an image can be a photo frame. The “photo placeholder” areas of an imported deck work the same way.</p>
     <div class="body">
       <div class="cards-3">
         <div class="card">
-          <h3>落として入れる</h3>
-          <p>画像ファイルを箱の上にドラッグ＆ドロップ。デスクトップアプリとして起動しているときの入口です。</p>
+          <h3>Drop it in</h3>
+          <p>Drag an image file onto the box. This is the way in when the app is running on the desktop.</p>
         </div>
         <div class="card">
-          <h3>右クリックで入れる</h3>
-          <p>箱を右クリックして「画像を入れる」。ファイル選択が開きます。インスペクタの「画像」からも同じ操作ができます。</p>
+          <h3>Right-click</h3>
+          <p>Right-click the box and choose “Insert image”. A file dialog opens. The inspector’s “Image” panel offers the same thing.</p>
         </div>
         <div class="card">
-          <h3>トリミングする</h3>
-          <p>枠と画像の 2 つの矩形で切り抜きます。はみ出た部分は隠れるだけで、捨てられません。</p>
+          <h3>Crop</h3>
+          <p>Two rectangles — the frame and the image — decide what shows. Whatever falls outside is hidden, never thrown away.</p>
         </div>
       </div>
       <div class="note">
-        入れ替えもトリミングも <b>Undo 1 回</b>で元どおり。書き出した HTML を読み直しても、同じ状態で戻ります。
+        Replacing and cropping are each <b>a single Undo</b>. Reopen the exported HTML and the crop comes back exactly as it was.
       </div>
     </div>
     <div class="foot"><span>IMAGES</span><span class="page">8 / 11</span></div>
@@ -581,20 +581,20 @@
   <!-- 9 --------------------------------------------------------------- -->
   <section class="slide s-present">
     <div class="head"><span class="num">08</span><span class="eyebrow">PRESENT &amp; SAVE</span><span class="rule"></span></div>
-    <h2 class="title">見せる。そして、失わない。</h2>
+    <h2 class="title">Show it. And keep it.</h2>
     <div class="body high">
       <div class="cols-2">
         <div class="card">
-          <h3>再生する</h3>
-          <p><span class="key">F5</span> で別ウィンドウが全画面で開きます。ページ送りは <span class="key">←→</span> とクリック、終了は <span class="key">Esc</span>。ここでは JavaScript も書かれたとおりに動きます。</p>
+          <h3>Present</h3>
+          <p><span class="key">F5</span> opens a separate full-screen window. Page with <span class="key">←→</span> or a click; leave with <span class="key">Esc</span>. Here, JavaScript runs exactly as written.</p>
         </div>
         <div class="card">
-          <h3>保存する</h3>
-          <p><span class="key">⌘S</span> で 1 枚の HTML に書き出します。行き先が決まったデッキは、手が 2 秒止まるたび同じファイルへ自動保存されます。</p>
+          <h3>Save</h3>
+          <p><span class="key">⌘S</span> exports a single HTML file. Once a deck knows where it lives, it autosaves to that file whenever your hands pause for two seconds.</p>
         </div>
       </div>
       <div class="note">
-        取り込んだだけのデッキは<b>勝手に上書きしません</b>。書き出し先を決めていないまま閉じようとしたときだけ、「書き出して終了 / 書き出さずに終了 / キャンセル」を聞きます。
+        A deck you have only imported is <b>never overwritten on its own</b>. Only when you close without choosing a destination does it ask: “Export and quit / Quit without exporting / Cancel”.
       </div>
     </div>
     <div class="foot"><span>PRESENT &amp; SAVE</span><span class="page">9 / 11</span></div>
@@ -603,22 +603,22 @@
   <!-- 10 -------------------------------------------------------------- -->
   <section class="slide s-keys">
     <div class="head"><span class="num">09</span><span class="eyebrow">SHORTCUTS</span><span class="rule"></span></div>
-    <h2 class="title">よく使うキー。</h2>
-    <p class="lead">キーは PowerPoint に合わせてあります。Windows では ⌘ を Ctrl に読み替えてください。全一覧はヘルプ（⌘/）に入っています。</p>
+    <h2 class="title">The keys you will use most.</h2>
+    <p class="lead">The keys follow PowerPoint. On Windows, read ⌘ as Ctrl. The full list is in Help (⌘/).</p>
     <div class="body">
       <div class="keys">
-        <div><span>取り込む</span><span class="key">⌘O</span></div>
-        <div><span>複製する</span><span class="key">⌘D</span></div>
-        <div><span>書き出す</span><span class="key">⌘S</span></div>
-        <div><span>前面へ / 背面へ</span><span class="key">⌘] / ⌘[</span></div>
-        <div><span>取り消す / やり直す</span><span class="key">⌘Z / ⌘⇧Z</span></div>
-        <div><span>スライドを追加</span><span class="key">⌘M</span></div>
-        <div><span>コピー / 切り取り / 貼り付け</span><span class="key">⌘C ⌘X ⌘V</span></div>
-        <div><span>再生する</span><span class="key">F5</span></div>
-        <div><span>書式をコピー / 貼り付け</span><span class="key">⌘⌥C / ⌘⌥V</span></div>
-        <div><span>画面に合わせる</span><span class="key">⌘0</span></div>
-        <div><span>文字編集に入る</span><span class="key">Enter / F2</span></div>
-        <div><span>ショートカット一覧</span><span class="key">⌘/</span></div>
+        <div><span>Import</span><span class="key">⌘O</span></div>
+        <div><span>Duplicate</span><span class="key">⌘D</span></div>
+        <div><span>Export</span><span class="key">⌘S</span></div>
+        <div><span>Bring forward / send backward</span><span class="key">⌘] / ⌘[</span></div>
+        <div><span>Undo / redo</span><span class="key">⌘Z / ⌘⇧Z</span></div>
+        <div><span>Add slide</span><span class="key">⌘M</span></div>
+        <div><span>Copy / cut / paste</span><span class="key">⌘C ⌘X ⌘V</span></div>
+        <div><span>Present</span><span class="key">F5</span></div>
+        <div><span>Copy / paste format</span><span class="key">⌘⌥C / ⌘⌥V</span></div>
+        <div><span>Fit to window</span><span class="key">⌘0</span></div>
+        <div><span>Edit text</span><span class="key">Enter / F2</span></div>
+        <div><span>Keyboard shortcuts</span><span class="key">⌘/</span></div>
       </div>
     </div>
     <div class="foot"><span>SHORTCUTS</span><span class="page">10 / 11</span></div>
@@ -627,7 +627,7 @@
   <!-- 11 -------------------------------------------------------------- -->
   <section class="slide s-end">
     <div class="head"><span class="num">10</span><span class="eyebrow">YOUR TURN</span><span class="rule"></span></div>
-    <h2 class="end-title">では、<em>あなたのデッキ</em>を<br>開いてみましょう。</h2>
+    <h2 class="end-title">Now open<br><em>a deck of your own</em>.</h2>
     <svg class="burst" viewBox="-50 -50 100 100" aria-hidden="true">
       <g fill="#D97757">
         <path d="M0 -46C2.9 -20.7 5.2 -12 5.2 0 5.2 12 2.9 20.7 0 46 -2.9 20.7 -5.2 12 -5.2 0 -5.2 -12 -2.9 -20.7 0 -46Z" transform="rotate(0)"/>
@@ -640,7 +640,7 @@
         <circle cx="0" cy="0" r="4" fill="#B4593B"/>
       </g>
     </svg>
-    <p class="end-lead">ツールバーの「HTML を取り込む」<span class="key">⌘O</span> から、手元の HTML スライドをどうぞ。このガイドは取り込んだ時点で置き換わるので、消す手間は要りません。</p>
+    <p class="end-lead">Use “Import HTML” <span class="key">⌘O</span> in the toolbar to bring in an HTML deck of your own. This guide is replaced the moment you import, so there is nothing to clean up.</p>
     <div class="foot"><span>BISHUDECK</span><span class="page">11 / 11</span></div>
   </section>
 

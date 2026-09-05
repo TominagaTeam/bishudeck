@@ -1,7 +1,12 @@
 import { create } from 'zustand';
 
 import { editorEvents } from '../core/events/bus';
-import type { MessageKey } from '../shared/i18n';
+import {
+  resolveLocale,
+  setLocale as applyLocale,
+  type Locale,
+  type MessageKey,
+} from '../shared/i18n';
 import {
   applyTheme,
   readTheme,
@@ -91,6 +96,10 @@ interface UiState {
    *  rather than about the deck — so it is stored the same way and never
    *  reaches the exported HTML. */
   theme: ThemePreference;
+  /** Which language the chrome reads in (`shared/i18n`). The catalog itself is
+   *  read by `t()` outside React, so the store's copy exists for one reason:
+   *  a change here is what re-renders the tree that calls `t()`. */
+  locale: Locale;
   /** The keyboard shortcut sheet. Opened from the toolbar and from ⌘/. */
   helpOpen: boolean;
 
@@ -105,6 +114,7 @@ interface UiState {
   togglePane(pane: PaneId, collapsed?: boolean): void;
   setInspectorPanel(id: string, open: boolean): void;
   setTheme(theme: ThemePreference): void;
+  setLocale(locale: Locale): void;
   setHelpOpen(open: boolean): void;
 }
 
@@ -222,6 +232,9 @@ export const useUiStore = create<UiState>((set, get) => ({
   panes: initialPanes,
   inspectorPanels: readInspectorPanels(),
   theme: readTheme(),
+  // Resolved here as well as in `initLocale()`: this module is evaluated
+  // before main.tsx gets to that call, and both read the same storage.
+  locale: resolveLocale(),
   helpOpen: false,
 
   setMode(mode) {
@@ -290,6 +303,16 @@ export const useUiStore = create<UiState>((set, get) => ({
     set({ theme });
     applyTheme(theme);
     storeTheme(theme);
+  },
+
+  // Same shape as the theme: one click, stored on the spot. Commands already
+  // in the history keep the label they were built with — `t()` is read at
+  // construction (core/commands) — which is the one place the old language
+  // lingers, in the undo tooltip, until those steps are gone.
+  setLocale(locale) {
+    if (get().locale === locale) return;
+    applyLocale(locale);
+    set({ locale });
   },
 
   setHelpOpen(helpOpen) {

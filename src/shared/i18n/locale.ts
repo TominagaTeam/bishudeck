@@ -6,11 +6,25 @@
  * widths.
  */
 
-export const LOCALES = ['ja'] as const;
+export const LOCALES = ['ja', 'en'] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
-export const DEFAULT_LOCALE: Locale = 'ja';
+/**
+ * Each language named in itself, for the picker.
+ *
+ * Not catalog entries: an endonym reads the same whichever language the
+ * interface is in, and it has to — a reader who cannot follow the current
+ * language still needs to find their own in the list.
+ */
+export const LOCALE_NAMES: Record<Locale, string> = { ja: '日本語', en: 'English' };
+
+/**
+ * Where a machine whose language has no catalog lands. English rather than
+ * Japanese, because it is the one a reader of any other language is likelier
+ * to manage; a Japanese machine never gets here, since `ja` matches first.
+ */
+export const DEFAULT_LOCALE: Locale = 'en';
 
 const STORAGE_KEY = 'hse.locale';
 
@@ -22,9 +36,7 @@ function isLocale(value: string | null): value is Locale {
  * An explicit choice wins over the machine's; the machine's wins over nothing.
  *
  * Only languages with a catalog are offered, so a French system falls back
- * rather than showing keys. Today that means everything falls back to Japanese,
- * which is also what the fallback would be with a full set of catalogs missing
- * a match.
+ * rather than showing keys.
  */
 export function resolveLocale(): Locale {
   try {
@@ -45,4 +57,17 @@ export function storeLocale(locale: Locale): void {
   } catch {
     // As above.
   }
+}
+
+/**
+ * Tells the platform which language the chrome is in.
+ *
+ * `<html lang>` is what a screen reader picks its voice by, and what a face
+ * covering both scripts uses to choose between the Japanese and the Chinese
+ * form of a shared Han character. Only this document: each slide is its own
+ * document with its own `lang`, and nothing here touches it.
+ */
+export function publishLocale(locale: Locale): void {
+  if (typeof document === 'undefined') return;
+  document.documentElement.lang = locale;
 }

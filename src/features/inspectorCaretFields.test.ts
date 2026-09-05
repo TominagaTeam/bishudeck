@@ -9,6 +9,7 @@ import { setTextSession, useCaretStyle } from '../core/editing/richText';
 import { matchFontStack } from '../shared/fonts';
 import { StageBridge } from '../stage/bridge';
 import { TextFormatControls } from './TextFormatControls';
+import { t } from '../shared/i18n';
 
 /**
  * サイズ / フォント / 太さ — the three fields that show a *value* rather than a
@@ -108,9 +109,9 @@ const showsMixed = (select: HTMLSelectElement): boolean => {
  *  deck's — `matchFontStack` maps a computed family onto the menu's entry. */
 const stackFor = (family: string) => matchFontStack(family) ?? '';
 
-const size = () => control('サイズ');
-const font = () => control('フォント');
-const weight = () => control('太さ');
+const size = () => control(t('text.size'));
+const font = () => control(t('text.font'));
+const weight = () => control(t('inspector.weight'));
 
 describe('the value fields — outside a session', () => {
   it('show the element, because the element is what they will write to', () => {

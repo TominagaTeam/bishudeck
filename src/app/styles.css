@@ -1012,7 +1012,8 @@ input[type='color'] {
 }
 
 .field.compact {
-  grid-template-columns: 28px 1fr;
+  /* Wide enough for "Angle" (35px measured); X / Y / W / H and 回転 have room to spare. */
+  grid-template-columns: 36px 1fr;
   margin-bottom: 0;
 }
 
@@ -1046,6 +1047,14 @@ input[type='color'] {
   width: 28px;
   padding-left: 0;
   padding-right: 0;
+}
+
+/* The one word in the row. 解除 fit the square by luck; "Clear" (32px) does
+   not, so this button alone is sized by its text and keeps only the height. */
+.format-button.clear {
+  width: auto;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .format-button.bold { font-weight: 800; }

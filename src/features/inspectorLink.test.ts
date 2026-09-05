@@ -9,6 +9,7 @@ import { setTextSession, snapshotSessionRange } from '../core/editing/richText';
 import { StageBridge } from '../stage/bridge';
 import { normalizeHref } from './LinkDialog';
 import { TextFormatControls } from './TextFormatControls';
+import { t } from '../shared/i18n';
 
 /**
  * リンク, from the press to the `href`, plus the state the 行揃え buttons owe
@@ -90,7 +91,7 @@ const cancelButton = () => host.querySelector('.modal-actions button') as HTMLBu
 
 const click = (element: Element) => act(() => (element as HTMLElement).click());
 
-const openDialog = () => click(byText('button', 'リンク'));
+const openDialog = () => click(byText('button', t('text.link')));
 
 /** One keystroke, through the prototype's setter so React sees a change. */
 const type = (text: string) =>
@@ -155,10 +156,10 @@ describe('normalizeHref', () => {
 describe('リンク — asking for the address', () => {
   it('is out of reach until there are words to attach to', () => {
     render();
-    expect((byText('button', 'リンク') as HTMLButtonElement).disabled).toBe(true);
+    expect((byText('button', t('text.link')) as HTMLButtonElement).disabled).toBe(true);
 
     openSession();
-    expect((byText('button', 'リンク') as HTMLButtonElement).disabled).toBe(false);
+    expect((byText('button', t('text.link')) as HTMLButtonElement).disabled).toBe(false);
   });
 
   // The load-bearing one. `data-hse-text-tools` sits on the container above this
@@ -275,7 +276,7 @@ describe('リンク — the ways out that write nothing', () => {
 /** The 行揃え group, found the way its label names it (`Field`). */
 const alignGroup = (): HTMLElement => {
   const label = Array.from(host.querySelectorAll('span')).find(
-    (candidate) => candidate.textContent === '行揃え',
+    (candidate) => candidate.textContent === t('inspector.textAlign'),
   );
   return host.querySelector(`[aria-labelledby="${label?.id}"]`) as HTMLElement;
 };
@@ -293,16 +294,16 @@ describe('行揃え — which one is lit', () => {
   it('says which way the lines run, not only in the class', () => {
     render();
     expect(pressedAligns()).toEqual([
-      ['左', 'true'],
-      ['中央', 'false'],
-      ['右', 'false'],
+      [t('inspector.alignLeft'), 'true'],
+      [t('inspector.alignCenter'), 'false'],
+      [t('inspector.alignRight'), 'false'],
     ]);
 
     render({ ...STYLES, 'text-align': 'center' });
     expect(pressedAligns()).toEqual([
-      ['左', 'false'],
-      ['中央', 'true'],
-      ['右', 'false'],
+      [t('inspector.alignLeft'), 'false'],
+      [t('inspector.alignCenter'), 'true'],
+      [t('inspector.alignRight'), 'false'],
     ]);
   });
 
@@ -312,9 +313,9 @@ describe('行揃え — which one is lit', () => {
   it('reads a logical value against the writing direction', () => {
     render({ ...STYLES, 'text-align': 'end', direction: 'rtl' });
     expect(pressedAligns()).toEqual([
-      ['左', 'true'],
-      ['中央', 'false'],
-      ['右', 'false'],
+      [t('inspector.alignLeft'), 'true'],
+      [t('inspector.alignCenter'), 'false'],
+      [t('inspector.alignRight'), 'false'],
     ]);
   });
 
@@ -323,6 +324,6 @@ describe('行揃え — which one is lit', () => {
     const lit = Array.from(alignGroup().querySelectorAll('button')).filter((button) =>
       button.classList.contains('active'),
     );
-    expect(lit.map((button) => button.textContent)).toEqual(['右']);
+    expect(lit.map((button) => button.textContent)).toEqual([t('inspector.alignRight')]);
   });
 });

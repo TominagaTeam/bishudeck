@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { BUNDLED_FONT_FAMILIES } from './bundledFonts';
 import {
@@ -10,7 +10,10 @@ import {
   matchFontStack,
   type MeasureText,
 } from './fonts';
-import { t } from './i18n';
+import { setLocale, t } from './i18n';
+
+// The names below are the Japanese ones; jsdom would otherwise report `en-US`.
+beforeEach(() => setLocale('ja'));
 
 /**
  * Stands in for canvas metrics: only the families listed as installed widen the
@@ -59,14 +62,14 @@ describe('availableFonts', () => {
     expect(labels).toEqual([
       t('font.defaultNamed', { name: 'Noto Sans' }),
       ...[...BUNDLED_FONT_FAMILIES].sort(
-        (a, b) => FONT_CATALOG.findIndex((c) => c.label === a) - FONT_CATALOG.findIndex((c) => c.label === b),
+        (a, b) => FONT_CATALOG.findIndex((c) => c.labels.ja === a) - FONT_CATALOG.findIndex((c) => c.labels.ja === b),
       ),
     ]);
   });
 
   it('has a catalog entry for every bundled family, and probes none of them', () => {
     for (const family of BUNDLED_FONT_FAMILIES) {
-      const entry = FONT_CATALOG.find((c) => c.label === family);
+      const entry = FONT_CATALOG.find((c) => c.labels.ja === family);
       expect(entry, `${family} is served but never offered`).toBeDefined();
       expect(entry?.bundled, `${family} would be probed away`).toBe(true);
     }
@@ -83,6 +86,30 @@ describe('availableFonts', () => {
 
   it('offers the whole catalog when there is nothing to measure with', () => {
     expect(availableFonts(null).length).toBeGreaterThan(FONT_CATALOG.length / 2);
+  });
+
+  it('names a Japanese face the way an English system does', () => {
+    // The alias its vendor uses, not a translation: what an English macOS
+    // lists ヒラギノ角ゴシック as.
+    setLocale('en');
+    const labels = availableFonts(measurerWith(['Hiragino Sans'])).map((f) => f.label);
+    expect(labels).toContain('Hiragino Sans');
+    expect(labels).not.toContain('ヒラギノ角ゴシック');
+    // The head of the list is translated with it.
+    expect(labels[0]).toBe('Default (Noto Sans)');
+  });
+
+  it('still folds the macOS and Windows names into one entry in English', () => {
+    setLocale('en');
+    const both = availableFonts(measurerWith(['YuGothic', 'Yu Gothic']));
+    expect(both.filter((f) => f.label === 'Yu Gothic')).toHaveLength(1);
+  });
+
+  it('gives every face a name in every language', () => {
+    for (const entry of FONT_CATALOG) {
+      expect(entry.labels.ja.trim(), entry.probe).not.toBe('');
+      expect(entry.labels.en.trim(), entry.probe).not.toBe('');
+    }
   });
 });
 
@@ -148,7 +175,7 @@ describe('the default entry', () => {
 
     // Unwrap 既定(名前) and find the catalog entry that name belongs to.
     const borrowed = first.label.replace(/^.*\(|\)$/g, '');
-    const source = FONT_CATALOG.find((c) => c.label === borrowed && here(c));
+    const source = FONT_CATALOG.find((c) => c.labels.ja === borrowed && here(c));
     expect(source, `${first.label} names a face that is not here`).toBeDefined();
 
     for (const choice of rest) {

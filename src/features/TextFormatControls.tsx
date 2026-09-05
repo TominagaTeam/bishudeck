@@ -21,6 +21,7 @@ import {
   useTextSession,
 } from '../core/editing/richText';
 import { DEFAULT_FONT_STACK, matchFontStack, usableFonts, type FontGroup } from '../shared/fonts';
+import { currentLocale } from '../shared/i18n';
 import { t } from '../shared/i18n';
 import { ColorPicker } from './ColorPicker';
 import { Field } from './Field';
@@ -354,9 +355,10 @@ export function TextFormatControls({
             {label}
           </button>
         ))}
-        {/* Not a toggle: there is no state for 「書式をクリア」 to be in. */}
+        {/* Not a toggle: there is no state for 「書式をクリア」 to be in, and
+            it is a word rather than a glyph, so it takes the width it needs. */}
         <button
-          className="format-button"
+          className="format-button clear"
           title={rangeTitle(t('text.clearFormat'))}
           disabled={!inSession}
           onMouseDown={(e) => e.preventDefault()}
@@ -635,7 +637,11 @@ export function FontSelect({
   value: string;
   onChange(stack: string): void;
 }) {
-  const fonts = useMemo(() => usableFonts(), []);
+  // Re-read when the language changes: the names in the list are the
+  // language's (shared/fonts.ts). Read rather than subscribed, like `t()` — a
+  // language change re-renders the whole tree, and this is part of it.
+  const locale = currentLocale();
+  const fonts = useMemo(() => usableFonts(), [locale]);
 
   return (
     <select

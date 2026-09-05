@@ -7,6 +7,7 @@ import { useSelectionStore } from '../core/selection/store';
 import { buildProject } from '../import/pipeline';
 import { StageBridge } from './bridge';
 import { GestureController } from './interactions';
+import { t } from '../shared/i18n';
 
 // jsdom ships no CSS.escape; both target WebViews have it.
 if (typeof CSS === 'undefined') {
@@ -141,7 +142,7 @@ describe('GestureController: Alt-drag duplicates', () => {
     controller.end();
 
     expect(doc.querySelectorAll('.headline')).toHaveLength(1);
-    expect(useHistory.getState().undoLabel).toBe('移動');
+    expect(useHistory.getState().undoLabel).toBe(t('command.move'));
   });
 });
 
@@ -183,7 +184,7 @@ describe('GestureController: a press has to travel before it drags', () => {
     // 10, not 6: re-basing on the crossing point would leave the element
     // trailing the pointer by the dead zone for the rest of the drag.
     expect(headline.style.transform).toContain('translate(10px, 0px)');
-    expect(useHistory.getState().undoLabel).toBe('移動');
+    expect(useHistory.getState().undoLabel).toBe(t('command.move'));
   });
 
   it('widens the dead zone as the stage zooms out', () => {
@@ -371,7 +372,7 @@ describe('GestureController: the handles leave a click alone', () => {
     controller.end();
 
     expect(headline.style.transform).toContain('rotate(');
-    expect(useHistory.getState().undoLabel).toBe('回転');
+    expect(useHistory.getState().undoLabel).toBe(t('command.rotate'));
   });
 
   it('widens the handles\' dead zone as the stage zooms out', () => {

@@ -8,6 +8,7 @@ import { clearHistory, setActiveStage, useHistory } from '../core/commands/engin
 import { setTextSession, snapshotSessionRange } from '../core/editing/richText';
 import { StageBridge } from '../stage/bridge';
 import { TextFormatControls } from './TextFormatControls';
+import { t } from '../shared/i18n';
 
 /**
  * The 太さ menu, and what it may and may not swallow.
@@ -85,7 +86,7 @@ const render = () =>
 /** The 太さ menu, found the way the row ties its label to it (`Field`). */
 const weightMenu = (): HTMLSelectElement => {
   const label = Array.from(host.querySelectorAll('label')).find(
-    (candidate) => candidate.textContent === '太さ',
+    (candidate) => candidate.textContent === t('inspector.weight'),
   );
   return document.getElementById(label?.getAttribute('for') as string) as HTMLSelectElement;
 };
@@ -218,7 +219,7 @@ const MIXED_SENTINEL = '*mixed*';
 describe('サイズと書体 — 範囲が無いときは箱に効く', () => {
   const sizeField = (): HTMLInputElement => {
     const label = Array.from(host.querySelectorAll('label')).find(
-      (candidate) => candidate.textContent === 'サイズ',
+      (candidate) => candidate.textContent === t('text.size'),
     );
     return document.getElementById(label?.getAttribute('for') as string) as HTMLInputElement;
   };
@@ -244,7 +245,7 @@ describe('サイズと書体 — 範囲が無いときは箱に効く', () => {
 
   const fontMenu = (): HTMLSelectElement => {
     const label = Array.from(host.querySelectorAll('label')).find(
-      (candidate) => candidate.textContent === 'フォント',
+      (candidate) => candidate.textContent === t('text.font'),
     );
     return document.getElementById(label?.getAttribute('for') as string) as HTMLSelectElement;
   };

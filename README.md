@@ -2,49 +2,54 @@
 
 [![CI](https://github.com/TominagaTeam/bishudeck/actions/workflows/ci.yml/badge.svg)](https://github.com/TominagaTeam/bishudeck/actions/workflows/ci.yml)
 
-AI が生成した HTML スライドを、CSS も JavaScript もそのまま再現したまま
-PowerPoint のように編集できるデスクトップアプリ(Tauri v2 + React + TypeScript)。
+日本語: [README.ja.md](README.ja.md)
 
-![Bishudeck の編集画面。スライドの見出しを選ぶと、右のインスペクタに文字書式と位置・サイズが出る](assets/images/screenshot.png)
+A desktop app (Tauri v2 + React + TypeScript) for editing the HTML slides an AI
+generated, the way you would in PowerPoint — with the deck's own CSS and
+JavaScript reproduced exactly as they are.
 
-## できること
+![Editing in Bishudeck. With a slide heading selected, the inspector on the right shows its text formatting and its position and size](assets/images/screenshot.png)
 
-- **AI がつくった HTML スライドをそのまま開く**
+## What it does
 
-  Claude Artifacts の standalone 書き出し・reveal.js・impress.js・Swiper・素の HTML を
-  取り込み、1 枚ずつのスライドに分割します。どう分割したかは取り込み前に確認できます。
+- **Opens the HTML slides an AI made, as they are**
 
-- **PowerPoint の感覚で直す**
+  Imports Claude Artifacts standalone exports, reveal.js, impress.js, Swiper and plain
+  HTML, and splits them into individual slides. You see how the file will be split
+  before it is imported.
 
-  要素をクリックして選び、ドラッグで動かし、ダブルクリックで文字を打ち替える。
-  整列・重ね順・複製・コピー & ペースト・Undo / Redo も同じ操作感で使えます。
+- **Edits like PowerPoint**
 
-- **デッキの CSS と JavaScript を壊さない**
+  Click an element to select it, drag to move it, double-click to rewrite its text.
+  Align, reorder, duplicate, copy & paste and undo / redo all work the way you expect.
 
-  編集はインラインの上書きだけで行い、元の CSS には触りません。
-  エディタが解釈できない要素も、触らなければそのまま残ります。
+- **Never breaks the deck's CSS and JavaScript**
 
-- **書き出すのは 1 枚の HTML**
+  Edits are written as inline overrides; the original CSS is never touched.
+  Elements the editor doesn't understand stay exactly as they were, as long as you
+  leave them alone.
 
-  独自のプロジェクト形式を持ちません。読み込んだものと同じ形で書き戻すので、
-  書き出したファイルはブラウザでそのまま開けます。
+- **Exports a single HTML file**
 
-- **そのままプレゼンできる**
+  There is no project format. The deck is written back in the shape it came in, so
+  the exported file opens in any browser.
 
-  再生ウィンドウで全画面表示。こちらでは JavaScript も動きます。
+- **Presents as is**
 
-## ビルド
+  A full-screen presentation window — and there, the deck's JavaScript runs.
 
-配布しているのはソースだけなので、手元でビルドして使います。
+## Building
 
-**必要なもの**
+Only the source is distributed, so you build it yourself.
 
-- Node.js 22 以降
+**Requirements**
+
+- Node.js 22 or later
 - Rust
-- [Tauri v2 の前提条件](https://v2.tauri.app/start/prerequisites/)
-  (macOS なら Xcode Command Line Tools、Windows なら MSVC ビルドツール)
+- The [Tauri v2 prerequisites](https://v2.tauri.app/start/prerequisites/)
+  (Xcode Command Line Tools on macOS, the MSVC build tools on Windows)
 
-**手順**
+**Steps**
 
 ```bash
 git clone https://github.com/TominagaTeam/bishudeck.git
@@ -53,168 +58,181 @@ npm install
 npm run tauri build
 ```
 
-`src-tauri/target/release/bundle/` に `.app` / `.dmg` / `.msi` ができます。
+The `.app` / `.dmg` / `.msi` lands in `src-tauri/target/release/bundle/`.
 
-起動すると使い方を説明する 11 枚のガイドが開くので、そこから触りはじめられます。
-ガイドは書き出し先を持たないので、触らずに閉じても何も聞かれませんし、勝手に保存もされません。
-自分の HTML を取り込めば置き換わります(消す操作は要りません)。
+On launch, an 11-slide guide to the editor opens, and you can start by playing with it.
+The guide has no export destination, so closing it untouched asks nothing and nothing
+is saved on its own. Importing your own HTML replaces it (there is nothing to delete).
 
-## 画面の使い方
+The interface is in **English or Japanese**, following the language of your OS. You can
+switch at any time from the right end of the status bar, and the choice is remembered.
 
-### 画面の見かた
+## Using the editor
 
-- **上** — ツールバー。取り込み・書き出し・元に戻す・スライド・挿入・配置・
-  編集 / プレビュー切替・ヘルプ・再生
-- **左** — スライド一覧。ドラッグで並べ替えられます
-- **中央** — 編集中のスライド 1 枚
-- **右** — インスペクタ。選んだ要素の書式がここに出ます
-- **下** — ステータスバー。保存の状態・選んでいる要素・テーマ・ズーム
+### The window
 
-左右のペインは、境界をドラッグすると幅が変わります。境界のシェブロンをクリックすると
-そのペインが隠れ、もう一度で戻ります。幅と開閉の状態は次回の起動にも残ります。
+- **Top** — the toolbar: import, export, undo, slide, insert, arrange,
+  edit / preview, help, present
+- **Left** — the slide list. Drag to reorder
+- **Center** — the slide being edited
+- **Right** — the inspector. The selected element's formatting lives here
+- **Bottom** — the status bar: save state, the selected element, language, theme, zoom
 
-### 要素を選ぶ
+Drag the seam beside either side pane to resize it. Click the chevron on the seam to
+fold the pane away, and again to bring it back. Widths and folds are remembered the
+next time you launch.
 
-- **クリックで選択。選べるのは 1 つずつ**です(複数選択はありません)
-- スライドいっぱいに広がっている要素は、クリックしても選ばれません(選択が外れます)。
-  レイアウト全体を覆うラッパーや、全面に敷いた背景レイヤーがこれにあたります
-- 中身を持つもの(画像・動画・自前の文字を持つ要素)は、大きさに関係なく選べます
-- 背景レイヤーそのものを選びたいときは、**インスペクタのパンくずから辿ります**
-- `Esc` で 1 階層外へ。いちばん外まで来ると選択が外れます
+### Selecting
 
-パンくず(`div.inner › h2`)にマウスを乗せると、その要素がステージ上に破線で出ます。
-**クリックする前にどの箱か分かる**ので、ラッパーが何重にもあるデッキでも
-当てずっぽうに選び直さずに済みます。
+- **Click to select. One element at a time** (there is no multi-select)
+- An element that fills the whole slide is not selected by a click (the selection is
+  cleared instead). That covers wrappers around the entire layout and background layers
+  spread across the slide
+- Anything with content of its own (an image, a video, an element with its own text)
+  can be selected whatever its size
+- To select a background layer itself, **walk the breadcrumb in the inspector**
+- `Esc` steps one level out. At the outermost level it clears the selection
 
-### 動かす・並べる・複製する
+Hover the breadcrumb (`div.inner › h2`) and that element is outlined on the stage with a
+dashed line. **You know which box it is before you click**, so a deck wrapped in layer
+after layer never turns into guesswork.
 
-- **ドラッグで移動**、選択枠のハンドルで**リサイズ・回転**
-- **矢印キーで 1px ずつ**移動(`Shift` で 10px)
-- ツールバーの「**配置**」から、整列(左揃え・左右中央 など)・重ね順(`⌘]` / `⌘[`)・複製(`⌘D`)
-- **コピー & ペースト**は `⌘C` / `⌘X` / `⌘V`
+### Moving, arranging, duplicating
 
-貼り付け先は「**選んでいる要素の隣**」です。同じ親に入るので、grid のセルや
-`.container .card` のように**親が塗っている**箱も、見た目そのままで増やせます。
-選択を外して貼ると、スライドの上に直接置かれます。
+- **Drag to move**; the handles on the selection frame **resize and rotate**
+- **Arrow keys nudge by 1px** (`Shift` for 10px)
+- The **Arrange** menu in the toolbar: alignment (left, center, …), stacking order
+  (`⌘]` / `⌘[`), duplicate (`⌘D`)
+- **Copy & paste** with `⌘C` / `⌘X` / `⌘V`
 
-### 文字を直す
+Paste lands **beside the selected element**. It goes into the same parent, so a grid cell
+or a box the parent paints (`.container .card`) can be multiplied and still look right.
+Paste with nothing selected and it goes straight onto the slide.
 
-![文字編集中。選んだ範囲が青くハイライトされ、右の「文字書式」が「選んだ範囲に適用」の説明に切り替わる](assets/images/text-edit.png)
+### Editing text
 
-- **ダブルクリック**で文字編集に入ります。キャレットはクリックした位置に入り、その語が選択されます
-- 抜けるのは、**枠の外をクリック**するか `Esc`
-- 抜けたあとは要素の選択が残るので、そのまま矢印キーで動かせます
+![Editing text. The selected range is highlighted in blue, and the "Text" panel on the right now says that formatting applies to the selected range](assets/images/text-edit.png)
 
-インスペクタの「**文字書式**」だけは例外で、**触っても編集が続きます**。
-フォントや色を選んでいる間に、選んだ文字の範囲が失われません。
+- **Double-click** to start editing. The caret lands where you clicked, with that word
+  selected
+- Leave by **clicking outside the box** or pressing `Esc`
+- The element stays selected afterwards, so you can nudge it with the arrow keys right away
 
-### 見た目を変える
+The inspector's **Text** panel is the one exception: **using it keeps the session going**.
+The range you selected is not lost while you pick a font or a color.
 
-インスペクタのパネルから変えます。
+### Changing appearance
 
-| パネル | できること |
+From the inspector's panels.
+
+| Panel | What it does |
 | --- | --- |
-| **文字書式** | 太字・斜体・下線・打ち消し・文字色・蛍光・サイズ・フォント・太さ・行揃え・箇条書き |
-| **位置とサイズ** | X / Y / 幅 / 高さ / 回転を数値で。**1 文字打つたびに反映されます** |
-| **ボックス** | 背景(透明 / 単色)・余白・角丸 |
-| **枠線** | 種類(なし / 実線 / 破線 / 点線)・色・太さ |
-| **画像** | 画像を入れる・トリミング |
+| **Text** | bold, italic, underline, strikethrough, text color, highlight, size, font, weight, alignment, lists |
+| **Position & size** | X / Y / W / H / angle as numbers. **Applied on every keystroke** |
+| **Box** | fill (none / solid), padding, corner radius |
+| **Border** | style (none / solid / dashed / dotted), color, width |
+| **Image** | insert an image, crop |
 
-数値の欄は、上下の矢印(スピナー)やスライダーを動かしてもその場で反映されます。
-**打っているあいだの変更はまとめて 1 回の Undo** で打つ前に戻ります。
+Number fields also apply on the spot when you use the spinner arrows or a slider.
+**Everything typed in one go is a single Undo** back to where you started.
 
-**「なし」「透明」と「解除」は違います。** 前者はデッキ自身の CSS が塗っている背景や
-枠線も消します(上書きとして書くため)。後者は上書きそのものをやめて、
-**デッキ本来の見た目に戻します**。
+**"None" is not "Reset".** "None" removes the background or border even where the deck's
+own CSS paints one (it is written as an override). "Reset" removes the override itself and
+**restores the deck's original look**.
 
-フォントの一覧には、**この環境に実際に入っているものだけ**が出ます。例外は
-**Noto Sans と Noto Sans JP** で、この 2 つはアプリが同梱しているのでどの環境でも選べます
-(既定は `既定(Noto Sans)`)。書き出した HTML を別の機械で開いたときは、
-その環境のシステム書体に落ちます。
+The font list shows **only the fonts actually installed on this machine**. The exceptions
+are **Noto Sans and Noto Sans JP**, which ship with the app and are therefore available
+everywhere (the default is `Default (Noto Sans)`). When the exported HTML is opened on
+another machine, it falls through to that machine's system fonts.
 
-### 画像を入れる
+### Inserting images
 
-**文字も画像も持たない箱**なら、どれでも画像を入れられます。
+**Any box that holds neither text nor an image** can take one.
 
-- 画像ファイルを**その箱の上に落とす**
-- **右クリック**して「画像を入れる」
-- インスペクタの「**画像 › 画像を入れる**」
+- **Drop an image file** onto the box
+- **Right-click** and choose "Insert image"
+- The inspector's **Image › Insert image**
 
-取り込んだデッキが持っている写真枠(破線の箱に「写真添付エリア: …」と書いてあるもの)も
-同じように扱えます。デッキ本来のドロップ機能は取り込みの時点で失われている
-(動かすにはデッキを作った環境のランタイムが要る)ので、これがその代わりです。
-入れた画像は **Undo 1 回で戻せます**。
+The photo frames an imported deck brings with it (dashed boxes labeled as photo
+placeholders) work the same way. The deck's own drop feature is lost at import (it needs
+the runtime of the environment the deck was made in), so this stands in for it.
+An inserted image is **one Undo away**.
 
-### 右クリックからまとめて
+### Everything from the right-click menu
 
-![要素を右クリックしたときのメニュー。テキスト編集・重ね順・整列・コピー・複製・削除がショートカット付きで並ぶ](assets/images/context-menu.png)
+![The menu that opens on right-clicking an element. Edit text, stacking order, alignment, copy, duplicate and delete, each with its shortcut](assets/images/context-menu.png)
 
-テキスト編集・重ね順・整列・切り取り / コピー / 貼り付け・書式のコピー / 貼り付け・
-複製・削除が並びます。同じ位置に要素が重なっているときは、
-`Alt` + クリック(または右クリックの「この位置にあるもの」)で選び分けられます。
+Edit text, stacking order, alignment, cut / copy / paste, copy / paste format, duplicate
+and delete. When elements overlap at one spot, `Alt` + click (or "Elements at this point"
+in the right-click menu) picks between them.
 
-## 保存の挙動
+## How saving works
 
-扱うのは HTML だけです。専用のプロジェクト形式はなく、「取り込む」で HTML を読み、
-「書き出し」で HTML を書きます。**保存 = 書き出し**なので、`⌘S` も自動保存も同じ経路を通ります。
+It is HTML all the way. There is no project format: "Import" reads an HTML file and
+"Export" writes one. **Saving is exporting**, so `⌘S` and autosave take the same path.
 
-**書き出し先が決まっているデッキ**は、編集の手が 2 秒止まると同じ HTML へ自動保存されます。
-書き込みは一時ファイル経由の atomic rename なので、途中で落ちても直前の版は残ります。
-ステータスバーに「変更あり / 書き出し済み HH:MM」が出ます。
+**A deck that has an export destination** is autosaved to the same HTML file two seconds
+after you stop editing. Writes go through a temporary file and an atomic rename, so a crash
+midway leaves the previous version intact. The status bar reads "Unsaved changes" or
+"Exported at HH:MM".
 
-**書き出し先が未設定(取り込んだだけ)のデッキ**は、勝手に書き出しません。取り込み元の
-HTML を黙って上書きしないのも同じ理由で、書き出し先は最初の書き出しでユーザーが決めます。
+**A deck with no destination (only imported)** is never written on its own. The HTML it
+was imported from is never silently overwritten either, for the same reason: you choose
+the destination on the first export.
 
-未書き出しのままウィンドウを閉じようとしたときだけ、確認ダイアログが出ます。
-選べるのは「書き出して終了」「書き出さずに終了」「終了をキャンセル」の 3 つで、
-`Esc` はキャンセルと同じです。× を押し間違えただけなら、そのまま作業に戻れます。
+Only when you close the window with unexported changes does a dialog appear. The choices
+are "Export and quit", "Quit without exporting" and "Cancel", and `Esc` is Cancel. If you
+hit × by mistake, you go straight back to work.
 
-## ファイル形式
+## File format
 
-書き出すのは 1 枚の HTML ファイルです。取り込んだ画像などは、その HTML と同じ階層の
-`assets/` に並べて置かれます。
+The export is one HTML file. Imported images and the like go in an `assets/` folder
+beside it.
 
 ```
-presentation.html   デッキ本体(元の head・body・シェルごと再現)
-assets/*            取り込んだ画像等
+presentation.html   the deck (original head, body and shell reproduced)
+assets/*            imported images and the like
 ```
 
-### Claude Artifacts の standalone HTML
+### Claude Artifacts standalone HTML
 
-Artifacts の「standalone」書き出しは、中身が JSON で埋め込まれた自己展開型のローダーなので、
-取り込み時に素の HTML へ戻してから分割します。`<deck-stage>` のデッキは
-**スライド 1 枚 = `<section>` 1 個**として認識され、デッキが宣言しているステージサイズ
-(1920×1080 等)もそのまま引き継ぎます。
+The "standalone" export from Artifacts is a self-unpacking loader with the content
+embedded as JSON, so it is unpacked to plain HTML before it is split. A `<deck-stage>`
+deck is recognized as **one slide per `<section>`**, and the stage size the deck declares
+(1920×1080 and the like) is kept.
 
-- 埋め込みフォントは、デッキが実際に使う文字を覆う分だけ残して `data:` で HTML に同梱します
-- デッキを**組み立てる**ランタイム(x-dc / React)は取り込みません。かわりに
-  **描くはずだった結果を取り込み時に静的な HTML へ畳み込みます** —— `{{ 変数 }}` は
-  コンポーネントが宣言している既定値になり、`<image-slot>` の写真枠は同じ見た目の
-  プレースホルダになります。どちらもそのまま編集できる普通の要素です
-- デッキを**プレゼンする**ランタイム(`<deck-stage>`)は逆に保持します。編集中は出さず、
-  **書き出す HTML にだけ戻す**ので、書き出したファイルは元の standalone と同じく
-  1 枚ずつ・左サムネイル・矢印キー送りで開きます
+- Embedded fonts are kept only as far as the characters the deck actually uses, inlined
+  into the HTML as `data:` URLs
+- The runtime that **assembles** the deck (x-dc / React) is not imported. Instead,
+  **what it would have drawn is folded into static HTML at import** — `{{ variables }}`
+  become the defaults the components declare, and `<image-slot>` photo frames become
+  placeholders that look the same. Both are ordinary elements you can edit
+- The runtime that **presents** the deck (`<deck-stage>`) is kept. It is hidden while
+  editing and **restored only in the exported HTML**, so the exported file opens the way
+  the original standalone did: one slide at a time, thumbnails on the left, arrow keys
+  to page through
 
-## まだできないこと
+## Not there yet
 
-- **PDF 書き出し**と**コードビュー**は未着手です
-- **要素の複数選択**はありません(選択は常に 1 つ。階層はパンくずで辿ります)
-- **スライドをゼロから作る機能**はありません。入力は既存の HTML デッキです
-- **UI の文言は日本語のみ**です
+- **PDF export** and a **code view** have not been started
+- **No multi-select** (the selection is always one element; walk the hierarchy with the breadcrumb)
+- **No creating slides from scratch**. The input is an existing HTML deck
+- `CONTRIBUTING.md` and `SECURITY.md` are in Japanese for now
 
-## 開発
+## Development
 
-- Issue / Pull Request を送る前に — [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- 脆弱性の報告 — [`SECURITY.md`](SECURITY.md)
+- Before opening an issue or a pull request — [`CONTRIBUTING.md`](CONTRIBUTING.md) (Japanese)
+- Reporting a vulnerability — [`SECURITY.md`](SECURITY.md) (Japanese)
 
-**このリポジトリはリリースごとのスナップショット**で、開発は別のリポジトリで進んでいます。
-PR をそのままマージできない(取り込み直す形になる)ので、送る前に CONTRIBUTING を読んでください。
+**This repository is a per-release snapshot**; development happens in a separate
+repository. A PR cannot be merged as it is (it gets re-applied), so please read
+CONTRIBUTING before sending one.
 
-## ライセンス
+## License
 
 [MIT License](LICENSE)
 
-著作権者は TominagaTeam。
+Copyright TominagaTeam.
 
-公開しているのは**ソースだけ**で、ビルド済みのバイナリは置いていません
-(コード署名と公証の準備ができていないため)。
+**Only the source is published**; there are no prebuilt binaries
+(code signing and notarization are not set up yet).

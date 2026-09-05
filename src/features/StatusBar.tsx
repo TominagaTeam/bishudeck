@@ -1,7 +1,7 @@
 import { useDocumentStore } from '../core/document/store';
 import { useSelectionStore } from '../core/selection/store';
 import { ZOOM_STEPS, useUiStore } from '../app/uiStore';
-import { t, type MessageKey } from '../shared/i18n';
+import { LOCALES, LOCALE_NAMES, t, type MessageKey } from '../shared/i18n';
 import { THEMES, type ThemePreference } from '../shared/theme';
 
 /** Named by key rather than by text: the catalog has to be read when the row
@@ -24,6 +24,8 @@ export function StatusBar({ fitScale }: { fitScale: number }) {
   const busy = useUiStore((s) => s.busy);
   const theme = useUiStore((s) => s.theme);
   const setTheme = useUiStore((s) => s.setTheme);
+  const locale = useUiStore((s) => s.locale);
+  const setLocale = useUiStore((s) => s.setLocale);
   const ancestry = useSelectionStore((s) => s.ancestry);
 
   const effective = zoomOverride ?? fitScale;
@@ -37,10 +39,27 @@ export function StatusBar({ fitScale }: { fitScale: number }) {
       <span className="status-slot dim">{saveLabel(dirty, filePath, savedAt)}</span>
       <span className="status-path">{ancestry.map((s) => s.label).join(' › ')}</span>
       <span className="status-slot">{busy}</span>
-      {/* Beside the zoom rather than in the toolbar: both are about how the
-          workspace looks rather than about the deck, and neither belongs to a
+      {/* Beside the zoom rather than in the toolbar: all three are about how
+          the workspace looks rather than about the deck, and none belongs to a
           command. The zoom keeps the far end — it is the one that gets reached
           for mid-edit. */}
+      <span className="status-slot">
+        <select
+          aria-label={t('status.language')}
+          title={t('status.language')}
+          value={locale}
+          onChange={(e) => {
+            const next = LOCALES.find((option) => option === e.target.value);
+            if (next) setLocale(next);
+          }}
+        >
+          {LOCALES.map((option) => (
+            <option key={option} value={option}>
+              {LOCALE_NAMES[option]}
+            </option>
+          ))}
+        </select>
+      </span>
       <span className="status-slot">
         <select
           aria-label={t('status.theme')}

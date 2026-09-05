@@ -22,13 +22,16 @@
  *
  * Typeface names stay here rather than in the message catalog — a proper noun
  * is the same in every language, and translating it would leave the reader
- * unable to tell which face they were choosing. The one string that *is* looked
- * up is the default entry's, because what it says is 「既定」 and not the name
- * of anything ({@link defaultChoice}).
+ * unable to tell which face they were choosing. What a Japanese face *does*
+ * have is a second name: the one its own vendor gives it in an English system,
+ * where ヒラギノ角ゴシック is listed as Hiragino Sans. That is an alias, not a
+ * translation, so it lives beside the Japanese one here ({@link face}). The one
+ * string that *is* looked up is the default entry's, because what it says is
+ * 「既定」 and not the name of anything ({@link defaultChoice}).
  */
 
 import { BUNDLED_FONT_FAMILIES } from './bundledFonts';
-import { t } from './i18n';
+import { LOCALES, currentLocale, t, type Locale } from './i18n';
 
 /**
  * What the editor writes when nothing else is chosen.
@@ -70,7 +73,15 @@ export interface FontChoice {
  * is now built separately ({@link defaultChoice}) and the nullable field went
  * with it, which is what makes the loop below a plain "is it installed?".
  */
-export interface CatalogFont extends FontChoice {
+export interface CatalogFont extends Omit<FontChoice, 'label'> {
+  /**
+   * What the picker calls it, per interface language. Latin faces have one
+   * name everywhere; a Japanese face has the one its vendor uses on a
+   * Japanese system and the one it uses on an English one. The same face
+   * under its macOS and its Windows family name carries the same labels, which
+   * is what lets {@link availableFonts} fold the two into one entry.
+   */
+  labels: Record<Locale, string>;
   probe: string;
   /**
    * Ships with the app, so {@link probe} is only its name and never a question
@@ -98,13 +109,20 @@ const GENERIC_BASELINES = ['monospace', 'serif', 'sans-serif'] as const;
 /** Measures the probe text under a CSS `font` shorthand, in pixels. */
 export type MeasureText = (font: string) => number;
 
+/** One name for every language, or a Japanese and an English one. */
+type FaceName = string | { ja: string; en: string };
+
+function names(name: FaceName): Record<Locale, string> {
+  return typeof name === 'string' ? { ja: name, en: name } : name;
+}
+
 function face(
-  label: string,
+  name: FaceName,
   family: string,
   group: FontGroup,
   generic: 'sans-serif' | 'serif' | 'monospace' = 'sans-serif',
 ): CatalogFont {
-  return { label, stack: `'${family}', ${generic}`, probe: family, group };
+  return { labels: names(name), stack: `'${family}', ${generic}`, probe: family, group };
 }
 
 /** A face the app ships, so nothing about it is conditional. */
@@ -120,22 +138,22 @@ export const FONT_CATALOG: CatalogFont[] = [
   /* ---- Japanese: bundled first, then macOS, then Windows ---- */
   bundledFace('Noto Sans JP', 'japanese'),
   face('Noto Serif JP', 'Noto Serif JP', 'japanese', 'serif'),
-  face('ヒラギノ角ゴシック', 'Hiragino Sans', 'japanese'),
-  face('ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', 'japanese'),
-  face('ヒラギノ丸ゴ ProN', 'Hiragino Maru Gothic ProN', 'japanese'),
-  face('ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', 'japanese', 'serif'),
-  face('游ゴシック', 'YuGothic', 'japanese'),
-  face('游ゴシック', 'Yu Gothic', 'japanese'),
-  face('游ゴシック UI', 'Yu Gothic UI', 'japanese'),
-  face('游明朝', 'YuMincho', 'japanese', 'serif'),
-  face('游明朝', 'Yu Mincho', 'japanese', 'serif'),
+  face({ ja: 'ヒラギノ角ゴシック', en: 'Hiragino Sans' }, 'Hiragino Sans', 'japanese'),
+  face({ ja: 'ヒラギノ角ゴ ProN', en: 'Hiragino Kaku Gothic ProN' }, 'Hiragino Kaku Gothic ProN', 'japanese'),
+  face({ ja: 'ヒラギノ丸ゴ ProN', en: 'Hiragino Maru Gothic ProN' }, 'Hiragino Maru Gothic ProN', 'japanese'),
+  face({ ja: 'ヒラギノ明朝 ProN', en: 'Hiragino Mincho ProN' }, 'Hiragino Mincho ProN', 'japanese', 'serif'),
+  face({ ja: '游ゴシック', en: 'Yu Gothic' }, 'YuGothic', 'japanese'),
+  face({ ja: '游ゴシック', en: 'Yu Gothic' }, 'Yu Gothic', 'japanese'),
+  face({ ja: '游ゴシック UI', en: 'Yu Gothic UI' }, 'Yu Gothic UI', 'japanese'),
+  face({ ja: '游明朝', en: 'Yu Mincho' }, 'YuMincho', 'japanese', 'serif'),
+  face({ ja: '游明朝', en: 'Yu Mincho' }, 'Yu Mincho', 'japanese', 'serif'),
   face('Osaka', 'Osaka', 'japanese'),
-  face('メイリオ', 'Meiryo', 'japanese'),
-  face('MS Pゴシック', 'MS PGothic', 'japanese'),
-  face('MS Pミンチョウ', 'MS PMincho', 'japanese', 'serif'),
-  face('BIZ UDPゴシック', 'BIZ UDPGothic', 'japanese'),
-  face('BIZ UDP明朝', 'BIZ UDPMincho', 'japanese', 'serif'),
-  face('UD デジタル教科書体', 'UD Digi Kyokasho N-R', 'japanese'),
+  face({ ja: 'メイリオ', en: 'Meiryo' }, 'Meiryo', 'japanese'),
+  face({ ja: 'MS Pゴシック', en: 'MS PGothic' }, 'MS PGothic', 'japanese'),
+  face({ ja: 'MS Pミンチョウ', en: 'MS PMincho' }, 'MS PMincho', 'japanese', 'serif'),
+  face({ ja: 'BIZ UDPゴシック', en: 'BIZ UDPGothic' }, 'BIZ UDPGothic', 'japanese'),
+  face({ ja: 'BIZ UDP明朝', en: 'BIZ UDPMincho' }, 'BIZ UDPMincho', 'japanese', 'serif'),
+  face({ ja: 'UD デジタル教科書体', en: 'UD Digi Kyokasho N-R' }, 'UD Digi Kyokasho N-R', 'japanese'),
 
   /* ---- Latin: bundled first, then cross-platform, macOS, Windows ---- */
   bundledFace('Noto Sans', 'latin'),
@@ -198,11 +216,16 @@ const DEFAULT_STACK_FAMILIES = DEFAULT_FONT_STACK.split(',')
   .filter((family) => !GENERICS.has(family));
 
 /**
- * The catalog's own name for a family, so the default entry can borrow the one
- * the picker already shows for the face it lands on rather than inventing a
- * second spelling of ヒラギノ.
+ * The catalog's own name for a family, per language, so the default entry can
+ * borrow the one the picker already shows for the face it lands on rather than
+ * inventing a second spelling of ヒラギノ.
  */
-const CATALOG_LABELS = new Map(FONT_CATALOG.map((choice) => [choice.probe, choice.label]));
+const CATALOG_LABELS: Record<Locale, Map<string, string>> = Object.fromEntries(
+  LOCALES.map((locale) => [
+    locale,
+    new Map(FONT_CATALOG.map((choice) => [choice.probe, choice.labels[locale]])),
+  ]),
+) as Record<Locale, Map<string, string>>;
 
 /** The families that arrive with the app rather than with the machine. */
 const BUNDLED = new Set<string>(BUNDLED_FONT_FAMILIES);
@@ -252,9 +275,9 @@ export function firstResolvableFamily(
  * `<select>` shows the option without its group heading, so the label has to say
  * "the default" on its own.
  */
-function defaultChoice(measure: MeasureText | null): FontChoice {
+function defaultChoice(measure: MeasureText | null, locale: Locale): FontChoice {
   const resolved = firstResolvableFamily(DEFAULT_STACK_FAMILIES, measure);
-  const name = resolved ? (CATALOG_LABELS.get(resolved) ?? resolved) : null;
+  const name = resolved ? (CATALOG_LABELS[locale].get(resolved) ?? resolved) : null;
   return {
     label: name ? t('font.defaultNamed', { name }) : t('font.default'),
     stack: DEFAULT_FONT_STACK,
@@ -264,21 +287,28 @@ function defaultChoice(measure: MeasureText | null): FontChoice {
 
 /**
  * The catalog reduced to what this machine can render, led by the default
- * entry. Entries that share a label (the same typeface under its macOS and its
- * Windows name) collapse into whichever one is actually present. The bundled
- * faces pass through untouched — nothing about them is this machine's to decide.
+ * entry, named in the current interface language. Entries that share a label
+ * (the same typeface under its macOS and its Windows name) collapse into
+ * whichever one is actually present. The bundled faces pass through untouched —
+ * nothing about them is this machine's to decide.
+ *
+ * The language is read rather than passed: the default entry's label comes
+ * from `t()`, which only ever speaks the current one, and a parameter that the
+ * head of the list ignored would be a lie.
  */
 export function availableFonts(measure: MeasureText | null): FontChoice[] {
-  const result: FontChoice[] = [defaultChoice(measure)];
+  const locale = currentLocale();
+  const result: FontChoice[] = [defaultChoice(measure, locale)];
   const seen = new Set<string>(result.map((choice) => choice.label));
 
   for (const choice of FONT_CATALOG) {
-    if (seen.has(choice.label)) continue;
+    const label = choice.labels[locale];
+    if (seen.has(label)) continue;
     // With no way to measure, absence cannot be proven, and a picker with one
     // entry in it is worse than one that occasionally offers a substitution.
     if (!choice.bundled && measure && !isFontAvailable(choice.probe, measure)) continue;
-    seen.add(choice.label);
-    result.push({ label: choice.label, stack: choice.stack, group: choice.group });
+    seen.add(label);
+    result.push({ label, stack: choice.stack, group: choice.group });
   }
   return result;
 }
@@ -293,22 +323,26 @@ export function canvasMeasure(): MeasureText | null {
   };
 }
 
-let cached: FontChoice[] | null = null;
+let cached: { locale: Locale; fonts: FontChoice[] } | null = null;
 
 /**
  * The list the UI shows. Probing the whole catalog costs a few hundred text
  * measurements, and the set of installed fonts does not change while the app
- * runs, so it is done once.
+ * runs, so it is done once per language rather than per render.
  *
- * The cache now holds one translated string — the default entry's label — so a
- * language switched mid-session would leave that one word behind. There is one
- * catalog today and no switch to make; when a second language arrives, this is
- * a `cached = null` on the way through `setLocale`, not a reason to re-measure
- * every font on every render.
+ * Per language, because the names are the language's — the default entry's
+ * label is translated and the Japanese faces answer to a different name in
+ * English — and a switch mid-session would otherwise leave the old ones behind.
+ * The cache remembers which language it was built in rather than being cleared
+ * by the switch: `i18n` cannot reach into this module, and a check here cannot
+ * be forgotten by a caller.
  */
 export function usableFonts(): FontChoice[] {
-  if (!cached) cached = availableFonts(canvasMeasure());
-  return cached;
+  const locale = currentLocale();
+  if (!cached || cached.locale !== locale) {
+    cached = { locale, fonts: availableFonts(canvasMeasure()) };
+  }
+  return cached.fonts;
 }
 
 /**

@@ -17,6 +17,7 @@ import {
 import { buildProject } from '../import/pipeline';
 import { StageBridge } from './bridge';
 import { CropController, PICTURE_GRIP, slidePicture, trimEdges, type CropStart } from './cropGesture';
+import { t } from '../shared/i18n';
 
 // jsdom ships no CSS.escape; both target WebViews have it.
 if (typeof CSS === 'undefined') {
@@ -303,7 +304,7 @@ describe('CropController: a grip has to travel before it crops', () => {
 
     expect(picture.style.left).not.toBe('-100px');
     expect(useHistory.getState().undoStack).toHaveLength(1);
-    expect(useHistory.getState().undoLabel).toBe('トリミング');
+    expect(useHistory.getState().undoLabel).toBe(t('command.crop'));
   });
 
   it('leaves the picture alone when the picture grip is only clicked', () => {
